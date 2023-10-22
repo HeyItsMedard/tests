@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %}
+<ul>
+  {% for todo in todos %}
+  <li>
+    {{ todo.text }}<input type="checkbox" {{ 'checked' if todo.completed }}
+    disabled />
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
