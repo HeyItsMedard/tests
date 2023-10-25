@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Szavazatszámláló</title>
+</head>
+<body>
+    <h1>Szavazás</h1>
+    <ul>
+        {% for valasztas, szavazat in szavazatok.items() %}
+            <li>
+                {{ valasztas }}: {{ szavazat }} szavazat
+                <progress value="{{ szavazat }}" max="{{ max_szavazat }}"></progress>
+                <button class="szavaz-gomb" data-valasztas="{{ valasztas }}">Szavaz</button>
+            </li>
+        {% endfor %}
+    </ul>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.szavaz-gomb').click(function() {
+                var valasztas = $(this).data('valasztas');
+                $.post('/szavaz', { valasztas: valasztas }, function(data) {
+                    if (data.success) {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

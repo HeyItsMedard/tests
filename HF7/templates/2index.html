@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aranyköpés-gyűjtő</title>
+</head>
+<body>
+    <h1>Aranyköpés-gyűjtő</h1>
+    <p>Beküldött aranyköpések száma: {{ wisecracks|length }}</p>
+    <ul>
+        <li><a href="/">Főoldal</a></li>
+        <li><a href="/new_wisecrack">Új Aranyköpés</a></li>
+        <li><a href="/random_wisecrack">Random Aranyköpés</a></li>
+        <li><a href="/latest_wisecrack">Legfrissebb Aranyköpés</a></li>
+    </ul>
+    <h2>Aranyköpések</h2>
+    <ul>
+        {% for wisecrack in wisecracks %}
+            <li>{{ wisecrack }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

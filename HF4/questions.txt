@@ -1,0 +1,3 @@
+NumericQuestion('Assassin's Creed Mirage will be the _th installment in the series.', 13.0, 0.0)
+TrueFalseQuestion('Is Gen-Z the current last generation?', 'False')
+MultipleChoiceQuestion('Which comic universe Doctor Doom is from?', ['The Boys', 'DC', 'Marvel', 'Astro City'], 3)
