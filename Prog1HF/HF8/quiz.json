@@ -1,0 +1,50 @@
+[
+    {
+        "question": "Who is the current CEO of Twitter?",
+        "type": "text",
+        "correct": "Elon Musk"
+    },
+    {
+        "question": "Who founded Twitter?",
+        "type": "MCQ",
+        "answers": [
+            "Jack Dorsey",
+            "Elon Musk",
+            "Bill Gates",
+            "George Soros"
+        ]
+    },
+    {
+        "question": "In which year was Twitter bought by a billionaire?",
+        "type": "number",
+        "correct": 2022,
+        "tolerance": 0
+    },
+    {
+        "question": "What was the price of the Twitter acquisition, in billion dollars?",
+        "type": "number",
+        "correct": 44,
+        "tolerance": 1
+    },
+    {
+        "question": "Any user can edit their tweet for up to 5 minutes after posting it.",
+        "type": "true/false",
+        "correct": false
+    },
+    {
+        "question": "How tall is Mount Everest in meters?",
+        "type": "number",
+        "correct": "8849",
+        "tolerance": "51"
+    },
+    {
+        "question": "Which country won the FIFA World Cup in 2022?",
+        "type": "MCQ",
+        "answers": [
+            "Argentina",
+            "France",
+            "Croatia",
+            "Brasil"
+        ]
+    }
+]
