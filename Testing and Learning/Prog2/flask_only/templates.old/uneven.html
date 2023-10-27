@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+    <h1>Home Page</h1>
+    {% for i in range(5) %}
+        {% if i % 2 == 1 %}
+            <p>Uneven {{i}}</p>
+        {% endif %}
+    {% endfor %}
+</body>
+</html>
