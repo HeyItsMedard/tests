@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body><h1>Üzenet küldés:</h1>
+    <hr>  
+    <form method='POST'>
+        <p>Add meg a címzett felhasználó nevét:</p> 
+            <p>{{Uzenet}}</p>
+            <input name="cimzett">
+           <p>Uzenet szövege::</p> 
+           <textarea name="szoveg"required></textarea>
+           <input type="submit">
+    </form>
+    <a href="{{ url_for('felhasznalo_menu')}}">felhasznalo_menu</a>
+</body>
+</html>

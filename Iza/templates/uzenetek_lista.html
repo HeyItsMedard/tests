@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body><h1>Üzenetek:</h1>
+    <hr>  
+  
+        {%for uzenet in Uzenetek%}
+            <p>{{uzenet}}</p>
+        {%endfor%}            
+
+
+    <a href="{{ url_for('felhasznalo_menu')}}">felhasznalo_menu</a>
+</body>
+</html>

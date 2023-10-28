@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>
+    <h1>Bejelentkező menü:</h1>
+    <hr>  
+    <form method="POST">
+        <p>{{Uzenet}}</p>
+           <p>Add meg a felhasználó neved:
+            
+            <input name="felhasznalonev"></p> 
+           <p>Add meg a jelszavad: 
+           <input name="jelszo"></p>
+           
+        <a href="{{ url_for('fo_oldal')}}">Főoldal</a>
+        <input type="submit">
+</form>
+</body>
+</html>

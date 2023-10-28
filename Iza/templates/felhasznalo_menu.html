@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        nav p a {
+            margin: 0 10px;
+            border-right: 1px solid #000;
+            padding-right: 10px;
+        }
+        nav p a:last-child {
+            border-right: none;
+        }
+    </style>
+</head>
+<body><h1>Felhasználó menü</h1>
+    <hr>  
+    <nav>
+        <p>
+        <a href="{{ url_for('uzenet_kiirasa')}}">Beérkező üzenetek</a>
+        <a href="{{ url_for('uzenet_iras')}}">Üzenet küldése</a>
+        <a href="{{ url_for('fo_oldal')}}">Kijelentkezés</a>
+    </p>  
+</nav>
+            
+    
+    
+</body>
+</html>
