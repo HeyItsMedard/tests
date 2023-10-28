@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Your Friends{% endblock %}
+{% block content %}
+    <h1>Your Friends</h1>
+    <ul>
+        {% for friend in friends %}
+            <li>Name: {{ friend.name }}, Email: {{ friend.email }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
