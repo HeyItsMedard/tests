@@ -27,6 +27,7 @@ friend_relationship = Table('friend_relationship',
 
 @dataclass
 class User(db.Model):
+    id: int
     name: str
     email: str
     password: str
@@ -34,7 +35,7 @@ class User(db.Model):
     login_date: datetime | None
     logout_date: datetime | None
     
-    _id = db.Column("id", db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
@@ -43,9 +44,9 @@ class User(db.Model):
     logout_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=True) # Default is None
     friends = relationship('User',
                           secondary= friend_relationship,
-                          primaryjoin=(_id == friend_relationship.c.user_id),
-                          secondaryjoin=(_id == friend_relationship.c.friend_id),
-                          backref="friend_of", order_by=_id)
+                          primaryjoin=(id == friend_relationship.c.user_id),
+                          secondaryjoin=(id == friend_relationship.c.friend_id),
+                          backref="friend_of", order_by=id)
     
     # Define the relationship for messages sent by the user
     sent_messages = relationship('Message', back_populates='sender', foreign_keys='Message.sender_id')
@@ -60,12 +61,14 @@ class Message(db.Model):
     sender_id: int
     receiver_id: int
     timestamp: datetime
+    seen: bool
 
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(200), nullable=False)
     sender_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     receiver_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     timestamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    seen = db.Column(db.Boolean, default=False)  # Default is False
 
     # Define the relationships with User
     sender = relationship('User', foreign_keys=[sender_id], back_populates='sent_messages')
@@ -77,9 +80,9 @@ def home():
     if "user" in session:
         user_name = session["user"]
         user = User.query.filter_by(name=user_name).first()
-        messages = User.query.filter(Message.timestamp > user.logout_date).all()
-        message_count= len(messages)
-
+        unseen_messages = Message.query.filter((Message.receiver_id == user.id) & (Message.seen == 0)).all()
+        print(unseen_messages)
+        message_count = len(unseen_messages)
         return render_template("index2.html", name=user_name, message_count=message_count)
     else:
         return render_template("index2.html")
@@ -104,22 +107,31 @@ def message(friend_name):
         user_name = session["user"]
         user = User.query.filter_by(name=user_name).first()
         friend = User.query.filter_by(name=friend_name).first()
-
-        if request.method == "POST":
-            message_text = request.form.get("message_text")
-            if message_text:
-                # Create a new message and save it in the database
-                message = Message(text=message_text, sender=user, receiver=friend)
-                db.session.add(message)
-                db.session.commit()
-                flash("Message sent!")
-
         # Fetch all messages between the user and their friend
         messages = Message.query.filter(
             ((Message.sender == user) & (Message.receiver == friend)) |
             ((Message.sender == friend) & (Message.receiver == user))
         ).order_by(Message.timestamp).all()
 
+        # Mark messages as "seen" - not okay, it sets every message before last input true
+        for message in messages:
+            print("this runs now")
+            if not message.seen and user.id == message.receiver_id:
+                message.seen = True
+        # Commit the changes
+        db.session.commit()
+        if request.method == "POST":
+            message_text = request.form.get("message_text")
+            if message_text:
+                # Create a new message and save it in the database
+                new_message = Message(text=message_text, sender=user, receiver=friend, seen=False)
+                db.session.add(new_message)
+                db.session.commit()
+                flash("Message sent!")
+                # Add the newly posted message to the list of messages
+                messages.append(new_message)
+                print("added message")
+        
         return render_template("message.html", user=user, friend=friend, messages=messages)
     else:
         flash("You are not logged in!")
@@ -392,12 +404,14 @@ def teardown_request(exception=None):
             db.session.commit()
 
 @app.route('/reset', methods=['GET', 'POST'])
-def reset():
+def reset(): #TODO: RESET HAS A PROBLEM WITH HOME WHERE IT THINKS ITS IN SESSION
     # Warning in html
     if request.method == 'POST':
         # empties the databases and sets the formats back - watch out for unused tables
         db.drop_all()
         db.create_all()
+        session.pop("user", None)
+        session.pop("user", None)
         return redirect(url_for('home'))
     return render_template('reset.html')
     
