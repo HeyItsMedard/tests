@@ -6,4 +6,8 @@
 <span style="font-size: 1.5em;">[x] Lehessen törölni barátot és fiókot is! </span>  
 <span style="font-size: 1.5em;">[x] Home nem csinál semmit jelenleg. Változtassunk rajta! </span>  
 <span style="font-size: 1.5em;">[x] Legyen az is elmentve, mikor regisztráltak a userek! Az újonnan regisztráltak kerüljenek ki csak viewba! </span>  
-<span style="font-size: 1.5em;">[x] Ellenőrizd, hogy username változtáskor se tudjon létező nevet adni! </span>
+<span style="font-size: 1.5em;">[x] Ellenőrizd, hogy username változtáskor se tudjon létező nevet adni! </span>  
+____________________________________________________________
+<span style="font-size: 1.5em;">[] Legyen request, még mielőtt a user kiküld egy befriendet! </span>  
+<span style="font-size: 1.5em;">[/] Legyen értesítés új üzeneteknek! Ez lehet homepagen egy count, vagy Friendsnél egy kiemelés! </span> 
+<span style="font-size: 1.5em;">[] Legyen seen adattároló, amikor rámegy egy beszélgetésre egy user! </span> 

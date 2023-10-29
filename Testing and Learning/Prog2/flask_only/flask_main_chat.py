@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, url_for, redirect, session, f
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 from flask_bcrypt import Bcrypt
-from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship
 from sqlalchemy import Table
 # from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
@@ -13,7 +12,8 @@ app = Flask(__name__)
 app.secret_key = "hello"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/medav/Documents/GitHub/tests/Testing and Learning/Prog2/flask_only/users.sqlite3' # csak így működik, aki tesztel, írja át
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.permanent_session_lifetime = timedelta(minutes=5) # session véget ér 5 perc után, vagyis logout lesz
+CUSTOM_SESSION_TIMEOUT = timedelta(minutes=10)
+app.permanent_session_lifetime = CUSTOM_SESSION_TIMEOUT
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
@@ -73,7 +73,16 @@ class Message(db.Model):
 
 @app.route("/")
 def home():
-    return render_template("index2.html")
+    # TODO WRITE MESSAGE COUNT OF NOT SEEN - CODE BELOW DOESN'T WORK FOR THIS VERSION DUE TO TEARDOWN REQUEST
+    if "user" in session:
+        user_name = session["user"]
+        user = User.query.filter_by(name=user_name).first()
+        messages = User.query.filter(Message.timestamp > user.logout_date).all()
+        message_count= len(messages)
+
+        return render_template("index2.html", name=user_name, message_count=message_count)
+    else:
+        return render_template("index2.html")
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -246,7 +255,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             session.permanent = True
             session["user"] = name
-
+            session['session_expires'] = datetime.utcnow() + CUSTOM_SESSION_TIMEOUT
             # Set the login date
             login_date = datetime.utcnow()
             user.login_date = login_date
@@ -370,7 +379,18 @@ def logout():
         session.pop("user", None) # not the same as list pop, logs user out
         session.pop("email", None)
         return redirect(url_for("login"))
-    
+
+# In case of inactivity, the last time a request was made is going to be the the logout time
+@app.teardown_request
+def teardown_request(exception=None):
+    if 'user' in session:
+        name = session['user']
+        user = User.query.filter_by(name=name).first()
+        if user:
+            logout_date = datetime.utcnow()
+            user.logout_date = logout_date
+            db.session.commit()
+
 @app.route('/reset', methods=['GET', 'POST'])
 def reset():
     # Warning in html
