@@ -8,13 +8,15 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    <form action="{{ url_for('user') }}" method="post">
-        <p>Username:</p>
-        <p><input type="text" name="new_username" value="{{user}}"/></p>
-        <p>Email:</p>
-        <p><input type="email" name="email" value="{{email if email}}"/></p>
-        <p>Password:</p>
-        <p><input type="password" name="new_password" placeholder="*hidden*"/></p>
-        <p><input type="submit" value="Save Changes"/></p>
-    </form>
+    {% if session.user  %}
+        <form action="{{ url_for('user') }}" method="post">
+            <p>Username:</p>
+            <p><input type="text" name="new_username" value="{{user}}"/></p>
+            <p>Email:</p>
+            <p><input type="email" name="email" value="{{email if email}}"/></p>
+            <p>Password:</p>
+            <p><input type="password" name="new_password" placeholder="*hidden*"/></p>
+            <p><input type="submit" value="Save Changes"/></p>
+        </form>
+    {% endif %}
 {% endblock %}

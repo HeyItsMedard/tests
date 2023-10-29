@@ -1,8 +1,8 @@
-<span style="font-size: 1.5em;">[ ] Legyen barát lista, legyen elérhető felülről</span>  
-<span style="font-size: 1.5em;">[ ] Barátokat az összes userből lehessen választani gombbal, megnyomáskor legyen alert.</span>  
-<span style="font-size: 1.5em;">[ ] Legyen chat ablak barátok között. A barátokból legyen megnyitható.</span>  
-<span style="font-size: 1.5em;">[ ] Minden ablak legyen elérhető navbarból! Login esetén logout blocked és fordítva.</span>  
+<span style="font-size: 1.5em;">[x] Legyen barát lista, legyen elérhető felülről</span>  
+<span style="font-size: 1.5em;">[x] Barátokat az összes userből lehessen választani gombbal, megnyomáskor legyen alert.</span>  
+<span style="font-size: 1.5em;">[x] Legyen chat ablak barátok között. A barátokból legyen megnyitható.</span>  
+<span style="font-size: 1.5em;">[/] Minden ablak legyen elérhető navbarból! Login esetén logout blocked és fordítva.</span>  
 <span style="font-size: 1.5em;">[x] Legyen jelszó, azoknak legyen titkosítása! Legyen kitakarva beíráskor!</span>  
-<span style="font-size: 1.5em;">[ ] Lehessen törölni barátot és fiókot is! </span>  
+<span style="font-size: 1.5em;">[/] Lehessen törölni barátot és fiókot is! </span>  
 <span style="font-size: 1.5em;">[x] Home nem csinál semmit jelenleg. Változtassunk rajta! </span>  
 <span style="font-size: 1.5em;">[ ] Legyen az is elmentve, mikor regisztráltak a userek! Az újonnan regisztráltak kerüljenek ki csak viewba! </span>

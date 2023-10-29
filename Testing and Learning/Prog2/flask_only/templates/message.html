@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Messaging with {{friend.name}}{% endblock %}
+{% block content %}
+    <h2>Messaging with {{friend.name}}</h2>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <style>
+        .message-line {
+            margin-bottom: 10px;
+        }
+    
+        .message-sender {
+            font-weight: bold;
+        }
+    
+        .message-date {
+            font-size: 12px;
+            color: #888;
+        }
+    
+        textarea {
+            width: 100%;
+            padding: 10px;
+        }
+    
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+    
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    {% for message in messages %}
+        <p class="message-line">
+            <span class="message-sender">{{ message.sender.name }}:</span>
+            {{ message.text }}
+            <span class="message-date">{{ message.timestamp.strftime('%Y.%m.%d %H:%M') }}</span>
+        </p>
+    {% endfor %}
+    
+    <form action="{{ url_for('message', friend_name=friend.name) }}" method="post">
+        <textarea name="message_text" placeholder="Type your message..."></textarea>
+        <input type="submit" value="Send">
+    </form>
+{% endblock %}
