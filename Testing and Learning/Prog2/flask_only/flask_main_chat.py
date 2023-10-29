@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship
 from sqlalchemy import Table
 # from flask_jwt_extended import JWTManager, create_access_token, get_jwt_identity, jwt_required
-# currently used htmls: view, user, reset, register, login, index2, base
+# currently used htmls: view, user, reset, register, login, index2, base, message, friends (from templates)
 app = Flask(__name__)
 app.secret_key = "hello"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/medav/Documents/GitHub/tests/Testing and Learning/Prog2/flask_only/users.sqlite3' # csak így működik, aki tesztel, írja át
@@ -30,16 +30,23 @@ class User(db.Model):
     name: str
     email: str
     password: str
+    registration_date: datetime
+    login_date: datetime | None
+    logout_date: datetime | None
     
     _id = db.Column("id", db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    registration_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    login_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=True)  # Default is None
+    logout_date = db.Column(db.DateTime, default=datetime.utcnow, nullable=True) # Default is None
     friends = relationship('User',
                           secondary= friend_relationship,
                           primaryjoin=(_id == friend_relationship.c.user_id),
                           secondaryjoin=(_id == friend_relationship.c.friend_id),
                           backref="friend_of", order_by=_id)
+    
     # Define the relationship for messages sent by the user
     sent_messages = relationship('Message', back_populates='sender', foreign_keys='Message.sender_id')
 
@@ -110,7 +117,7 @@ def message(friend_name):
         return redirect(url_for("login"))
     
 @app.route("/unfriend/<friend_name>")
-def unfriend(friend_name):
+def unfriend(friend_name): # from friends.html, we pass the username of selected friend
     if "user" in session:
         user_name = session["user"]
         user = User.query.filter_by(name=user_name).first()
@@ -139,7 +146,20 @@ def unfriend(friend_name):
 
 @app.route("/view")
 def view():
-    return render_template("view.html", values=User.query.all())
+    if "user" in session:
+        user_name = session["user"]
+        user = User.query.filter_by(name=user_name).first()
+        since_registration = user.registration_date
+        recent_users = User.query.filter(User.registration_date > since_registration).all()
+        return render_template("view.html", values=recent_users)
+    else:
+        # Get the current date and time
+        current_datetime = datetime.now()
+
+        # Calculate the start of today (midnight)
+        today_start = current_datetime.replace(hour=0, minute=0, second=0, microsecond=0)
+        today_users = User.query.filter(User.registration_date > today_start).all()
+        return render_template("view.html", values=today_users)
 
 @app.route("/befriend", methods=["POST"])
 def befriend():
@@ -185,10 +205,10 @@ def befriend():
 @app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "POST":
+        # Get inputs
         name = request.form["username"]
         password = request.form["password"]
         email = request.form["email"]
-        # You can add more fields here
 
         # Check if the user already exists
         user = User.query.filter_by(name=name).first()
@@ -199,8 +219,12 @@ def register():
         # Hash the password for security
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-        # Create a new user
-        new_user = User(name=name, email=email, password=hashed_password)
+        # Remember registration date
+        registration_date = datetime.utcnow()
+
+        # Create new user
+        new_user = User(name=name, password=hashed_password, email=email, 
+                        registration_date=registration_date, login_date=None, logout_date=None)
         db.session.add(new_user)
         db.session.commit()
 
@@ -209,22 +233,32 @@ def register():
     else:
         return render_template("register.html")
 
-
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    # User tries logging in
     if request.method == "POST":
+        # Get name and password
         name = request.form["nm"]
         password = request.form["password"]
 
+        # Look for user and check password hash
         user = User.query.filter_by(name=name).first()
         if user and bcrypt.check_password_hash(user.password, password):
             session.permanent = True
             session["user"] = name
+
+            # Set the login date
+            login_date = datetime.utcnow()
+            user.login_date = login_date
+            db.session.commit()
+
             flash("Login successful! Confirm your details.")
-            return redirect(url_for("user"))
+            return redirect(url_for("user")) # check settings
+        # User not found or incorrect password
         else:
             flash("Login failed. Invalid credentials.")
             return redirect(url_for("login"))
+    # User in session, already logged in
     else:
         if "user" in session:
             flash("Already logged in!")
@@ -233,56 +267,120 @@ def login():
 
 @app.route("/user", methods=["POST", "GET"])
 def user():
+    # Make sure the user is logged in
     if "user" in session:
         user = session["user"]
-        if request.method == "POST":
-            email = request.form["email"]
-            session["email"] = email
-            found_user = User.query.filter_by(name=user).first()
-            found_user.email = email
+        found_user = User.query.filter_by(name=user).first()
 
+        # Give email to the session
+        email = found_user.email
+        session["email"] = email
+
+        # User made changes
+        if request.method == "POST":
+            # Get all usernames and emails from the database
+            all_usernames = [user.name for user in User.query.all()]
+            all_emails = [user.email for user in User.query.all()]
+
+            # Requesting new input from HTML
             new_username = request.form.get("new_username")
             new_password = request.form.get("new_password")
+            new_email = request.form.get("new_email")
 
             if new_username:
-                found_user.name = new_username
-                session["user"] = new_username  # Update the session with the new username
+                # compare to current and existing usernames
+                if new_username != user and new_username not in all_usernames:
+                    found_user.name = new_username  # Update name in the database
+                    session["user"] = new_username  # Update the session with the new username
+                else:
+                    new_username = user # for display, change it back to the original
+                    flash("Username already in use or same as the current username. Changes not saved.")
+
+            if new_email:
+                # compare to current and existing emails
+                if new_email != email and new_email not in all_emails:
+                    found_user.email = new_email
+                else:
+                    new_email = email # for display, change it back to the original
+                    flash("Email already in use or same as the current email. Changes not saved.")
 
             if new_password:
+                # Save the hashed password to the database
                 found_user.password = bcrypt.generate_password_hash(new_password).decode('utf-8')
 
+            # Save the changes to the database
             db.session.commit()
             flash("Changes saved!")
-        else:
-            if "email" in session:
-                email = session["email"]
-            else:
-                found_user = User.query.filter_by(name=user).first()
-                email = found_user.email if found_user else ""
-                session["email"] = email
+            return render_template("user.html", user=new_username, email=new_email)
 
         return render_template("user.html", user=user, email=email)
     else:
         flash("You are not logged in!")
         return redirect(url_for("login"))
+    
+@app.route("/delete_user", methods=["POST"])
+def delete_user():
+    if "user" in session:
+        user_name = session["user"]
+        user = User.query.filter_by(name=user_name).first()
+
+        # User found in database
+        if user:
+            # Delete user's messages
+            Message.query.filter(
+                (Message.sender == user) | (Message.receiver == user)
+            ).delete(synchronize_session=False)
+
+            # Remove the user from their friends' lists
+            for friend in user.friends:
+                friend.friends.remove(user)
+
+            # Delete the user
+            db.session.delete(user)
+            db.session.commit()
+
+            # Log the user out
+            session.pop("user", None)
+            session.pop("email", None)
+            flash("Your account has been deleted.")
+        else:
+            flash("User not found.")
+    else: # how do you even get here if you are not logged in? :D
+        flash("You are not logged in!")
+
+    return redirect(url_for("login"))
 
 @app.route("/logout")
 def logout():
     if "user" not in session:
+        # You are not logged in flash in user, redirect to login
         return redirect(url_for("user"))
     else:
+        # Get session user
+        name = session["user"]
+        # Search them in the database
+        user = User.query.filter_by(name=name).first()
+        # Set the logout date
+        logout_date = datetime.utcnow()
+        user.logout_date = logout_date
+        db.session.commit() # and save it
+
+        # Log out the session user
         flash(f"You have been logged out!", "info") #info is empty
-        session.pop("user", None) # not the same as list pop
+        session.pop("user", None) # not the same as list pop, logs user out
         session.pop("email", None)
         return redirect(url_for("login"))
     
 @app.route('/reset', methods=['GET', 'POST'])
 def reset():
-    if request.method == 'POST': 
+    # Warning in html
+    if request.method == 'POST':
+        # empties the databases and sets the formats back - watch out for unused tables
         db.drop_all()
         db.create_all()
         return redirect(url_for('home'))
     return render_template('reset.html')
+    
 
 if __name__ == "__main__":
     with app.app_context():

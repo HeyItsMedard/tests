@@ -13,10 +13,13 @@
             <p>Username:</p>
             <p><input type="text" name="new_username" value="{{user}}"/></p>
             <p>Email:</p>
-            <p><input type="email" name="email" value="{{email if email}}"/></p>
+            <p><input type="email" name="new_email" value="{{email}}"/></p>
             <p>Password:</p>
             <p><input type="password" name="new_password" placeholder="*hidden*"/></p>
             <p><input type="submit" value="Save Changes"/></p>
+        </form>
+        <form action="{{ url_for('delete_user') }}" method="post">
+            <p><input type="submit" value="Delete Account"/></p>
         </form>
     {% endif %}
 {% endblock %}
