@@ -76,7 +76,6 @@ class Message(db.Model):
 
 @app.route("/")
 def home():
-    # TODO WRITE MESSAGE COUNT OF NOT SEEN - CODE BELOW DOESN'T WORK FOR THIS VERSION DUE TO TEARDOWN REQUEST
     if "user" in session:
         user_name = session["user"]
         user = User.query.filter_by(name=user_name).first()
@@ -178,6 +177,7 @@ def view():
         current_datetime = datetime.now()
 
         # Calculate the start of today (midnight)
+        # Note: you have to set it manually. Date and DateTime can't be compared.
         today_start = current_datetime.replace(hour=0, minute=0, second=0, microsecond=0)
         today_users = User.query.filter(User.registration_date > today_start).all()
         return render_template("view.html", values=today_users)

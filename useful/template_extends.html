@@ -1,0 +1,13 @@
+<!-- BASIC HTML EXTEND TEMPLATE, EDIT FOR PERSONAL USE! -->
+{% extends "template.html" %}
+{% block title %}Template{% endblock %}
+{% block content %}
+    <!-- PRINT FLASH MESSAGES (IF YOU USE IT IN YOUR CODE, MIGHT JUST BE ME) -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% endblock %}
