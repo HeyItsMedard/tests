@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from flask import Flask, render_template, request, url_for, redirect, session, flash
+from flask import Flask, jsonify, render_template, request, url_for, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
 from flask_bcrypt import Bcrypt
@@ -80,7 +80,6 @@ def home():
         user_name = session["user"]
         user = User.query.filter_by(name=user_name).first()
         unseen_messages = Message.query.filter((Message.receiver_id == user.id) & (Message.seen == 0)).all()
-        print(unseen_messages)
         message_count = len(unseen_messages)
         return render_template("index2.html", name=user_name, message_count=message_count)
     else:
@@ -114,7 +113,6 @@ def message(friend_name):
 
         # Mark messages as "seen" - not okay, it sets every message before last input true
         for message in messages:
-            print("this runs now")
             if not message.seen and user.id == message.receiver_id:
                 message.seen = True
         # Commit the changes
@@ -126,10 +124,20 @@ def message(friend_name):
                 new_message = Message(text=message_text, sender=user, receiver=friend, seen=False)
                 db.session.add(new_message)
                 db.session.commit()
-                flash("Message sent!")
+                # flash("Message sent!") #some reason shows up outside of messages now, but I'm not bothered
                 # Add the newly posted message to the list of messages
-                messages.append(new_message)
-                print("added message")
+                # messages.append(new_message)
+                # js needs this for some reason lol
+                response = {
+                    'text': message_text,
+                    'timestamp': new_message.timestamp.strftime('%Y-%m-%d %H:%M'),
+                }
+                return jsonify(response)
+                
+        messages = Message.query.filter(
+                ((Message.sender == user) & (Message.receiver == friend)) |
+                ((Message.sender == friend) & (Message.receiver == user))
+            ).order_by(Message.timestamp).all()
         
         return render_template("message.html", user=user, friend=friend, messages=messages)
     else:

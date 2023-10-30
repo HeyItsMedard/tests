@@ -22,6 +22,11 @@
             font-size: 12px;
             color: #888;
         }
+
+        .message-box {
+            max-height: 300px; /* Set a maximum height for the message box */
+            overflow-y: scroll; /* Add vertical scrolling when needed */
+        }
     
         textarea {
             width: 100%;
@@ -40,16 +45,79 @@
             background-color: #0056b3;
         }
     </style>
-    {% for message in messages %}
-        <p class="message-line">
-            <span class="message-sender">{{ message.sender.name }}:</span>
-            {{ message.text }}
-            <span class="message-date">{{ message.timestamp.strftime('%Y.%m.%d %H:%M') }}</span>
-        </p>
-    {% endfor %}
+    <div class="message-box" id="message-box">
+        {% for message in messages %}
+            <p class="message-line">
+                <span class="message-sender">
+                    {% if message.sender.name == user.name %}
+                        You:
+                    {% else %}
+                        {{ message.sender.name }}:
+                    {% endif %}
+                </span>
+                {{ message.text }}
+                <span class="message-date">{{ message.timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+            </p>
+        {% endfor %}
+    </div>
     
-    <form action="{{ url_for('message', friend_name=friend.name) }}" method="post">
+    <form id="message-form" method="post">
         <textarea name="message_text" placeholder="Type your message..."></textarea>
-        <input type="submit" value="Send">
+        <input type="button" value="Send" onclick="sendMessage()">
     </form>
+</div>
+
+<script>
+    var currentUser = "{{ user.name }}";
+
+    function scrollToBottom() {
+        var messageBox = document.getElementById('message-box');
+        messageBox.scrollTop = messageBox.scrollHeight;
+    }
+
+    function sendMessage() {
+        var messageText = document.querySelector('[name="message_text"]').value;
+        if (messageText.trim() === '') {
+            return; // Don't send empty messages
+        }
+
+        // Use AJAX to submit the message
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ url_for('message', friend_name=friend.name) }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    // Message sent successfully, update the message box
+                    var messageBox = document.getElementById('message-box');
+                    var senderName = currentUser === "{{ user.name }}" ? "You" : "{{ user.name }}";
+
+                    // Parse the response from the server
+                    var response = JSON.parse(xhr.responseText);
+
+                    // Format the timestamp in the desired format and style
+                    var formattedTimestamp = '<span class="message-date">' + response.timestamp + '</span>';
+
+                    // Create a new message line with sender, message text, and formatted timestamp
+                    var messageLine = '<p class="message-line"><span class="message-sender">' + senderName + ':</span> ' + response.text + ' ' + formattedTimestamp + '</p>';
+
+                    // Append the new message to the message box
+                    messageBox.innerHTML += messageLine;
+
+                    scrollToBottom(); // Scroll to the bottom after appending the new message
+                } else {
+                    // Handle any errors that occur during message submission
+                    console.log('Error: ' + xhr.status + ' ' + xhr.statusText);
+                }
+            }
+        };
+        xhr.send('message_text=' + encodeURIComponent(messageText));
+    }
+    // Scroll to the bottom when the page loads
+    window.addEventListener('load', function() {
+        scrollToBottom();
+    });
+</script>
+
+
 {% endblock %}
