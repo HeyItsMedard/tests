@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Játékosok nevei</title>
+</head>
+<body>
+    <h2>Játékosok nevei</h2>
+    <form method="POST" action="{{ url_for('enter_player_names') }}">
+        <input type="hidden" name="num_players" value="{{ num_players }}">
+        {% for i in range(num_players) %}
+            <label for="player_{{ i }}">Játékos {{ i + 1 }} neve:</label>
+            <input type="text" id="player_{{ i }}" name="player_{{ i }}" required>
+            <br>
+        {% endfor %}
+        <input type="submit" value="Mentés">
+    </form>
+</body>
+</html>

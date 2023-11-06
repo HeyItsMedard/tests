@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Marrakech Játék</title>
+</head>
+<body>
+    <h1>Marrakech Játék</h1>
+
+    <!-- Játéktábla megjelenítése -->
+    <div id="game-board">
+        <!-- Mezők és szőnyegek megjelenítése -->
+        {% for row in board %}
+            <div class="row">
+                {% for field in row %}
+                    <div class="field" style="background-color: {{ field.color }};">
+                        {% if field.carpet %}
+                            <img src="{{ url_for('static', filename='carpet.png') }}" alt="Szőnyeg">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
