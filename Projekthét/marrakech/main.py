@@ -41,26 +41,13 @@ def enter_player_names():
         player = Player(name=player_name, color=player_color, money=120//num_players, carpet_count=carpet_count)
         players.append(player)
     print(players)
-    return redirect(url_for('game_board'))
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+    # A játékosokat átadjuk a game_board nézetnek
+    return render_template('game_board.html', players=players, num_players=num_players)
 
 @app.route('/game_board')
 def game_board():
-    # Játékosok adatainak lekérése a dataclassból
-    players = get_players_data()  # Adatainak lekérése a megfelelő függvénnyel
-
-    return render_template('game_board.html', players=players)
-
-# Új függvény a játékosok adatainak lekéréséhez
-def get_players_data():
-    players = []  # Ebben a listában tároljuk majd a játékosok adatait
-
-    # Itt le kell kérni a játékosok adatait a dataclassból és hozzáadni a players listához
-
-    return players
+    # TODO: írd meg a függvényt és a htmlt! írja ki a játékosokat és tulajdonaikat, az első elem kezdjen egy körben és haladjon végig
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
