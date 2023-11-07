@@ -1,22 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for
 import random
 
-from flask_sqlalchemy import SQLAlchemy
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/medav/Documents/GitHub/tests/Projekthét/marrakech/marrakech.db'
-db = SQLAlchemy(app)
 
 # Lista a játékosok neveinek és színeinek tárolásához
 player_data = []
-
-class Player(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    color = db.Column(db.String(20))
-    money = db.Column(db.Integer)
-    # Kapcsolat a szőnyegekhez
-    carpet_count = db.Column(db.Integer)
 
 @app.route('/')
 def start_game_form():
@@ -43,26 +31,31 @@ def enter_player_names():
     available_colors = ['Red', 'Blue', 'Green', 'Yellow']
     random.shuffle(available_colors)
     
-    # Játékosok létrehozása és hozzáadása az adatbázishoz
+    # Játékosok létrehozása és hozzáadása a player_data listához
+    players = []
     for i in range(num_players):
         player_name = player_data[i]
         player_color = available_colors[i]
         
-        player = Player(name=player_name, color=player_color, money=money_per_player, carpet_count=carpet_count)
-        db.session.add(player)
-    
-    # Adatok mentése az adatbázisba
-    db.session.commit()
-    
+        player = {'name': player_name, 'color': player_color, 'money': money_per_player, 'carpet_count': carpet_count}
+        players.append(player)
+    print(players)
     return redirect(url_for('game_board'))
 
 @app.route('/game_board')
 def game_board():
-    # Játéktáblát és állapotot jelenítse meg
-    pass
+    # Játékosok adatainak lekérése a dataclassból
+    players = get_players_data()  # Adatainak lekérése a megfelelő függvénnyel
+
+    return render_template('game_board.html', players=players)
+
+# Új függvény a játékosok adatainak lekéréséhez
+def get_players_data():
+    players = []  # Ebben a listában tároljuk majd a játékosok adatait
+
+    # Itt le kell kérni a játékosok adatait a dataclassból és hozzáadni a players listához
+
+    return players
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
     app.run(debug=True)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Játéktábla</title>
+</head>
+<body>
+    <h2>Játéktábla</h2>
+    <h3>Aktuális játékos: {{ current_player }}</h3>
+    <h4>Szín: {{ current_color }}</h4>
+    <h4>Pénz: {{ current_money }}</h4>
+    <h4>Szőnyeg szám: {{ current_carpet_count }}</h4>
+
+    <!-- Játéktábla megjelenítése -->
+    <table>
+        <tr>
+            <th></th>
+            <th>1</th>
+            <th>2</th>
+            <th>3</th>
+            <th>4</th>
+            <th>5</th>
+            <th>6</th>
+            <th>7</th>
+        </tr>
+        {% for player in players %}
+            <tr>
+                <td>{{ player['name'] }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
