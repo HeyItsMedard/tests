@@ -1,10 +1,17 @@
+from dataclasses import dataclass
 from flask import Flask, render_template, request, redirect, url_for
 import random
-
 app = Flask(__name__)
+player_data= []
+@dataclass
+class Player:
+    name: str
+    color: str
+    money: int
+    carpet_count: int
 
-# Lista a játékosok neveinek és színeinek tárolásához
-player_data = []
+# Lista a játékosok adatainak tárolására
+players = []
 
 @app.route('/')
 def start_game_form():
@@ -23,24 +30,22 @@ def enter_player_names():
     for i in range(num_players):
         player_name = request.form[f'player_{i}']
         player_data.append(player_name)
-    
-    # Játékosok számának alapján pénzérmék és szőnyegek inicializálása
-    money_per_player = 120 // num_players
-    carpet_count = 12 if num_players == 4 else (15 if num_players == 3 else 24)
-    
+    carpet_count = 12 if num_players == 4 else 15
     available_colors = ['Red', 'Blue', 'Green', 'Yellow']
     random.shuffle(available_colors)
-    
-    # Játékosok létrehozása és hozzáadása a player_data listához
-    players = []
     for i in range(num_players):
-        player_name = player_data[i]
+        player_name = request.form[f'player_{i}']
         player_color = available_colors[i]
         
-        player = {'name': player_name, 'color': player_color, 'money': money_per_player, 'carpet_count': carpet_count}
+        # Létrehozunk egy Player objektumot és hozzáadjuk a players listához
+        player = Player(name=player_name, color=player_color, money=120//num_players, carpet_count=carpet_count)
         players.append(player)
     print(players)
     return redirect(url_for('game_board'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
 
 @app.route('/game_board')
 def game_board():
