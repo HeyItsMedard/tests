@@ -3,14 +3,156 @@
 <head>
     <title>Indítás</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <style>
+        body{
+			background: linear-gradient(45deg, rgba(28,21,142,1) 0%, rgba(93,21,119,1) 100%);
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+            color: white;
+            text-align: center;
+            font-family: Arial, Helvetica, sans-serif;
+            text-shadow: 0px 0px 3px black;
+		}
+        input{
+			background: none;
+			background-color: rgba(155, 10, 245, 0.4);
+			border: 3px solid purple;
+			border-radius: 25px;
+			text-align: center;
+			margin-top: 5px;
+			transition: 0.5s;
+			width: 200px;
+			font-size: 20px;
+			color: white;
+		}
+		input:hover{
+			background-color: rgba(155, 10, 245, 0.7);
+		}
+
+		input:focus{
+			background-color: rgba(155, 10, 245, 1.0);
+		}
+        .button {
+			height: 50px;
+			width: 15vh;
+			background: red;
+			border: 3px solid rgba(255, 0, 0, 0.6);
+			border-radius: 25px;
+			font-size: 20px;
+			color: white;
+			text-shadow: 0px 0px 5px red;
+			margin: auto;
+			transition: 0.5s;
+			margin-top: 20px;
+		}
+
+		.button:hover{
+			background: none;
+			height: 50px;
+			width: 20vh;
+			box-shadow: 0px 0px 20px red;
+			font-size: 25px;
+			animation: hover 3s ease-in-out 0s infinite alternate ;
+		}
+
+		@keyframes hover{
+			from{
+				background-color: red;
+				box-shadow: 0px 0px 20px red;
+                border: 3px solid rgba(255, 0, 0, 0.6);
+			}			
+			to{
+				background-color: orange;
+				box-shadow: 0px 0px 20px orange;
+                border: 3px solid rgba(255, 165, 0, 0.6);
+			}
+		}
+        #border{
+            border: 3px solid white;
+            border-radius: 25px;
+            width: 500px;
+            margin: auto;
+            height: 500px;
+            margin-top: 20vh;
+            box-shadow: 0px 0px 20px white;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        form{
+            margin-top: 30%;
+            font-size: 20px;
+        }
+        .ball{
+            height: 25vh;
+            width: 25vh;
+            background-color: rgba(255, 255, 255, 0.6);
+            position: absolute;
+            border: 3px solid rgba(255, 255, 255, 0.4);    
+            border-radius: 50%;
+            box-shadow: 0px 0px 20px white;
+            z-index: -1;
+        }
+        #bone{
+            top: 50vh;
+            right: 40vh;
+            animation: ballone 10s linear 0s infinite alternate;
+        }
+
+        @keyframes ballone{
+            0%{
+                top: 50vh;
+                right: 40vh;
+            }
+            25%{
+                top: 60vh;
+                right: 30vh;
+            }
+            50%{
+                top: 30vh;
+                right: 50vh;
+            }
+            100%{
+                top: 60vh;
+                right: 70vh;
+            }
+        }
+        #btwo{
+            bottom: 50vh;
+            left: 40vh;
+            animation: balltwo 10s linear 0s infinite alternate;
+        }
+
+        @keyframes balltwo{
+            0%{
+                bottom: 50vh;
+                left: 70vh;
+            }
+            25%{
+                bottom: 60vh;
+                left: 50vh;
+            }
+            50%{
+                bottom: 80vh;
+                left: 30vh;
+            }
+            100%{
+                bottom: 60vh;
+                left: 60vh;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="ball" id="bone"></div>
+    <div class="ball" id="btwo"></div>
+    <div id="border">
     <h2>Indítás</h2>
-    <form method="POST" action="{{ url_for('start_game') }}">
-        <label for="num_players">Játékosok száma:</label>
-        <input type="number" id="num_players" name="num_players" min="3" max="4" required>
-        <br>
-        <input type="submit" value="Indítás">
+        <form method="POST" action="{{ url_for('start_game') }}">
+            <label for="num_players">Játékosok száma:</label>
+            <input type="number" id="num_players" name="num_players" min="3" max="4" required>
+            <br>
+            <input class="button" type="submit" value="Indítás">
     </form>
+    </div>
 </body>
 </html>

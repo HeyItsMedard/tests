@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{css_url}}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Játék</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <script>
+        window.onload = function() {
+    document.getElementById("my_audio").play();
+}
+        
+    </script> 
+</head>
+
+<body>
+    <audio id="my_audio" src="../static/music/1.mp3" loop="loop"></audio>
+    <div class="sectionl"> <!--bal oszlop-->
+        <div id="logo">
+            <img src="{{ url_for('static', filename='images/penzkep.png') }}" alt="Pénzkép">
+            
+        </div>
+        <div class="irany">
+            <a href="/turn_up" id="gombf"><img src="../static/images/gombok/nyíl.png" alt="helobelo"></a>
+            <a href="/turn_left"  id="gombj"><img src="../static/images/gombok/nyíl.png" alt="helobelo "></a>
+            <a href="/turn_right" id="gombb"><img src="../static/images/gombok/nyíl.png" alt="helobelo "></a>
+            <a href="/turn_down" id="gombl"><img src="../static/images/gombok/nyíl.png" alt="helobelo "></a>
+        </div>
+    </div>
+
+    <div class="section"> <!--középső oszlop, a board-->
+        <div id="keret" >
+            <div id="gyász"><img src="../static/images/vent.png" alt="asd" ></div>
+            <div class="tg-wrap">
+                
+                <table class="tg">
+                    <tbody>
+                        {% for row in range(7) %}
+                        <tr>
+                            {% for col in range(7) %}
+                                <td class="tg-cell" >
+                                    {% if row == figure_row and col == figure_col %}
+                                        {% if figure_dir == "Direction.UP" %}
+                                            <img src="../static/images/figura/1.png" alt="">
+                                        {% elif figure_dir== "Direction.RIGHT" %}
+                                          <img src="../static/images/figura/2.png" alt="">
+                                        {% elif figure_dir== "Direction.DOWN" %}
+                                          <img src="../static/images/figura/4.png" alt="">
+                                        {% elif figure_dir == "Direction.LEFT" %}
+                                          <img src="../static/images/figura/3.png" alt="">
+                                        {% else %}
+                                            ERROR: DIDN'T GET DIRECTION
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if rug_left == col and row == figure_row %}
+                                        <form action="/placing_rug" method="post">
+                                            <input type="hidden" name="selected_row" value="{{ row }}">
+                                            <input type="hidden" name="rug_dir" value="Direction.LEFT">
+                                            <input type="hidden" name="selected_col" value="{{ col }}">
+                                            <button type="submit" style="max-width: 50px;">Szőnyeg</button>
+                                        </form>
+                                    {% endif %}
+                                    {% if rug_down == row and col == figure_col %}
+                                        <form action="/placing_rug" method="post">
+                                            <input type="hidden" name="selected_row" value="{{ row }}">
+                                            <input type="hidden" name="rug_dir" value="Direction.DOWN">
+                                            <input type="hidden" name="selected_col" value="{{ col }}">
+                                            <button type="submit" style="max-width: 50px;">Szőnyeg</button>
+                                        </form>
+                                    {% endif %}
+                                    {% if rug_right == col and row == figure_row %}
+                                        <form action="/placing_rug" method="post">
+                                            <input type="hidden" name="selected_row" value="{{ row }}">
+                                            <input type="hidden" name="rug_dir" value="Direction.RIGHT">
+                                            <input type="hidden" name="selected_col" value="{{ col }}">
+                                            <button type="submit" style="max-width: 50px;">Szőnyeg</button>
+                                        </form>
+                                    {% endif %}
+                                    {% if rug_up == row and col == figure_col %}
+                                        <form action="/placing_rug" method="post">
+                                            <input type="hidden" name="selected_row" value="{{ row }}">
+                                            <input type="hidden" name="rug_dir" value="Direction.UP">
+                                            <input type="hidden" name="selected_col" value="{{ col }}">
+                                            <button type="submit" style="max-width: 50px;">Szőnyeg</button>
+                                        </form>
+                                    {% endif %}
+                                  {% if row == selected_row and col == selected_col %}
+                                    {% if selected_direction == "Direction.UP" %}
+                                        <img src="{{ url_for('static', filename='szőnyegek/piros1.png') }}" alt="Piros" style="transform: rotate(180deg);">
+                                    {% elif selected_direction== "Direction.RIGHT" %}
+                                        <img src="{{ url_for('static', filename='szőnyegek/piros1.png') }}" alt="Piros" style="transform: rotate(90deg);">
+                                    {% elif selected_direction== "Direction.DOWN" %}
+                                        <img src="{{ url_for('static', filename='szőnyegek/piros1.png') }}" alt="Piros">
+                                    {% elif selected_direction == "Direction.LEFT" %}
+                                        <img src="{{ url_for('static', filename='szőnyegek/piros1.png') }}" alt="Piros" style="transform: rotate(270deg);">
+                                    {% else %}
+                                        ERROR: DIDN'T GET DIRECTION
+                                    {% endif %}
+                                  {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div class="sectionr"> <!--jobb oszlop, a játékosok (névvel, színnel, szőnyeggel, pénzzel), dobás, -->
+        <div class="container">
+            <div id="kocka" class="left">
+                <img src="../static/kocka/kockaa3.png" alt="kockaaaaa">
+            </div>
+            <div class="right">
+                <div id="szövegmező">
+                    <p id="dobas" style="width: 50px;">{{ dobas }}</p>
+                </div>
+                <div id="dobasgomb">
+                    <form action="/roll_dice" method="get">
+                        <button type="submit" class="btn btn-outline-primary"><img src="../static/images/gombok/dobás.png" alt=""></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="jatekosokteljes">
+            {% for player in players %}
+                <div class="jatekosok" id="{{ loop.index }}jatekos">
+                    <div class="bal">
+                        <div id="karakter{{ loop.index }}"> 
+                            {% if player.color.value == 1 %}
+                                <img src="{{ url_for('static', filename='karakterek/pirosfej.png') }}" alt="Piros">
+                            {% elif player.color.value == 2 %}
+                                <img src="{{ url_for('static', filename='karakterek/kékfej.png') }}" alt="Kék">
+                            {% elif player.color.value == 3 %}
+                                <img src="{{ url_for('static', filename='karakterek/zöldfej.png') }}" alt="Barna">
+                            {% else %}
+                                <img src="{{ url_for('static', filename='karakterek/sárgafej.png') }}" alt="Sárga">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="jobb">
+                        <div class="felső">
+                            <input type="text" value="{{ player.name }}" readonly style="width: 100px;">
+                        </div>
+                        <div class="alsó container2">
+                            <div class="left50">
+                                <div id="pénzkép">
+                                    <!-- Pénzkép vagy tartalom -->
+                                    <img src="{{ url_for('static', filename='images/érme/érme.png') }}" alt="Pénzkép">
+                                </div>
+                                <div id="pénzösszeg">
+                                    <input type="text" value="{{ player.money }}" readonly style="width: 25px; height: 20px;">
+                                </div>
+                            </div>
+                            <div class="right50">
+                                <div id="szőnyegkép">
+                                    <!-- Szőnyegkép vagy tartalom -->
+                                    {% if player.color.value == 1 %}
+                                        <img src="{{ url_for('static', filename='images/red.png') }}" alt="Piros">
+                                    {% elif player.color.value == 2 %}
+                                        <img src="{{ url_for('static', filename='images/blue.png') }}" alt="Kék">
+                                    {% elif player.color.value == 3 %}
+                                        <img src="{{ url_for('static', filename='images/brown.png') }}" alt="Barna">
+                                    {% else %}
+                                        <img src="{{ url_for('static', filename='images/yellow.png') }}" alt="Sárga">
+                                    {% endif %}
+                                </div>
+                                <div id="szőnyegösszeg">
+                                    <input type="text" value="{{ player.carpet_count }}" readonly style="width: 25px; height: 20px;">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+</body>
+</html>
