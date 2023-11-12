@@ -1,7 +1,15 @@
-const App = () => (
-  <div>
-    <h1>Web1 starter template</h1>
-  </div>
-)
+import Navigation from "./Navigation/Nav";
+import Products from "./Products/Products";
+import Recommended from "./Recommended/Recommended";
 
-export default App
+function App() {
+  return (
+   <>
+    <Navigation/>
+    <Products/>
+    <Recommended/>
+   </>
+  );
+}
+
+export default App;
