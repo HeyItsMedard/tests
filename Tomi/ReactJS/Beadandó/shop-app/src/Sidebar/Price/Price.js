@@ -11,23 +11,6 @@ const Price = ({ handleChange }) => {
           <input onChange={handleChange} type="radio" value="" name="test2" />
           <span className="checkmark"></span>All
         </label>
-
-        <label className="sidebar-label-container">
-          <input onChange={handleChange} type="radio" value="" name="test2" />
-          <span className="checkmark"></span>$0 - 50$
-        </label>
-        <label className="sidebar-label-container">
-          <input onChange={handleChange} type="radio" value="" name="test2" />
-          <span className="checkmark"></span>$50 - 100$
-        </label>
-        <label className="sidebar-label-container">
-          <input onChange={handleChange} type="radio" value="" name="test2" />
-          <span className="checkmark"></span>$100 - 150$
-        </label>
-        <label className="sidebar-label-container">
-          <input onChange={handleChange} type="radio" value="" name="test2" />
-          <span className="checkmark"></span>$150+
-        </label>
         <Input
           handleChange={handleChange}
           value={50}

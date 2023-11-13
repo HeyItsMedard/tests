@@ -15,6 +15,12 @@
     align-items: center;
 }
 
+@media screen and (min-width: 1600px) {
+    .sidebar {
+      width: 10%; /* I use ultrawide, had to change the width otherwise it is overlapping with the products*/
+    }
+  }
+
 .logo-container{
     margin-bottom: 4rem;
 }
