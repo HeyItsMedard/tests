@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import './App.css';
-import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, InputGroup, FormControl, Button, Row, Card} from 'react-bootstrap';
 
@@ -13,8 +12,7 @@ const RESPONSE_TYPE = "token"
 function App() {
     const [searchInput, setSearchInput] = useState("")
     const [accessToken, setAccessToken] = useState("")
-    const [albums, setAlbums] = useState("")
-    // const [artists, setArtists] = useState([])
+    const [albums, setAlbums] = useState([]);
 
     useEffect(() => {
         var authParameters = {
@@ -48,20 +46,6 @@ function App() {
                 console.log(data);
                 setAlbums(data.items)})
     }
-    // const searchArtists = async (e) => {
-    //     e.preventDefault()
-    //     const {data} = await axios.get("https://api.spotify.com/v1/search", {
-    //         headers: {
-    //             Authorization: `Bearer ${token}`,
-    //         },
-    //         params: {
-    //             q: searchKey,
-    //             type: "artist",
-    //         }
-    //     })
-
-    //     setArtists(data.artists.items)
-    // }
 
     return (
         <div className="App">
@@ -84,13 +68,15 @@ function App() {
             </Container>
             <Container>
                 <Row className="mx-2 row row-cols-4"></Row>
-                {albums.map((album, i)=>{
-                    return (<Card>
-                        <Card.Img src = {album.images[0].url}/>
-                        <Card.Body>
-                            <Card.Title>{album.name}</Card.Title>
-                        </Card.Body>  
-                    </Card>)
+                {albums && albums.map((album, i) => {
+                    return (
+                        <Card key={i}>
+                            <Card.Img src={album.images[0].url} />
+                            <Card.Body>
+                                <Card.Title>{album.name}</Card.Title>
+                            </Card.Body>
+                        </Card>
+                    );
                 })}
                 
             </Container>
