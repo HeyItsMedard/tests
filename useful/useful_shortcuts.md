@@ -5,3 +5,5 @@
 <span style="font-size: 1.2em;">Alt + Arrow: move current line</span>  
 <span style="font-size: 1.2em;">Alt + Shift + Left Click Drag: select lines from the character's position</span>   
 <span style="font-size: 1.2em;">Win+. = emoji board - completely discovered it by accident (⊙ˍ⊙)</span>  
+###
+More editing info: https://code.visualstudio.com/docs/editor/codebasics
