@@ -24,7 +24,7 @@ myentry.pack(pady=20)
 button = tk.Button(root, text="Click me!", command=lambda: print("You clicked me!"))
 button.pack()
 
-buttonframe = tk.Frame(root, )
+buttonframe = tk.Frame(root)
 buttonframe.columnconfigure(0, weight=1) # weight determines how much space the column takes up
 buttonframe.columnconfigure(1, weight=1)
 buttonframe.columnconfigure(2, weight=1)
