@@ -1,0 +1,38 @@
+{% extends 'base.html' %} {% block content %}
+<h2>Books</h2>
+{% for book in books %}
+<div>
+  <h3>
+    <a href="/books/{{ book.isbn }}">{{ book.title }}</a>
+  </h3>
+  <p>ISBN: {{ book.isbn }}</p>
+  <p>Author: {{ book.author }}</p>
+  <p>Publisher: {{ book.publisher }}</p>
+  <p>Year of publish: {{ book.year_of_publish }}</p>
+  {% if people|length > 0 %} {% if book.owned_by == None %}
+  <form action="/booking" method="post">
+    <input type="hidden" name="id" value="{{ book.id }}" />
+    <select name="neptun">
+      {% for person in people %}
+      <option name="neptun" value="{{ person.neptun }}">
+        {{ person.name }}
+      </option>
+      {% endfor %}
+    </select>
+    <button>Book this</button>
+  </form>
+  {% else %}
+  <p>Booked</p>
+  {% endif %} {% endif %}
+</div>
+{% endfor %}
+<h3>Create book</h3>
+<form action="/books" method="POST">
+  <input type="text" name="isbn" placeholder="ISBN" />
+  <input type="text" name="author" placeholder="Author" />
+  <input type="text" name="title" placeholder="Title" />
+  <input type="text" name="publisher" placeholder="Publisher" />
+  <input type="number" name="year_of_publish" placeholder="Year of publish" />
+  <input type="submit" value="Create" />
+</form>
+{% endblock %}

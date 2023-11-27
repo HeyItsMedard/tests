@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Books booked by {{ person.name }}</h3>
+<ul>
+  {% for book in books %}
+  <li>
+    <form action="/return" method="post">
+      <a href="/books/{{ book.isbn }}">{{ book.title }}</a>
+      <input type="hidden" name="id" value="{{ book.id }}" />
+
+      <input type="hidden" name="neptun" value="{{ person.neptun }}" />
+      <button>Return</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

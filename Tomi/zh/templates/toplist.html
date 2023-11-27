@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<h3>Top read books</h3>
+<ol>
+  {% for book in books %}
+  <li>
+    <a href="/books/{{ book.isbn }}"> {{ book.title }}</a> - {{
+    book.booking_count }}
+  </li>
+  {% endfor %}
+</ol>
+<img width="80%" src="/books/top" />
+<h3>Top read people</h3>
+<ol>
+  {% for person in people %}
+  <li>
+    <a href="/people/{{ person.neptun }}">{{ person.name }}</a> - {{
+    person.booking_count }}
+  </li>
+  {% endfor %}
+</ol>
+<img width="80%" src="/people/top" />
+{% endblock %}

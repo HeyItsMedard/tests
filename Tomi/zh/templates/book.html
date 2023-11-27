@@ -1,0 +1,19 @@
+{% extends 'base.html' %} {% block content %}
+<h3>{{ book.title }} details</h3>
+<ul>
+  <li>Title: {{ book.title }}</li>
+  <li>Author: {{ book.author }}</li>
+  <li>ISBN: {{ book.isbn }}</li>
+  <li>Booking count: {{ book.booking_count }}</li>
+  <li>Publisher: {{ book.publisher }}</li>
+  <li>Year of publish: {{ book.year_of_publish }}</li>
+  <li>
+    {% if book.owned_by == None %}
+    <div>Available</div>
+    {% else %}
+    <div>Booked</div>
+    {% endif %}
+  </li>
+</ul>
+
+{% endblock %}

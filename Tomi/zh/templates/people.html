@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block content %}
+<h3>People</h3>
+<ul>
+  {% for person in people %}
+  <li>
+    <a href="/people/{{ person.neptun }}">{{ person.name }}</a> - {{
+    person.booking_count }}
+  </li>
+  {% endfor %}
+</ul>
+<h3>Add new person</h3>
+<form action="/people" method="post">
+  <input type="text" name="name" placeholder="Name" />
+  <input type="text" name="neptun" placeholder="Neptun" />
+  <button>Add</button>
+</form>
+{% endblock %}
