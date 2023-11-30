@@ -1,129 +1,182 @@
-﻿use Múzeum
+﻿use sopron2024
 
--- 2.
-create table Személy (Nev nvarchar(16), Varos nvarchar(15), Adomany nvarchar(16), Datum date)
-create table Mûtárgy (Alkoto nvarchar(15), Mucim nvarchar(20), Hely nvarchar(15), Erteke int)
+--1. Hozzuk létre a MUZEUM adatbázist!
+--  2. Hozzuk létre a SZEMELY és a MUTARGY táblát!
+--  3. Vigyük fel a SZEMELY és a MUTARGY táblákban az adatokat! 
 
--- 4.
-select * from Személy
-select * from Mûtárgy
 
--- 5.
-select * from Mûtárgy
-	order by Alkoto asc
+CREATE TABLE SZEMELY (
+    NEV NVARCHAR(16),
+    VAROS NVARCHAR(15),
+    ADOMANY NVARCHAR(20),
+    DATUM DATE
+);
 
--- 6.
-select Nev from Személy
-	order by Nev asc
 
--- 7.
-update Személy
-	set Nev = 'Jones Charles'
-	where Nev = 'Charles Jones'
+INSERT INTO SZEMELY (NEV, VAROS, ADOMANY, DATUM)
+VALUES
+('Benjamin Jones', 'New York', 'készpénz', '1975-01-01'),
+('Daniel Smith', 'Boston', 'Argenteuil', '1979-03-05'),
+('Roger Black', 'Amsterdam', 'Éjszakai õrjárat', '1985-04-04'),
+('Charles Jones', 'San Diego', 'készpénz', '1976-09-18'),
+('Zodiac Fischer', 'Seattle', 'készpénz', '1969-10-01'),
+('Robert Browne', 'Chicago', 'Dávid', '1980-09-02'),
+('Bill Fox', 'Chicago', 'készpénz', '1984-04-03'),
+('David Bario', 'Oshkosh', 'Gondolkodó', '1977-02-28'),
+('Lawrence Walters', 'Oshkosh', 'készpénz', '1986-09-09');
 
-select * from Személy
+CREATE TABLE MUTARGY (
+    ALKOTO NVARCHAR(15),
+    MUCIM NVARCHAR(20),
+    HELY NVARCHAR(15),
+    ERTEKE NUMERIC
+);
 
--- 7. +
+INSERT INTO MUTARGY (ALKOTO, MUCIM, HELY, ERTEKE)
+VALUES
+('Rodin', 'Gondolkodó', 'kölcsön', 338000),
+('Michelangelo', 'Dávid', 'kölcsön', 967000),
+('Ticiano', 'Madonna', 'kölcsön', 134000),
+('Bosch', 'Kísértés', 'restaurálás', 100000),
+('El Greco', 'Feltámadás', 'restaurálás', 205000),
+('Coreggio', 'Madonna', 'restaurálás', 760000),
+('Rembrandt', 'Danae', 'restaurálás', 950000),
+('Rembrandt', 'Éjszakai őrjárat', 'kiállítva', 1200000),
+('Renoir', 'Le Dejeuner', 'kiállítva', 650000),
+('Cezanne', 'Baigneuses', 'kiállítva', 230000),
+('Monet', 'Londoni Parlament', 'kiállítva', 256000),
+('Monet', 'Impresszió', 'kiállítva', 280000),
+('Monet', 'Argenteuil', 'kiállítva', 300000),
+('Hals', 'Archers Banquet', 'kiállítva', 500000),
+('Gainsborough', 'Blue Boy', 'kiállítva', 420000);
 
--- 8.
-select * from Mûtárgy
-	where Mucim = 'Archers Banquet'
 
-delete from Mûtárgy 
-	where Mucim = 'Archers Banquet'
+-- 4. Ellenőrizzük a táblák felvitelét! Egy-egy lekérdezés mindkét táblára!
+select * from SZEMELY
+select * from MUTARGY
+-- 5. Listázzuk ki a MUTARGY táblát ALKOTO szerint növekvő sorrendben!
+select * from MUTARGY
+order by ALKOTO asc
 
--- 9.
-select Varos from SZemély
+-- 6. Listázzuk ki a SZEMELY táblában lévő személyeket neveit csökkenő sorrendben!
+select NEV from SZEMELY
+	order by NEV asc
 
--- 10. 
-select distinct(Varos) from SZemély
+-- 7. Módosítsuk a SZEMELY táblában Charles Jones nevét Jones Charles-ra!
+update SZEMELY
+	set NEV = 'Jones Charles'
+	where NEV = 'Charles Jones'
 
--- 11.
-select distinct(Alkoto) from Mûtárgy
-	where left(Alkoto, 1) = 'M'
+-- 8. Töröljük ki Hals Archers Banquet alkotását a MUTARGY táblából (ugyanis ellopták)!
+delete from MUTARGY
+	where MUCIM = 'Archers Banquet'
 
--- 12.
-select distinct(Alkoto) from Mûtárgy
-	where charindex('o', Alkoto) > 0
+--9.-10. Listázzuk ki a (különböző) városokat a SZEMELY táblából!
+select distinct VAROS from SZEMELY
 
--- 13.
-select Alkoto, Mucim, Erteke from Mûtárgy
-	where Erteke between 100000 and 500000
+--11. Listázzuk ki az M betűvel kezdődő alkotók neveit!
+select distinct ALKOTO from MUTARGY
+where SUBSTRING(ALKOTO, 1,1) = 'M'
+--where left(Alkoto, 1) = 'M'
 
--- 14. Listázzuk ki Monet alkotásainak címét, ahol a mû értéke nagyobb, mint 200.000 dollár!
-select Mucim from Mûtárgy
-		where Erteke > 200000 and Alkoto ='MONET'
+-- 12. Listázzuk ki azokat az alkotókat, akiknek a nevében szerepel o betű!
+select distinct ALKOTO from MUTARGY
+where CHARINDEX('o', ALKOTO) > 0
 
--- 15. Ki az alkotója Roger Black adományának!
-select Alkoto from Mûtárgy, Személy
-	where Mûtárgy.Mucim = Személy.Adomany
-	and Személy.Nev = 'Roger Black'
+--13. Listázzuk ki a 100 000 és 500 000 dollár közötti alkotások alkotóját, címét és értékét! 
+select ALKOTO, MUCIM, ERTEKE FROM MUTARGY
+where ERTEKE between 100000 and 500000
+--14. Mire volt kíváncsi az alábbi kérdező! Fogalmazd meg értelmes magyar mondattal!
+--	SELECT MUCIM FROM MUTARGY 
+--		WHERE ERTEKE > 200 000 AND ALKOTO ='MONET';
+-- Válasz: Monet egyik műcímért akarta tudni, aminek az értéke magasabb volt mint 200 ezer dollár.
 
--- 16. Kiknek az alkotásai drágábbak Cezanne alkotásánál?
-select distinct(Alkoto) from Mûtárgy
-	where Erteke > (select Erteke from Mûtárgy where Alkoto = 'Cezanne')
+--15. Ki az alkotója Roger Black adományának!
+select ALKOTO from MUTARGY, SZEMELY
+	where SZEMELY.ADOMANY = MUTARGY.MUCIM 
+	and SZEMELY.NEV = 'Roger Black'
 
--- 17. Mennyi a múzeumban található mûtárgyak összértéke?
-select sum(Erteke) from Mûtárgy
+select * from MUTARGY where ALKOTO = 'Rembrandt'
 
--- 18. Ki adományozta a legdrágább mûkincset?
-select Nev from Személy
-	where Adomany in
-	(select Mucim from Mûtárgy
-		where Erteke in
-		(select max(Erteke) from Mûtárgy))
+select adomany, mucim from SZEMELY, MUTARGY -- áh, nálam vmiért Éjszakai orjárat van adomany oszlopban...
+
+SELECT M.ALKOTO
+FROM MUTARGY M
+JOIN SZEMELY S ON M.MUCIM = S.ADOMANY
+WHERE M.ALKOTO = 'Roger Black';
+
+--16. Kiknek az alkotásai drágábbak Cezanne alkotásánál?
+select distinct(ALKOTO) from MUTARGY
+	where ERTEKE > (select ERTEKE from MUTARGY where ALKOTO = 'Cezanne')
+
+--17. Mennyi a múzeumban található műtárgyak összértéke?
+select sum(Erteke) from MUTARGY
+
+--18. Ki adományozta a legdrágább műkincset?
+select NEV from SZEMELY
+	where ADOMANY in
+	(select MUCIM from MUTARGY
+		where ERTEKE in
+		(select max(Erteke) from MUTARGY, SZEMELY
+			where SZEMELY.ADOMANY = MUTARGY.MUCIM))
 
 -- 19. Írassuk ki azoknak az adományozóknak a lakhelyét, akik Rodin mûkincset ajándékoztak!
-select Személy.Varos from Személy, Mûtárgy
-	where Személy.Adomany = Mûtárgy.Mucim
-	and Mûtárgy.Alkoto = 'Rodin'
+select SZEMELY.VAROS from SZEMELY, MUTARGY
+	where SZEMELY.ADOMANY = MUTARGY.MUCIM
+	and MUTARGY.ALKOTO = 'Rodin'
 
 -- 20. Írassuk ki a mûkincsek alkotók szerinti összértékét!
-select Alkoto, sum(Erteke) from Mûtárgy
-	group by Alkoto
+select ALKOTO, sum(ERTEKE) as Összérték from MUTARGY
+	group by ALKOTO
 
 -- 21. Írassuk ki a mûkincsek hely szerinti összértékét!
-select Hely, sum(Erteke) from Mûtárgy
+select HELY, sum(Erteke) from Mutargy
 	group by Hely
 
 -- 22. Melyik a kiállított alkotások közül a legolcsóbb Monet alkotást?
-select Mucim from Mûtárgy
-	where Hely = 'Kiállítva' and Erteke in
-	(select min(Erteke) from Mûtárgy
+select MUCIM from MUTARGY
+	where HELY = 'Kiállítva' and ERTEKE in
+	(select min(ERTEKE) from MUTARGY
 		where Alkoto = 'Monet')
 
 -- 23. Adjuk meg az 1985 elõtt készpénzt adományozók neveit! 
-select Nev from Személy
+select Nev from SZEMELY
 	where Adomany = 'Készpénz'
 
 -- 24. Listázzuk ki a Chicagoban vagy New Yorkban lakó adományozók adatait! 
-select * from Személy
+select * from SZEMELY
 	where Varos = 'Chicago' or Varos = 'New York'
 
 -- 25. Listázzuk ki az 1 milliónál kisebb értékû mûkincseket alkotó, azon belül érték szerinti csökkenõ sorrendben!
-select * from Mûtárgy
+select * from MUTARGY
 	where Erteke < 1000000 
 	order by Alkoto asc, Erteke desc
 
 -- 26. Hány különbözõ alkotó alkotása szerepel a múzeumban?
-select count(distinct(Alkoto)) from Mûtárgy
+select count(distinct(Alkoto)) from MUTARGY
 	where Hely = 'Kiállítva'
 
 -- 27. Bõvítsük a MUTARGY táblát egy GALERIA oszloppal!
-alter table Mûtárgy
-add Galéria nvarchar(1)
+alter table MUTARGY
+add GALERIA nvarchar(1)
+-- drop column GALERIA to remove
 
--- 28. Állítsuk ki Monet alkotásait a C galériában!
-update Mûtárgy
-set Galéria = 'C'
+--28. Állítsuk ki Monet alkotásait a C galériában!
+update MUTARGY
+set GALERIA = 'C'
 where Alkoto = 'Monet' and Hely = 'kiállítva'
+select * from MUTARGY
 
--- 29. Állítsuk ki a 400 000-nél olcsóbb alkotásokat a B galériában! 
-update Mûtárgy
-set Galéria = 'B'
-where Erteke < 400000 and Alkoto != 'Monet' and Hely = 'kiállítva'
+--29. Állítsuk ki a 400 000-nél olcsóbb alkotásokat a B galériában! 
+update MUTARGY
+set GALERIA = 'B'
+where ERTEKE < 400000 and Alkoto != 'Monet' and Hely = 'kiállítva'
 
--- 30. A restaurálásról visszatért El Greco alkotást tegyük az A galériába!
-update Mûtárgy
-set Hely = 'kiállítva', Galéria = 'A'
-where Alkoto = 'El Greco'
+--30. A restaurálásról visszatért El Greco alkotást tegyük az A galériába!
+update MUTARGY
+set GALERIA = 'A'
+where Alkoto = 'El Greco' and Hely = 'restaurálás'
+
+--Reset
+update MUTARGY
+set GALERIA = NULL

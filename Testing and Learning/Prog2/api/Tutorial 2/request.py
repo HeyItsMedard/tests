@@ -1,5 +1,15 @@
 import requests
 
+# params = {
+#     "key1": "value1",
+#     "key2": "value2"
+# } get request
+
+# payload = {
+#     "key1": "value1",
+#     "key2": "value2"
+# } # post request
+
 headers = {
     "User-Agent": "Mobile", # user agents serve based on device and interface like a browser
     "Accept": "image/png" # accept image/png
