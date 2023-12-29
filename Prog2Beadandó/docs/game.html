@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>prog1-23t-beadando-HeyItsMedard.game API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>prog1-23t-beadando-HeyItsMedard.game</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from database import get_topic_index, get_topic_file, get_topic_name
+from highscore import write_highscore_if_eligible
+import random
+# from playsound import playsound # sound for game overs, unused for now
+from inputimeout import inputimeout # timer
+
+def get_playlist(data) -&gt; list:
+    &#34;&#34;&#34;Puts together a list of videos from a chosen topic.
+
+    Args:
+        data (list): The entire list of content creators and contents from a topic json file.
+
+    Returns:
+        playlist (list): Every video of a topic.
+    &#34;&#34;&#34;
+    playlist = []
+    for creator in data:
+        for video in creator[&#39;contents&#39;].items():
+            playlist.append(video)
+    return playlist
+
+
+def get_creator_of_content(content: tuple, data: list) -&gt; str:
+    &#34;&#34;&#34;Gets the creator of content. Used for normal difficulty and music topic.
+
+    Args:
+        content (tuple): A specific content.
+        data (list): The entire list of content creators and contents from a topic json file. This is where we look for a specific content.
+
+    Returns:
+        str: The creator&#39;s name of the content.
+    &#34;&#34;&#34;
+    for creator in data:
+        if (content[0], content[1]) in creator[&#34;contents&#34;].items():
+            return creator[&#34;creator&#34;]
+
+def get_correct_answer(first_views: int, second_views: int) -&gt; int:
+    &#34;&#34;&#34;Gets the correct answer. Comes into play when comparing to player answer.
+
+    If it returns with 1, the first content has more views.
+    If it returns with 2, the second content has more views.
+    Finally, if 0, both content have equal views on it.
+
+    Args:
+        first_views (int): First content&#39;s viewcount.
+        second_views (int): Second content&#39;s viewcount.
+
+    Returns:
+        int: The correct answer (0 if they are equal)
+    &#34;&#34;&#34;
+    if second_views &lt; first_views:
+        return 1
+    elif second_views &gt; first_views:
+        return 2
+    return 0
+
+def react_to_points(points: int, length: int):
+    &#34;&#34;&#34;The game reacts with a message, based on how well the player was performing.
+
+    Args:
+        points (int): Points earned throughout the game by the player.
+        length (int): The maximum possible questions&#39; count. Necessary when the game runs out of questions.
+
+    Prints:
+        str: A funny response
+    &#34;&#34;&#34;
+    zero = [&#34;Te egy kő alatt élsz, vagy ennyire szerencsétlen kérdést kaptál? Próbálkozz újra!&#34;, 
+            &#34;Több mint a semmi! Ja nem...&#34;, &#34;Hát lehetne ennél rosszabb?&#34;]
+    terrible = [&#34;Felejtsük el, hogy ez megtörtént... Új játék?&#34;, f&#34;... csak {points} pont? Rettenetes...&#34;, 
+                &#34;Nagyjából ennyi pont választotta el a Dortmundot is egy bajnoki győzelemtől... idén is...&#34;,
+                &#34;Ennél tudsz te jobbat is, hiszek benned!&#34;]
+    better = [&#34;Szép szám bizony, de vajon tudsz ennél jobbat elérni?&#34;,
+              &#34;Ügyes! Így tovább!&#34;, &#34;Ez megérdemel egy virtuális hátveregést!&#34;,
+              &#34;Ahogy VR Pisti is mondaná: \&#34;Nem is rossz!\&#34;&#34;]
+    great = [&#34;Aztamindenségit! Gratulálok az eredményhez!&#34;, &#34;Ijesztően sokat tudsz!&#34;,
+             &#34;Szép munka!&#34;]
+    max = [&#34;Sikerült kivinned a játékot! Gratulálok!&#34;, 
+           &#34;A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!&#34;,
+           &#34;Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg&#34;]
+    # The answer is chosen randomly, but based on earned points
+    # Comment out playsound for Easter Eggs (note: sometimes they do not work).
+    if points == 0:
+        print(random.choice(zero))
+        # playsound(&#39;sounds\\zero1.mp3&#39;) -&gt; gave up again, error handling doesn&#39;t work on it, only commenting helps
+    elif points &lt;= 2:
+        print(random.choice(terrible))
+        # playsound(&#39;sounds\\\\\\bad1.mp3&#39;) -&gt; gave up again, error handling doesn&#39;t work on it, only commenting helps
+    elif points &lt;= 6:
+        print(random.choice(better))
+        # playsound(&#39;sounds\\notbad.mp3&#39;) -&gt; gave up again, error handling doesn&#39;t work on it, only commenting helps 
+    elif points &lt; length:
+        print(random.choice(great))
+        # playsound(&#39;sounds\\nice.mp3&#39;)
+    elif points == length:
+        print(random.choice(max))
+        # playsound(&#39;sounds\\\max1.mp3&#39;)
+
+def get_difficulty() -&gt; bool:
+    &#34;&#34;&#34;Asks the player whether they want to play in Hard Mode.
+
+    By default returns False, except when player answers with a possible combination of &#34;igen&#34;.
+
+    Returns:
+        bool: False if Normal Mode, True if Hard Mode
+    &#34;&#34;&#34;
+    show_creator = input(&#34;Nehéz fokozat bekapcsolása? (I/N)\nSzöveges bemenet: &#34;)
+    if any(show_creator.lower() == valid_input.lower() for valid_input in [&#34;igen&#34;, &#34;I&#34;, &#34;igaz&#34;]):
+        return True
+    return False
+
+def play():
+
+    # Player chooses topic
+    answer = get_topic_index()
+    if answer == &#39;0&#39;:
+        return
+    
+    #Loads topic data and filename
+    topic = get_topic_file(answer)
+    topic_name = get_topic_name(answer)
+
+    # Gets the list of content based on chosen topic, randomises order
+    content_list = get_playlist(topic)
+
+    # If player answers to every question right, the game will print out a special message (referring to function &#34;react_to_points&#34;)
+    length_for_reaction = len(content_list)
+
+    # There are not enough questions in the topic to be playable.
+    if length_for_reaction &lt;= 1:
+        # Empty topic given
+        print(&#34;Ez a téma jelenleg üres. Visszatérés...&#34;)
+        return
+    
+    # Gets difficulty based on player input
+    hard_difficulty = get_difficulty()
+
+    FirstRound = True
+    points = 0
+
+    # Game must end if there is only one content left
+    while len(content_list) &gt;= 2:
+
+        # Check if this is the first round
+        if FirstRound:
+            # Generate first content randomly
+            first = random.choice([i for i in range(len(content_list))])
+            f_title = content_list[first][0]
+            f_views = content_list[first][1]
+            f_creator = get_creator_of_content(content_list[first], topic)    
+            FirstRound = False
+
+        # Generate second content randomly
+        second = random.choice([i for i in range(len(content_list)) if i != first])
+        s_title = content_list[second][0]
+        s_views = content_list[second][1]
+        s_creator = get_creator_of_content(content_list[second], topic) 
+
+        # Gets correct answer based on views
+        correct_answer = (get_correct_answer(f_views, s_views))
+        player_answer = &#34;&#34;
+
+        # Player plays on normal difficulty
+        if not hard_difficulty:
+            
+            print(f&#34;&#34;&#34;Melyiknek van több nézettsége?
+        1) {f_creator}: {f_title} -&gt; {f_views} nézőszám
+        2) {s_creator}: {s_title} -&gt; ??? nézőszám&#34;&#34;&#34;)
+            player_answer = (input(&#34;Szám: &#34;))
+            try:
+                # Awaits player input
+                player_answer = int(player_answer)
+            # If they give a wrong input
+            except ValueError:
+                break
+        
+        # Player plays on hard difficulty
+        elif hard_difficulty:
+            # Music artists should still appear next to the song title, but player still has limited to answer
+            if topic_name == &#34;zene&#34;:
+                print(f&#34;&#34;&#34;Melyiknek van több nézettsége? Van 10 másodperced válaszolni!
+        1) {f_creator}: {f_title} -&gt; {f_views} nézőszám
+        2) {s_creator}: {s_title} -&gt; ??? nézőszám&#34;&#34;&#34;)
+            # Player is basing decisions on which title sounds more interesting and who might have created it
+            else:
+                print(f&#34;&#34;&#34;Melyiknek van több nézettsége? Van 10 másodperced válaszolni!
+        1) {f_title} -&gt; {f_views} nézőszám
+        2) {s_title} -&gt; ??? nézőszám&#34;&#34;&#34;)
+            try:
+                # Counting to 10 while awaiting player input
+                player_answer = int(inputimeout(prompt=&#39;Szám: &#39;, timeout=10))
+            # If they run out of time, or give a wrong input
+            except Exception:
+                # Game Over
+                break
+        
+        # The answer isn&#39;t right and the two options&#39; views are not equal
+        if correct_answer != 0 and player_answer != correct_answer:
+            # Game Over, prints out which was higher
+            if correct_answer == 1:
+                print(f&#34;1) {f_views} &gt; 2) {s_views}&#34;)
+            elif correct_answer == 2:
+                print(f&#34;1) {f_views} &lt; 2) {s_views}&#34;)
+            break
+        
+        # Correct answer
+        else:
+            # Game continues, prints out earned points so far
+            points += 1
+            print(f&#34;Korrekt! Eddig {points} pont, jöhet a következő...&#34;)
+
+        # Remove the first content, so it does not appear again
+        content_list.pop(first)
+        # # Fixing list order
+        if second &gt; first:
+            second -= 1
+        # Swapping second content to be the first in next round
+        first, f_title, f_views, f_creator = second, s_title, s_views, s_creator
+    
+    if points &gt;= 0:
+        if len(content_list) == 1 and points &gt; 0: 
+        # Last remaining question in-game
+            # Game Over and game completed
+            points += 1
+        print(f&#34;Játék vége, elért pontszám: {points}&#34;)
+        react_to_points(points, length_for_reaction)
+        write_highscore_if_eligible(topic_name, hard_difficulty, points)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="prog1-23t-beadando-HeyItsMedard.game.get_correct_answer"><code class="name flex">
+<span>def <span class="ident">get_correct_answer</span></span>(<span>first_views: int, second_views: int) ‑> int</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the correct answer. Comes into play when comparing to player answer.</p>
+<p>If it returns with 1, the first content has more views.
+If it returns with 2, the second content has more views.
+Finally, if 0, both content have equal views on it.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>first_views</code></strong> :&ensp;<code>int</code></dt>
+<dd>First content's viewcount.</dd>
+<dt><strong><code>second_views</code></strong> :&ensp;<code>int</code></dt>
+<dd>Second content's viewcount.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>int</code></dt>
+<dd>The correct answer (0 if they are equal)</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_correct_answer(first_views: int, second_views: int) -&gt; int:
+    &#34;&#34;&#34;Gets the correct answer. Comes into play when comparing to player answer.
+
+    If it returns with 1, the first content has more views.
+    If it returns with 2, the second content has more views.
+    Finally, if 0, both content have equal views on it.
+
+    Args:
+        first_views (int): First content&#39;s viewcount.
+        second_views (int): Second content&#39;s viewcount.
+
+    Returns:
+        int: The correct answer (0 if they are equal)
+    &#34;&#34;&#34;
+    if second_views &lt; first_views:
+        return 1
+    elif second_views &gt; first_views:
+        return 2
+    return 0</code></pre>
+</details>
+</dd>
+<dt id="prog1-23t-beadando-HeyItsMedard.game.get_creator_of_content"><code class="name flex">
+<span>def <span class="ident">get_creator_of_content</span></span>(<span>content: tuple, data: list) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the creator of content. Used for normal difficulty and music topic.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>content</code></strong> :&ensp;<code>tuple</code></dt>
+<dd>A specific content.</dd>
+<dt><strong><code>data</code></strong> :&ensp;<code>list</code></dt>
+<dd>The entire list of content creators and contents from a topic json file. This is where we look for a specific content.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>str</code></dt>
+<dd>The creator's name of the content.</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_creator_of_content(content: tuple, data: list) -&gt; str:
+    &#34;&#34;&#34;Gets the creator of content. Used for normal difficulty and music topic.
+
+    Args:
+        content (tuple): A specific content.
+        data (list): The entire list of content creators and contents from a topic json file. This is where we look for a specific content.
+
+    Returns:
+        str: The creator&#39;s name of the content.
+    &#34;&#34;&#34;
+    for creator in data:
+        if (content[0], content[1]) in creator[&#34;contents&#34;].items():
+            return creator[&#34;creator&#34;]</code></pre>
+</details>
+</dd>
+<dt id="prog1-23t-beadando-HeyItsMedard.game.get_difficulty"><code class="name flex">
+<span>def <span class="ident">get_difficulty</span></span>(<span>) ‑> bool</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Asks the player whether they want to play in Hard Mode.</p>
+<p>By default returns False, except when player answers with a possible combination of "igen".</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>bool</code></dt>
+<dd>False if Normal Mode, True if Hard Mode</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_difficulty() -&gt; bool:
+    &#34;&#34;&#34;Asks the player whether they want to play in Hard Mode.
+
+    By default returns False, except when player answers with a possible combination of &#34;igen&#34;.
+
+    Returns:
+        bool: False if Normal Mode, True if Hard Mode
+    &#34;&#34;&#34;
+    show_creator = input(&#34;Nehéz fokozat bekapcsolása? (I/N)\nSzöveges bemenet: &#34;)
+    if any(show_creator.lower() == valid_input.lower() for valid_input in [&#34;igen&#34;, &#34;I&#34;, &#34;igaz&#34;]):
+        return True
+    return False</code></pre>
+</details>
+</dd>
+<dt id="prog1-23t-beadando-HeyItsMedard.game.get_playlist"><code class="name flex">
+<span>def <span class="ident">get_playlist</span></span>(<span>data) ‑> list</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Puts together a list of videos from a chosen topic.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>data</code></strong> :&ensp;<code>list</code></dt>
+<dd>The entire list of content creators and contents from a topic json file.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>playlist (list): Every video of a topic.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_playlist(data) -&gt; list:
+    &#34;&#34;&#34;Puts together a list of videos from a chosen topic.
+
+    Args:
+        data (list): The entire list of content creators and contents from a topic json file.
+
+    Returns:
+        playlist (list): Every video of a topic.
+    &#34;&#34;&#34;
+    playlist = []
+    for creator in data:
+        for video in creator[&#39;contents&#39;].items():
+            playlist.append(video)
+    return playlist</code></pre>
+</details>
+</dd>
+<dt id="prog1-23t-beadando-HeyItsMedard.game.play"><code class="name flex">
+<span>def <span class="ident">play</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def play():
+
+    # Player chooses topic
+    answer = get_topic_index()
+    if answer == &#39;0&#39;:
+        return
+    
+    #Loads topic data and filename
+    topic = get_topic_file(answer)
+    topic_name = get_topic_name(answer)
+
+    # Gets the list of content based on chosen topic, randomises order
+    content_list = get_playlist(topic)
+
+    # If player answers to every question right, the game will print out a special message (referring to function &#34;react_to_points&#34;)
+    length_for_reaction = len(content_list)
+
+    # There are not enough questions in the topic to be playable.
+    if length_for_reaction &lt;= 1:
+        # Empty topic given
+        print(&#34;Ez a téma jelenleg üres. Visszatérés...&#34;)
+        return
+    
+    # Gets difficulty based on player input
+    hard_difficulty = get_difficulty()
+
+    FirstRound = True
+    points = 0
+
+    # Game must end if there is only one content left
+    while len(content_list) &gt;= 2:
+
+        # Check if this is the first round
+        if FirstRound:
+            # Generate first content randomly
+            first = random.choice([i for i in range(len(content_list))])
+            f_title = content_list[first][0]
+            f_views = content_list[first][1]
+            f_creator = get_creator_of_content(content_list[first], topic)    
+            FirstRound = False
+
+        # Generate second content randomly
+        second = random.choice([i for i in range(len(content_list)) if i != first])
+        s_title = content_list[second][0]
+        s_views = content_list[second][1]
+        s_creator = get_creator_of_content(content_list[second], topic) 
+
+        # Gets correct answer based on views
+        correct_answer = (get_correct_answer(f_views, s_views))
+        player_answer = &#34;&#34;
+
+        # Player plays on normal difficulty
+        if not hard_difficulty:
+            
+            print(f&#34;&#34;&#34;Melyiknek van több nézettsége?
+        1) {f_creator}: {f_title} -&gt; {f_views} nézőszám
+        2) {s_creator}: {s_title} -&gt; ??? nézőszám&#34;&#34;&#34;)
+            player_answer = (input(&#34;Szám: &#34;))
+            try:
+                # Awaits player input
+                player_answer = int(player_answer)
+            # If they give a wrong input
+            except ValueError:
+                break
+        
+        # Player plays on hard difficulty
+        elif hard_difficulty:
+            # Music artists should still appear next to the song title, but player still has limited to answer
+            if topic_name == &#34;zene&#34;:
+                print(f&#34;&#34;&#34;Melyiknek van több nézettsége? Van 10 másodperced válaszolni!
+        1) {f_creator}: {f_title} -&gt; {f_views} nézőszám
+        2) {s_creator}: {s_title} -&gt; ??? nézőszám&#34;&#34;&#34;)
+            # Player is basing decisions on which title sounds more interesting and who might have created it
+            else:
+                print(f&#34;&#34;&#34;Melyiknek van több nézettsége? Van 10 másodperced válaszolni!
+        1) {f_title} -&gt; {f_views} nézőszám
+        2) {s_title} -&gt; ??? nézőszám&#34;&#34;&#34;)
+            try:
+                # Counting to 10 while awaiting player input
+                player_answer = int(inputimeout(prompt=&#39;Szám: &#39;, timeout=10))
+            # If they run out of time, or give a wrong input
+            except Exception:
+                # Game Over
+                break
+        
+        # The answer isn&#39;t right and the two options&#39; views are not equal
+        if correct_answer != 0 and player_answer != correct_answer:
+            # Game Over, prints out which was higher
+            if correct_answer == 1:
+                print(f&#34;1) {f_views} &gt; 2) {s_views}&#34;)
+            elif correct_answer == 2:
+                print(f&#34;1) {f_views} &lt; 2) {s_views}&#34;)
+            break
+        
+        # Correct answer
+        else:
+            # Game continues, prints out earned points so far
+            points += 1
+            print(f&#34;Korrekt! Eddig {points} pont, jöhet a következő...&#34;)
+
+        # Remove the first content, so it does not appear again
+        content_list.pop(first)
+        # # Fixing list order
+        if second &gt; first:
+            second -= 1
+        # Swapping second content to be the first in next round
+        first, f_title, f_views, f_creator = second, s_title, s_views, s_creator
+    
+    if points &gt;= 0:
+        if len(content_list) == 1 and points &gt; 0: 
+        # Last remaining question in-game
+            # Game Over and game completed
+            points += 1
+        print(f&#34;Játék vége, elért pontszám: {points}&#34;)
+        react_to_points(points, length_for_reaction)
+        write_highscore_if_eligible(topic_name, hard_difficulty, points)</code></pre>
+</details>
+</dd>
+<dt id="prog1-23t-beadando-HeyItsMedard.game.react_to_points"><code class="name flex">
+<span>def <span class="ident">react_to_points</span></span>(<span>points: int, length: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The game reacts with a message, based on how well the player was performing.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>points</code></strong> :&ensp;<code>int</code></dt>
+<dd>Points earned throughout the game by the player.</dd>
+<dt><strong><code>length</code></strong> :&ensp;<code>int</code></dt>
+<dd>The maximum possible questions' count. Necessary when the game runs out of questions.</dd>
+</dl>
+<h2 id="prints">Prints</h2>
+<p>str: A funny response</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def react_to_points(points: int, length: int):
+    &#34;&#34;&#34;The game reacts with a message, based on how well the player was performing.
+
+    Args:
+        points (int): Points earned throughout the game by the player.
+        length (int): The maximum possible questions&#39; count. Necessary when the game runs out of questions.
+
+    Prints:
+        str: A funny response
+    &#34;&#34;&#34;
+    zero = [&#34;Te egy kő alatt élsz, vagy ennyire szerencsétlen kérdést kaptál? Próbálkozz újra!&#34;, 
+            &#34;Több mint a semmi! Ja nem...&#34;, &#34;Hát lehetne ennél rosszabb?&#34;]
+    terrible = [&#34;Felejtsük el, hogy ez megtörtént... Új játék?&#34;, f&#34;... csak {points} pont? Rettenetes...&#34;, 
+                &#34;Nagyjából ennyi pont választotta el a Dortmundot is egy bajnoki győzelemtől... idén is...&#34;,
+                &#34;Ennél tudsz te jobbat is, hiszek benned!&#34;]
+    better = [&#34;Szép szám bizony, de vajon tudsz ennél jobbat elérni?&#34;,
+              &#34;Ügyes! Így tovább!&#34;, &#34;Ez megérdemel egy virtuális hátveregést!&#34;,
+              &#34;Ahogy VR Pisti is mondaná: \&#34;Nem is rossz!\&#34;&#34;]
+    great = [&#34;Aztamindenségit! Gratulálok az eredményhez!&#34;, &#34;Ijesztően sokat tudsz!&#34;,
+             &#34;Szép munka!&#34;]
+    max = [&#34;Sikerült kivinned a játékot! Gratulálok!&#34;, 
+           &#34;A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!&#34;,
+           &#34;Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg&#34;]
+    # The answer is chosen randomly, but based on earned points
+    # Comment out playsound for Easter Eggs (note: sometimes they do not work).
+    if points == 0:
+        print(random.choice(zero))
+        # playsound(&#39;sounds\\zero1.mp3&#39;) -&gt; gave up again, error handling doesn&#39;t work on it, only commenting helps
+    elif points &lt;= 2:
+        print(random.choice(terrible))
+        # playsound(&#39;sounds\\\\\\bad1.mp3&#39;) -&gt; gave up again, error handling doesn&#39;t work on it, only commenting helps
+    elif points &lt;= 6:
+        print(random.choice(better))
+        # playsound(&#39;sounds\\notbad.mp3&#39;) -&gt; gave up again, error handling doesn&#39;t work on it, only commenting helps 
+    elif points &lt; length:
+        print(random.choice(great))
+        # playsound(&#39;sounds\\nice.mp3&#39;)
+    elif points == length:
+        print(random.choice(max))
+        # playsound(&#39;sounds\\\max1.mp3&#39;)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="prog1-23t-beadando-HeyItsMedard" href="index.html">prog1-23t-beadando-HeyItsMedard</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="prog1-23t-beadando-HeyItsMedard.game.get_correct_answer" href="#prog1-23t-beadando-HeyItsMedard.game.get_correct_answer">get_correct_answer</a></code></li>
+<li><code><a title="prog1-23t-beadando-HeyItsMedard.game.get_creator_of_content" href="#prog1-23t-beadando-HeyItsMedard.game.get_creator_of_content">get_creator_of_content</a></code></li>
+<li><code><a title="prog1-23t-beadando-HeyItsMedard.game.get_difficulty" href="#prog1-23t-beadando-HeyItsMedard.game.get_difficulty">get_difficulty</a></code></li>
+<li><code><a title="prog1-23t-beadando-HeyItsMedard.game.get_playlist" href="#prog1-23t-beadando-HeyItsMedard.game.get_playlist">get_playlist</a></code></li>
+<li><code><a title="prog1-23t-beadando-HeyItsMedard.game.play" href="#prog1-23t-beadando-HeyItsMedard.game.play">play</a></code></li>
+<li><code><a title="prog1-23t-beadando-HeyItsMedard.game.react_to_points" href="#prog1-23t-beadando-HeyItsMedard.game.react_to_points">react_to_points</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
