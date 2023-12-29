@@ -43,7 +43,7 @@ def get_playlist_items(playlist_id):
         return None
 
 if __name__ == '__main__':
-    playlist_id = 'PL3_R0-1x5KSMPNoaJRRS1rQ0EwXTiyGCQ'  # Replace with the ID of your YouTube playlist
+    playlist_id = 'PLCDmOwXsjuPYMXOGKCgH9yEUSZqebXo5U'  # Replace with the ID of your YouTube playlist
     playlist_items, video_data = get_playlist_items(playlist_id)
 
     if playlist_items and video_data:
@@ -51,5 +51,6 @@ if __name__ == '__main__':
             print(f"Title: {item['snippet']['title']}")
             print(f"Video ID: {item['contentDetails']['videoId']}")
             print(f"Views: {video['statistics']['viewCount']}")
+            print(f"Creator: {video['snippet']['channelTitle']}")
             print("-----")
 
