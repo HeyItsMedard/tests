@@ -9,7 +9,7 @@ A játék az előző félévi beadandónak egy továbbfejlesztett változata les
 
 Segítségével videók friss adatainak integrálása a játékba - json fájlok leváltása.  
 A fejlesztés során tisztázódik, hogyan lehet hatékonyan integrálni az adatokat a játékba. Több lehetséges megközelítés lehet a videók friss adatainak beszerzésére, például...
-- Playlistből (privát vagy publikus, előbbi esetén a játékhoz készítek saját listákat témák szerint, OAuth Token) beolvasva - legoptimálisabb
+- Playlistből (privát vagy publikus, előbbi esetén a játékhoz készítek saját listákat témák szerint, OAuth Token) beolvasva - legoptimálisabb ✔
 - Téma szerint (nehéz felülvizsgálni, milyen tartalmakat fog visszaadni)
 - Nézettség szerint stb.
 
@@ -31,7 +31,7 @@ Leváltaná a json fájlokat.
 
 ### További változtatások
 
-A kódomat struktúráltabbá teszem azzal, hogy különálló class-okba szervezem. Ez nemcsak a kód átláthatóságát javítja, de lehetővé teszi a funkcionalitások logikai csoportosítását és az egyszerűbb karbantartást.
+A kódomat struktúráltabbá teszem azzal, hogy különálló class-okba szervezem. Ez nemcsak a kód átláthatóságát javítja, de lehetővé teszi a funkcionalitások logikai csoportosítását és az egyszerűbb karbantartást.✔
 
 A továbbfejlesztésből kimaradhatnak olyan régebbi feature-ök, mint a téma, videó, tartalomgyártó hozzáadása és szerkesztése, vagy a nehézségi szint.
 
