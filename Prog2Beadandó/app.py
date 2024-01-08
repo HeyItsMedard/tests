@@ -2,7 +2,7 @@
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from models import db
-import ytapi_fetch as fetch_logic
+import ytapi
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/medav/Documents/GitHub/tests/Prog2Beadandó/videos.sqlite3'
@@ -11,12 +11,7 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-    return render_template('base.html')
-
-# Fetch gombhoz útvonal
-@app.route('/fetch', methods=['GET'])
-def fetch():
-    return render_template('fetch.html')
+    return render_template('menu.html')
 
 # Drop és fetch gombhoz útvonal
 @app.route('/drop_and_fetch', methods=['GET'])
@@ -26,8 +21,8 @@ def drop_and_fetch():
     # Create new table
     db.create_all()
     # Fetch new data
-    fetch_logic.fetch_data()
-    return redirect(url_for('fetch'))
+    ytapi.fetch_data()
+    return redirect(url_for('index'))
 
 @app.route('/game')
 def game():

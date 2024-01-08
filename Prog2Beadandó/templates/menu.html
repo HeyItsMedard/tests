@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    
     <header>
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
     </header>
@@ -15,9 +14,17 @@
         <ul>
             <li><a href="{{ url_for('game') }}">Játék</a></li>
             <li><a href="{{ url_for('stats') }}">Statisztika</a></li>
-            <li><a href="{{ url_for('fetch') }}">Fetch</a></li>
+            <li><a id="fetchBtn">Fetch</a></li>
         </ul>
     </nav>
+    <script>
+        document.getElementById('fetchBtn').addEventListener('click', function () {
+            var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
+            if (confirmResult) {
+                window.location.href = "{{ url_for('drop_and_fetch') }}";
+            }
+        });
+    </script>
     <main>
         {% block content %}{% endblock %}
     </main>
