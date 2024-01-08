@@ -1,14 +1,22 @@
 <!-- templates/fetch.html -->
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fetch</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <h1>Fetch oldal</h1>
-    <p>Itt vagy a fetch oldalon.</p>
-</body>
-</html>
+
+{% extends 'base.html' %}
+
+{% block title %}Fetch{% endblock %}
+
+{% block content %}
+    <h1>Fetch</h1>
+    <p>Fetching videos...</p>
+    <button id="fetchBtn">Fetch Data</button>
+
+    <script>
+        document.getElementById('fetchBtn').addEventListener('click', function () {
+            var confirmResult = confirm('Do you want to drop the previous table and fetch new data?');
+            if (confirmResult) {
+                window.location.href = "{{ url_for('drop_and_fetch') }}";
+            } else {
+                window.location.href = "{{ url_for('fetch') }}";
+            }
+        });
+    </script>
+{% endblock %}

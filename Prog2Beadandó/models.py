@@ -1,7 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
+from dataclasses import dataclass
 
 db = SQLAlchemy()
 
+@dataclass
 class Video(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)

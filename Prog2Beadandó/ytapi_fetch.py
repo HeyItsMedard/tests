@@ -80,7 +80,7 @@ def get_playlist_items(playlist_id):
         print(f"An error occurred: {e}")
         return None
 
-if __name__ == '__main__':
+def fetch_data():
     playlist_id = 'PLCDmOwXsjuPYMXOGKCgH9yEUSZqebXo5U'
     paired_data = get_playlist_items(playlist_id)
 
