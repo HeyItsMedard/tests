@@ -29,7 +29,6 @@ def get_all_video_details(video_ids):
             video_data.extend(response.get('items', []))
 
         print(f"Video data (first):" + str(video_data[0]))
-        print(f"Total videos fetched: {len(video_data)}")
         return video_data
 
     except HttpError as e:
@@ -80,11 +79,10 @@ def get_playlist_items(playlist_id):
         return None
 
 if __name__ == '__main__':
-    playlist_id = 'PLCDmOwXsjuPYMXOGKCgH9yEUSZqebXo5U'  # Replace with the ID of your YouTube playlist
+    playlist_id = 'PLCDmOwXsjuPYMXOGKCgH9yEUSZqebXo5U'
     paired_data = get_playlist_items(playlist_id)
 
     if paired_data:
-        print(f"Total videos paired: {len(paired_data)}")
         for pair in paired_data:
             playlist_item = pair['playlist_item']
             video_info = pair['video_info']
@@ -92,5 +90,14 @@ if __name__ == '__main__':
             print(f"Video ID: {playlist_item['contentDetails']['videoId']}")
             print(f"Views: {video_info['statistics']['viewCount']}")
             print(f"Creator: {playlist_item['snippet']['videoOwnerChannelTitle']}")
+            try:
+                print(f"Thumbnail: {playlist_item['snippet']['thumbnails']['maxres']['url']}")
+            except KeyError:
+                # Maybe we should also store a true/false value for this - true for maxres, false for standard
+                print("!!!!!!!!!!!!!!")
+                print(f"Video has no thumbnail in maxres: {playlist_item['snippet']['title']}")
+                print(f"Thumbnail: {playlist_item['snippet']['thumbnails']['standard']['url']}")
+                print("!!!!!!!!!!!!!!")
             print("-----")
+    print(f"Total videos fetched: {len(paired_data)}")
     print(f"Total quota cost: {quota_cost}")
