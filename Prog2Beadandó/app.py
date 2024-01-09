@@ -1,7 +1,8 @@
 # app.py
 from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from models import db
+from sqlalchemy import func
+from models import db, Video
 import ytapi
 
 app = Flask(__name__)
@@ -26,7 +27,16 @@ def drop_and_fetch():
 
 @app.route('/game')
 def game():
-    return render_template('game.html')
+    # Vegyük le két véletlenszerű videót az adatbázisból
+    video1 = Video.query.order_by(func.random()).first()
+    video2 = Video.query.filter(Video.id != video1.id).order_by(func.random()).first()
+
+    # Ellenőrizzük, hogy van-e két különböző videó
+    if video1 is None or video2 is None:
+        return "Nem sikerült két különböző videót kiválasztani az adatbázisból."
+
+    # Az olvasott videókat adjuk át a game.html template-nek
+    return render_template('game.html', video1=video1, video2=video2)
 
 @app.route('/stats')
 def stats():

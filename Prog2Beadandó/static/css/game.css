@@ -1,0 +1,68 @@
+/* static/css/game.css */
+body {
+    background-color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    font-family: rooney-sans,sans-serif;
+    font-size: 16px;
+    line-height: 1.3;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.game-container {
+    display: flex;
+    align-items: center;
+}
+
+.video-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 33.33333%;
+    text-align: center;
+    background-size: cover;
+    background-position: 50%;
+}
+
+
+.video-container img {
+    max-width: 100%;
+    border-radius: 10px;
+    filter: brightness(50%); /* Sötétítés a thumbnail-höz */
+}
+
+.video-container.left {
+    background-image: url('{{ video1.thumbnail_url }}');
+    background-size: cover;
+    background-position: center;
+}
+
+.video-container.right {
+    background-image: url('{{ video2.thumbnail_url }}');
+    background-size: cover;
+    background-position: center;
+}
+
+.buttons button {
+    width: 100px; /* Példa méret, állítsd be a kívánt méretre */
+    height: 30px; /* Példa méret, állítsd be a kívánt méretre */
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.more-btn {
+    background-color: green;
+    color: white;
+}
+
+.less-btn {
+    background-color: red;
+    color: white;
+}
