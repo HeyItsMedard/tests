@@ -19,8 +19,12 @@
             <img src="{{ video2.thumbnail_url }}" alt="Video Thumbnail">
             <h2>{{ video2.title }}</h2>
             <div class="buttons">
-                <button class="more-btn">Több</button>
-                <button class="less-btn">Kevesebb</button>
+                <form method="post" action="{{ url_for('check_guess', guess='more') }}">
+                    <button type="submit" class="more-btn">Több</button>
+                </form>
+                <form method="post" action="{{ url_for('check_guess', guess='less') }}">
+                    <button type="submit" class="less-btn">Kevesebb</button>
+                </form>
             </div>
         </div>
     </div>

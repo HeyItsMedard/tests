@@ -2,46 +2,77 @@
 from models import Video
 from sqlalchemy import func
 from flask_sqlalchemy import SQLAlchemy
+from flask import session
 
 db = SQLAlchemy()
 
 class Game:
+    FirstRound = True
     def __init__(self, db):
         self.db = db
-        self.video1 = None
-        self.video2 = None
         self.displayed_video_ids = set()  # Az eddig megjelenített videók azonosítóit tartalmazó halmaz
 
-    def get_random_videos(self):
-        print("get_random_videos")
-        # Az első körben mindkét videónak válasszunk randomot
-        if self.video1 is None or self.video2 is None:
-            self.video1 = Video.query.order_by(func.random()).first()
-            self.video2 = Video.query.filter(Video.id != self.video1.id).order_by(func.random()).first()
-        else:
-            # A következő körökben csak video2 kapjon randomot
-            self.video1 = self.video2
-            self.video2 = Video.query.filter(~Video.id.in_([self.video1.id] + list(self.displayed_video_ids))).order_by(func.random()).first()
+    @classmethod
+    def get_first_round(cls):
+        return cls.FirstRound
 
-        # Ellenőrizd a konzolon, hogy a videók helyesen lettek-e kiválasztva
+    @classmethod
+    def set_first_round(cls, value):
+        cls.FirstRound = value
+
+    def get_random_videos(self):
+        print(self.FirstRound)
+        if self.FirstRound:
+            # Get a random video from the database
+            video1 = self.db.session.query(Video).order_by(func.random()).first()
+            # Get another random video from the database
+            video2 = self.db.session.query(Video).order_by(func.random()).first()
+
+            self.set_first_round(False)
+
+            session['video1_id'] = video1.id
+            session['video2_id'] = video2.id
+
+            self.displayed_video_ids.add(video1.id)
+            self.displayed_video_ids.add(video2.id)
+
+            self.print_videos(video1, video2)
+
+        else:
+            # Swap the videos
+            video1 = self.db.session.query(Video).get(session['video2_id'])
+            # Get another random video from the database that is not in displayed_video_ids
+            video2 = self.db.session.query(Video).filter(Video.id.notin_(self.displayed_video_ids)).order_by(func.random()).first()
+            
+            session['video1_id'] = video1.id
+            session['video2_id'] = video2.id
+
+            self.displayed_video_ids.add(video1.id)
+            self.displayed_video_ids.add(video2.id)
+
+            self.print_videos(video1, video2)
+
+        return video1, video2
+            
+    def print_videos(self, video1, video2):
+        """Used for debugging purposes"""
         print("Video 1:")
-        print(f"Title: {self.video1.title}")
-        print(f"Thumbnail URL: {self.video1.thumbnail_url}")
-        print(f"Views: {self.video1.views}")
+        print(f"Title: {video1.title}")
+        print(f"Thumbnail URL: {video1.thumbnail_url}")
+        print(f"Views: {video1.views}")
         print('-------------------')
         
         print("Video 2:")
-        print(f"Title: {self.video2.title}")
-        print(f"Thumbnail URL: {self.video2.thumbnail_url}")
-        print(f"Views: {self.video2.views}")
+        print(f"Title: {video2.title}")
+        print(f"Thumbnail URL: {video2.thumbnail_url}")
+        print(f"Views: {video2.views}")
         print('-------------------')
 
-        # Ellenőrizzük, hogy van-e két különböző videó
-        if self.video1 is None or self.video2 is None:
-            return None, None
-
-        # Hozzáadjuk az azonosítókat a megjelenített videók halmazához
-        self.displayed_video_ids.add(self.video1.id)
-        self.displayed_video_ids.add(self.video2.id)
-
-        return self.video1, self.video2
+    def check_guess(self, video1, video2, guess):
+        print(video1, video2, guess)
+        if guess == 'more' and video2.views >= video1.views:
+            return True
+        elif guess == 'less' and video2.views < video1.views:
+            return True
+        else:
+            return False
