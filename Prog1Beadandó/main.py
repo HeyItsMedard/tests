@@ -1,7 +1,7 @@
-from game import play
-from utils import help
-from database import delete_data, add_data, edit_data
-from highscore import highscore_lists
+from game import Game
+from utils import Utils
+from database import Database
+from highscore import Highscore
 
 def main_menu():
     """ Main program is here. """
@@ -21,17 +21,17 @@ Válassz az alábbi opciók közül (számbevitellel):
             case '0':
                 break
             case '1':
-                play()
+                Game.play()
             case '2':
-                add_data()
+                Database.add_data()
             case '3':
-                delete_data()
+                Database.delete_data()
             case '4':
-                edit_data()
+                Database.edit_data()
             case '5':
-                highscore_lists()
+                Highscore.highscore_lists()
             case '6':
-                help()
+                Utils.help()
             case _:
                 print("Nem létező opció!")
     print("""
