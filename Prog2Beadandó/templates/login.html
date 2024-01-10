@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Bejelentkezés{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+    </header>
+    <form>
+        <input type="text" name="username" placeholder="Név">
+        <input type="password" name="password" placeholder="Jelszó">
+        <input type="submit" value="Bejelentkezés">
+    </form>
+</body>
+</html>
