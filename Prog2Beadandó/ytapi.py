@@ -102,7 +102,7 @@ def fetch_data():
             #     print("!!!!!!!!!!!!!!")
             # print("-----")
 
-            video = Video(
+            videos = Video(
                 title=playlist_item['snippet']['title'],
                 video_id=playlist_item['contentDetails']['videoId'],
                 views=int(video_info['statistics']['viewCount']),
@@ -110,13 +110,13 @@ def fetch_data():
             )
 
             try:
-                video.thumbnail_url = playlist_item['snippet']['thumbnails']['maxres']['url']
-                video.maxres_thumbnail = True
+                videos.thumbnail_url = playlist_item['snippet']['thumbnails']['maxres']['url']
+                videos.maxres_thumbnail = True
             except KeyError:
-                video.thumbnail_url = playlist_item['snippet']['thumbnails']['standard']['url']
-                video.maxres_thumbnail = False
+                videos.thumbnail_url = playlist_item['snippet']['thumbnails']['standard']['url']
+                videos.maxres_thumbnail = False
 
-            db.session.add(video)
+            db.session.add(videos)
         db.session.commit()
 
     print(f"Total videos fetched: {len(paired_data)}")
