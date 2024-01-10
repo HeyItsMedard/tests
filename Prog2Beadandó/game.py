@@ -8,9 +8,9 @@ db = SQLAlchemy()
 
 class Game:
     FirstRound = True
+    displayed_video_ids = set()  # Az eddig megjelenített videók azonosítóit tartalmazó halmaz
     def __init__(self, db):
         self.db = db
-        self.displayed_video_ids = set()  # Az eddig megjelenített videók azonosítóit tartalmazó halmaz
 
     @classmethod
     def get_first_round(cls):
@@ -49,6 +49,8 @@ class Game:
 
             self.displayed_video_ids.add(video1.id)
             self.displayed_video_ids.add(video2.id)
+
+            print(self.displayed_video_ids)
 
             self.print_videos(video1, video2)
 

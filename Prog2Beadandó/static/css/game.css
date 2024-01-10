@@ -1,8 +1,7 @@
-/* static/css/game.css */
 body {
     background-color: #ffffff;
     -webkit-font-smoothing: antialiased;
-    font-family: rooney-sans,sans-serif;
+    font-family: rooney-sans, sans-serif;
     font-size: 16px;
     line-height: 1.3;
     height: 100%;
@@ -11,11 +10,28 @@ body {
     left: 0;
     bottom: 0;
     right: 0;
+    color: #ffffff;
+    margin: 0; /* Törölje el a test marginját, hogy ne legyen üres tér a test körül */
+    overflow: hidden; /* Ne jelenjen meg görgetősáv */
+    height: 100vh; /* Töltse ki a teljes képernyőmagasságot */
 }
 
 .game-container {
     display: flex;
     align-items: center;
+}
+
+.background-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../images/menu.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    filter: brightness(50%); /* Sötétítés a menu.jpg-hoz */
 }
 
 .video-container {
@@ -24,15 +40,11 @@ body {
     width: 100%;
     height: 33.33333%;
     text-align: center;
-    background-size: cover;
-    background-position: 50%;
 }
-
 
 .video-container img {
     max-width: 100%;
     border-radius: 10px;
-    filter: brightness(50%); /* Sötétítés a thumbnail-höz */
 }
 
 .video-container.left {
@@ -48,8 +60,8 @@ body {
 }
 
 .buttons button {
-    width: 100px; /* Példa méret, állítsd be a kívánt méretre */
-    height: 30px; /* Példa méret, állítsd be a kívánt méretre */
+    width: 100px;
+    height: 30px;
     padding: 10px;
     margin: 5px;
     border: none;
