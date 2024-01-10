@@ -14,6 +14,8 @@ db.init_app(app)
 
 @app.route('/')
 def index():
+    game_instance = Game(db)
+    game_instance.reset()
     return render_template('menu.html')
 
 # Drop és fetch gombhoz útvonal

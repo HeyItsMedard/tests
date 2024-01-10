@@ -7,28 +7,16 @@ from flask import session
 db = SQLAlchemy()
 
 class Game:
-    FirstRound = True
     displayed_video_ids = set()  # Az eddig megjelenített videók azonosítóit tartalmazó halmaz
     def __init__(self, db):
         self.db = db
 
-    @classmethod
-    def get_first_round(cls):
-        return cls.FirstRound
-
-    @classmethod
-    def set_first_round(cls, value):
-        cls.FirstRound = value
-
     def get_random_videos(self):
-        print(self.FirstRound)
-        if self.FirstRound:
+        if session.get('video1_id') is None and session.get('video2_id') is None:
             # Get a random video from the database
             video1 = self.db.session.query(Video).order_by(func.random()).first()
             # Get another random video from the database
             video2 = self.db.session.query(Video).order_by(func.random()).first()
-
-            self.set_first_round(False)
 
             session['video1_id'] = video1.id
             session['video2_id'] = video2.id
@@ -36,8 +24,7 @@ class Game:
             self.displayed_video_ids.add(video1.id)
             self.displayed_video_ids.add(video2.id)
 
-            self.print_videos(video1, video2)
-
+            self.print_videos(video1, video2) # kisegítésnek
         else:
             # Swap the videos
             video1 = self.db.session.query(Video).get(session['video2_id'])
@@ -47,12 +34,9 @@ class Game:
             session['video1_id'] = video1.id
             session['video2_id'] = video2.id
 
-            self.displayed_video_ids.add(video1.id)
             self.displayed_video_ids.add(video2.id)
 
-            print(self.displayed_video_ids)
-
-            self.print_videos(video1, video2)
+            self.print_videos(video1, video2) # kisegítésnek
 
         return video1, video2
             
@@ -78,3 +62,9 @@ class Game:
             return True
         else:
             return False
+    
+    def reset(self):
+        print("Resetting game...")
+        self.displayed_video_ids.clear()
+        session.pop('video1_id', None)
+        session.pop('video2_id', None)
