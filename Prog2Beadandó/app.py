@@ -95,6 +95,7 @@ def drop_and_fetch():
     db.create_all()
     # Fetch new data
     ytapi.fetch_data()
+
     return redirect(url_for('index'))
 
 @app.route('/game')

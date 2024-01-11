@@ -25,24 +25,27 @@
 
     <script>
         document.getElementById('fetchBtn').addEventListener('click', function () {
-        var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
-        if (confirmResult) {
-            // Fetch gomb lenyomásakor AJAX kérést küldünk
-            fetch("{{ url_for('drop_and_fetch') }}")
-                .then(response => response.json())
-                .then(data => {
-                    if (data.message) {
-                        alert(data.message);  // Megjelenítjük az üzenetet alert segítségével
-                    } else {
-                        // Ha sikeres volt a fetch, visszairányítunk a főoldalra
+            var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
+            if (confirmResult) {
+                // Fetch gomb lenyomásakor AJAX kérést küldünk
+                fetch("{{ url_for('drop_and_fetch') }}")
+                    .then(response => {
+                        // Ellenőrizzük a válasz státuszát
+                        if (!response.ok) {
+                            throw new Error(`Hiba: ${response.status}`);
+                        }
+                        // Az üzenet tartalmát tartalmazza, nem JSON
+                        return response.text();
+                    })
+                    .then(data => {
+                        alert("Sikeres fetch!");  // Megjelenítjük az üzenetet alert segítségével
                         window.location.href = "{{ url_for('index') }}";
-                    }
-                })
-                .catch(error => {
-                    console.error('Hiba a fetch közben:', error);
-                });
-        }
-    });
+                    })
+                    .catch(error => {
+                        console.error('Hiba a fetch közben:', error);
+                    });
+            }
+        });
     </script>
     <main>
         {% block content %}{% endblock %}
