@@ -6,7 +6,7 @@ class MissingTopicsError(Exception):
     "Raised when there are no topic files to."
     
 # Set the path to the folder
-folder_path = "Prog2Beadandó"
+folder_path = "Prog1Beadandó"
 
 # Change the current working directory to the specified folder
 os.chdir(folder_path)
