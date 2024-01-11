@@ -86,6 +86,25 @@ def login():
             return redirect(url_for("user"))
         return render_template("login.html")
 
+@app.route("/logout")
+def logout():
+    if "user" not in session:
+        # You are not logged in flash in user, redirect to login
+        return render_template("login_or_register.html")
+    else:
+        # Get session user
+        username = session["user"]
+        # Search them in the database
+        user = User.query.filter_by(username=username).first()
+        # Set the logout date
+        logout_date = datetime.utcnow()
+        user.logout_date = logout_date
+        db.session.commit() # and save it
+
+        # Log out the session user
+        session.pop("user", None) # not the same as list pop, logs user out
+        return render_template("login_or_register.html")
+    
 # Drop és fetch gombhoz útvonal
 @app.route('/drop_and_fetch', methods=['GET'])
 def drop_and_fetch():
@@ -111,8 +130,6 @@ def game():
 
     # Hívjuk meg a Game osztályt és adjuk át a videókat a template-nek
     return render_template('game.html', video1=video1, video2=video2)
-
-#PROBLEM: Az új körben bal oldalt kéne legyen az előző jobboldali videó és a jobboldalinek egy random videó, de mindkettő random lesz
 
 @app.route('/check_guess/<guess>', methods=['POST'])
 def check_guess(guess):
