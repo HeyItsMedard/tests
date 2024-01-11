@@ -76,7 +76,9 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             session.permanent = True
             session["user"] = username
+            user.login_date = datetime.utcnow()
             session['session_expires'] = datetime.utcnow() + timedelta(minutes=30)
+            db.session.commit()
             return redirect(url_for("index"))  # Redirect to menu successful login
         else:
             flash("Login failed. Invalid credentials.")
@@ -84,7 +86,7 @@ def login():
     else:
         if "user" in session:
             flash("Already logged in!")
-            return redirect(url_for("user"))
+            return redirect(url_for("index"))
         return render_template("login.html")
 
 @app.route("/logout")
@@ -100,6 +102,8 @@ def logout():
         # Set the logout date
         logout_date = datetime.utcnow()
         user.logout_date = logout_date
+        user.played_time += logout_date - user.login_date
+        user.login_date = None
         db.session.commit() # and save it
 
         # Log out the session user
@@ -169,6 +173,7 @@ def check_guess(guess):
     else:
         # Incorrect guess, redirect to menu - game over indev!
         user.current_score = 0
+        user.games_played += 1
         session['current_score'] = user.current_score
         db.session.commit()
         return redirect(url_for('index'))

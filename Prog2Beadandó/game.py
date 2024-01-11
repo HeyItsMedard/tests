@@ -18,7 +18,7 @@ class Game:
             # Get a random video from the database
             video1 = self.db.session.query(Video).order_by(func.random()).first()
             # Get another random video from the database
-            video2 = self.db.session.query(Video).order_by(func.random()).first()
+            video2 = self.db.session.query(Video).filter(Video.id != video1.id).order_by(func.random()).first()
 
             session['video1_id'] = video1.id
             session['video2_id'] = video2.id
@@ -31,7 +31,7 @@ class Game:
             # Swap the videos
             video1 = self.db.session.query(Video).get(session['video2_id'])
             # Get another random video from the database that is not in displayed_video_ids
-            video2 = self.db.session.query(Video).filter(Video.id.notin_(self.displayed_video_ids)).order_by(func.random()).first()
+            video2 = self.db.session.query(Video).filter(Video.id != video1.id, Video.id.notin_(self.displayed_video_ids)).order_by(func.random()).first()
             
             session['video1_id'] = video1.id
             session['video2_id'] = video2.id
