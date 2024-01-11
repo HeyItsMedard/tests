@@ -36,6 +36,10 @@
                 </div>
             </div>
         </div>
+        <div class="score-container">
+            <p>Pontszám: {{ session['current_score'] }}</p>
+            <p>Legjobb pontszám: {{ session['best_score'] }}</p>
+        </div>
     {% endif %}
 </body>
 </html>

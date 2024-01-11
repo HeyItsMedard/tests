@@ -104,7 +104,8 @@ def game():
         return render_template('game.html', message="A video tábla üres. Kérlek, használd a Fetch gombot az adatok betöltéséhez!")
     # Hozz létre egy Game példányt és add át neki a db objektumot
     game_instance = Game(db)
-
+    
+    print("Current score: ",session['current_score'])
     # Hívjuk meg a Game osztályt és vegyük le a videókat
     video1, video2 = game_instance.get_random_videos()
 
@@ -125,18 +126,37 @@ def check_guess(guess):
     video1 = Video.query.get(video1_id)
     video2 = Video.query.get(video2_id)
 
+    user = User.query.filter_by(username=session["user"]).first()
+
     if game_instance.check_guess(video1, video2, guess):
-        # Helyes tipp, folytatjuk a játékot
+        # Helyes tipp
+        user.current_score += 1
+
+        # Ellenőrizzük, hogy a mostani pontszám nagyobb-e, mint a legjobb
+        if user.current_score > user.best_score:
+            user.best_score = user.current_score
+
+        db.session.commit()
+
+        # Folytatjuk a játékot
         video1, video2 = game_instance.get_random_videos()
-        
+
         # Tároljuk el az új videók ID-jait a session-ben
         session['video1_id'] = video1.id if video1 else None
         session['video2_id'] = video2.id if video2 else None
 
+        # Frissítjük a session-ben tárolt pontszámokat
+        session['current_score'] = user.current_score
+        session['best_score'] = user.best_score
+
         session.modified = True  # Explicitly mark the session as modified
+
         return render_template('game.html', video1=video1, video2=video2)
     else:
-        # Rossz tipp, visszatérünk a menühöz
+        # Rossz tipp, visszatérünk a menühöz - game over indev!
+        user.current_score = 0
+        session['current_score'] = user.current_score
+        db.session.commit()
         return redirect(url_for('index'))
 
 @app.route('/stats')
