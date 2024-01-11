@@ -9,6 +9,7 @@ API_VERSION = 'v3'
 quota_cost = 0
 
 def get_all_video_details(video_ids):
+    """We use this function to fetch video details like viewcount using pagination"""
     global quota_cost
     youtube = googleapiclient.discovery.build(API_SERVICE_NAME, API_VERSION, developerKey=API_KEY)
 
@@ -30,7 +31,7 @@ def get_all_video_details(video_ids):
             response = request.execute()
             video_data.extend(response.get('items', []))
 
-        print(f"Video data (first):" + str(video_data[0]))
+        print(f"Video data (first):" + str(video_data[0])) # check for yourself
         return video_data
 
     except HttpError as e:
@@ -38,6 +39,7 @@ def get_all_video_details(video_ids):
         return None
 
 def get_playlist_items(playlist_id):
+    """Fetches all items from a playlist using pagination"""
     global quota_cost
     youtube = googleapiclient.discovery.build(API_SERVICE_NAME, API_VERSION, developerKey=API_KEY)
 
@@ -58,7 +60,7 @@ def get_playlist_items(playlist_id):
             next_page_token = response.get('nextPageToken')
 
         video_ids = [item['contentDetails']['videoId'] for item in playlist_items]
-        print(f"Playlist item (first):" + str(playlist_items[0]))
+        print(f"Playlist item (first):" + str(playlist_items[0])) # check for yourself
         # Add debugging output
         print("Fetching video details...")
         print(f"Video IDs: {video_ids}")  # This is a list of video IDs
@@ -81,6 +83,7 @@ def get_playlist_items(playlist_id):
         return None
 
 def fetch_data():
+    """Called by the app to fetch data from the YouTube API and store it in the database"""
     playlist_id = 'PLCDmOwXsjuPYMXOGKCgH9yEUSZqebXo5U'
     paired_data = get_playlist_items(playlist_id)
 
@@ -120,4 +123,4 @@ def fetch_data():
         db.session.commit()
 
     print(f"Total videos fetched: {len(paired_data)}")
-    print(f"Total quota cost: {quota_cost}")
+    print(f"Total quota cost: {quota_cost}") # for developer (me) - limit is 10 000

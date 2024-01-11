@@ -62,6 +62,13 @@ body {
     background-position: center;
 }
 
+.video-container p {
+    color: yellow; /* Nézettség színének beállítása */
+    font-weight: bold;
+    font-size: 1.5em;
+    margin-top: 5px; /* Felső margó a törés után */
+}
+
 .buttons button {
     width: 100px;
     height: 30px;

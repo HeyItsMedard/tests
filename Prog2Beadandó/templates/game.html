@@ -14,7 +14,7 @@
         <div class="video-container left">
             <img src="{{ video1.thumbnail_url }}" alt="Video Thumbnail">
             <h2>{{ video1.title }}</h2>
-            <p>{{ video1.views }} nézőszám</p>
+            <p>{{ "{:,.0f}".format(video1.views) | replace(',', ' ') }} nézőszám</p>
         </div>
         
         <div class="video-container right">
