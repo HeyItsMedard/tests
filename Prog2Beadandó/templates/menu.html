@@ -18,6 +18,9 @@
             <li><a id="fetchBtn">Logout</a></li>
         </ul>
     </nav>
+    {% if 'user' in session %}
+        <div class="user-info">Bejelentkezett: {{ session['user'] }}</div>
+    {% endif %}
     <script>
         document.getElementById('fetchBtn').addEventListener('click', function () {
             var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
