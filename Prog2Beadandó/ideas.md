@@ -10,8 +10,6 @@ def formatted_played_time(self):
         minutes, seconds = divmod(remainder, 60)
         return f"{int(hours)}:{int(minutes)}:{int(seconds)}"
 
-<span style="font-size: 1.5em;"> Regisztrációs és bejelentkezéses errorok  
-
 <span style="font-size: 1.5em;"> Legyen tudtára adva a játékosnak, hogy top 10-ben van!  
 
 <span style="font-size: 1.5em;"> Kalkuláljon game over kiírásnál esetleg olyat is, hogy a játékosok hány százalékánál teljesített a játékos jobban!  
@@ -19,7 +17,5 @@ def formatted_played_time(self):
 <span style="font-size: 1.5em;"> Kommentek!
 
 <span style="font-size: 1.5em;"> Visszagomb bejelentkezésnek és regisztrációnak
-
-<span style="font-size: 1.5em;"> Szebb több kevesebb gombok
 
 <span style="font-size: 1.5em;"> Legvégén dokumentáció.

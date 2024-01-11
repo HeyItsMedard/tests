@@ -45,8 +45,7 @@ def register():
         # Check if the user already exists
         user = User.query.filter_by(username=username).first()
         if user:
-            flash("Username already exists. Please choose another one.")
-            return redirect(url_for("register"))
+            return render_template('register.html', message="Ez a felhasználónév már foglalt!")
 
         # Hash the password for security
         hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -58,8 +57,7 @@ def register():
         user = User(username=username, password=hashed_password, registration_date=registration_date)
         db.session.add(user)
         db.session.commit()
-
-        flash("Registration successful! You can now log in.")
+        
         return redirect(url_for("login"))
     else:
         return render_template("register.html")
@@ -81,11 +79,9 @@ def login():
             db.session.commit()
             return redirect(url_for("index"))  # Redirect to menu successful login
         else:
-            flash("Login failed. Invalid credentials.")
-            return redirect(url_for("login"))
+            return render_template('login.html', message="Sikertelen bejelentkezés!")
     else:
         if "user" in session:
-            flash("Already logged in!")
             return redirect(url_for("index"))
         return render_template("login.html")
 

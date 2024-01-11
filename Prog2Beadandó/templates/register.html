@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    {% if message %}
+        <script>
+            alert("{{ message }}");
+            window.location.href = "{{ url_for('register') }}";
+        </script>
+    {% endif %}
     <header>
         <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
     </header>
