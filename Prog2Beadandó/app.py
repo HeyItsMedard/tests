@@ -10,11 +10,15 @@ import ytapi
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///C:/Users/medav/Documents/GitHub/tests/Prog2Beadandó/game.sqlite3'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-CUSTOM_SESSION_TIMEOUT = timedelta(minutes=10)
+CUSTOM_SESSION_TIMEOUT = timedelta(minutes=30)
 app.permanent_session_lifetime = CUSTOM_SESSION_TIMEOUT
 app.secret_key = 'super secret key'
 bcrypt = Bcrypt(app)
 db.init_app(app)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return 'Page not found', 404
 
 @app.route('/')
 def index():
@@ -80,8 +84,8 @@ def login():
 # Drop és fetch gombhoz útvonal
 @app.route('/drop_and_fetch', methods=['GET'])
 def drop_and_fetch():
-    # Drop the previous table
-    db.drop_all()
+    # Drop the Video table
+    Video.__table__.drop(db.engine)
     # Create new table
     db.create_all()
     # Fetch new data
@@ -126,7 +130,6 @@ def check_guess(guess):
     else:
         # Rossz tipp, visszatérünk a menühöz
         return redirect(url_for('index'))
-
 
 @app.route('/stats')
 def stats():

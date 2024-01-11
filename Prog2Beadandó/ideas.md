@@ -1,9 +1,10 @@
 
-____________________________________________________________
-<span style="font-size: 1.5em;">[ ] Legyen menü: játék -> nehézség, highscore (vagy inkább statistics), friss fetching </span>   
-<span style="font-size: 1.5em;">[/] Fetchelés mentsen el: címet, thumbnailt, készítőt, nézettséget (nem szükséges auth) SQLAlchemyvel </span>  
-<span style="font-size: 1.5em;">[ ] Legyen a highscore is mentve (egyelőre csak az) SQLAlchemyvel, továbbra is top 10</span>  
-<span style="font-size: 1.5em;">[ ] A játék könnyű esetén adjon ki címet és mögé thumbnailt, egymás mellé mint az eredetiben. Balra legyen megadva a nézettség mindig. A jobbnál legyenek a gombok, hogy magasabb vagy alacsonyabb. A thumbnailek legyenek sötétítve az átláthatóságért. Nehéz esetén középen még ezek mellett legyen egy timer, ami pörög/változik.</span>
-<span style="font-size: 1.5em;">[ ] Adatbázisban a thumbnail urlből eg legyen, opcionálisan rövidítve a linket.</span> 
-<span style="font-size: 1.5em;">[ ] Game over screen gifek legyenek az elért eredmény szerint (talán itt jobban működik a hang is, az is lehet)</span>
-<span style="font-size: 1.5em;">[ ] Lehet, érdemes az oldalakat template htmlből származtatni, csak a képek mindenképp cserélődjenek. Hiányzó thumbnail esetén töltődjön be egy MissingTemplate. CSS Styleokat megtekinteni HorL oldalán!</span> 
+____________________________________________________________  
+<span style="font-size: 1.5em;"> Legyen game over screen - hozzá megfelelő gif háttérben, középen az elért pontszámmal és szöveggel, hanggal is akár.
+<span style="font-size: 1.5em;"> A pontszám mindig is szerepeljen, a bal alsó sarokban és updateljen.
+<span style="font-size: 1.5em;"> A nézettség legyen nagyobb és legyen jól olvasható, akár más színű. Tördeljük fel a számot így: 10000 -> 10'000 (vagy space)
+<span style="font-size: 1.5em;"> Statisztika: highscore - egyéni - közösségi gombok, highscore egy max 10 elemű listát ad vissza névvel és ponttal; egyéninél: legjobb pontszám, átlag pontszám, játszott meccsek, eltöltött idő a játékban (lehet ehhez kéne logout time is és logout gomb); közösségi: össz játékosok száma, átlag legjobb pontszám, regisztrációk hónapra bontva gráf - még ezer lehetőség van
+<span style="font-size: 1.5em;"> Regisztrációs és bejelentkezéses errorok
+<span style="font-size: 1.5em;"> Legyen tudtára adva a játékosnak, hogy top 10-ben van!
+<span style="font-size: 1.5em;"> Kalkuláljon game over kiírásnál esetleg olyat is, hogy a játékosok hány százalékánál teljesített a játékos jobban!
+<span style="font-size: 1.5em;">
