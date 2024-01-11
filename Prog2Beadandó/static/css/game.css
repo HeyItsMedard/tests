@@ -70,23 +70,37 @@ body {
 }
 
 .buttons button {
-    width: 100px;
-    height: 30px;
-    padding: 10px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
+    width: 200px;
+    height: 40px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 20px;
+    padding: 10px 20px;
+    margin: 10px 0;
     cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .more-btn {
+    border: 2px solid green;
+    background-color: transparent;
+    color: green;
+}
+
+.more-btn:hover {
     background-color: green;
-    color: white;
 }
 
 .less-btn {
+    border: 2px solid red;
+    background-color: transparent;
+    color: red;
+}
+
+.less-btn:hover {
     background-color: red;
-    color: white;
 }
 
 .score-container {

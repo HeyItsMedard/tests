@@ -20,4 +20,6 @@ def formatted_played_time(self):
 
 <span style="font-size: 1.5em;"> Visszagomb bejelentkezésnek és regisztrációnak
 
+<span style="font-size: 1.5em;"> Szebb több kevesebb gombok
+
 <span style="font-size: 1.5em;"> Legvégén dokumentáció.
