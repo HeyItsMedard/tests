@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
 from sqlalchemy.engine.reflection import Inspector
@@ -23,10 +23,15 @@ def page_not_found(e):
 @app.route('/')
 def index():
     if "user" in session:
+        if User.query.count() == 0:
+            session.clear()
+            return render_template("login_or_register.html")
         game_instance = Game(db)
         game_instance.reset()
         return render_template('menu.html')
     else:
+        if User.query.count() == 0:
+            session.clear()
         return render_template("login_or_register.html")
 
 @app.route("/register", methods=["POST", "GET"])
@@ -94,6 +99,8 @@ def drop_and_fetch():
 
 @app.route('/game')
 def game():
+    if Video.query.count() < 2:
+        return render_template('game.html', message="A video tábla üres. Kérlek, használd a Fetch gombot az adatok betöltéséhez!")
     # Hozz létre egy Game példányt és add át neki a db objektumot
     game_instance = Game(db)
 

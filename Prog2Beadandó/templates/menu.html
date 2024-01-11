@@ -18,16 +18,31 @@
             <li><a id="fetchBtn">Logout</a></li>
         </ul>
     </nav>
+    
     {% if 'user' in session %}
         <div class="user-info">Bejelentkezett: {{ session['user'] }}</div>
     {% endif %}
+
     <script>
         document.getElementById('fetchBtn').addEventListener('click', function () {
-            var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
-            if (confirmResult) {
-                window.location.href = "{{ url_for('drop_and_fetch') }}";
-            }
-        });
+        var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
+        if (confirmResult) {
+            // Fetch gomb lenyomásakor AJAX kérést küldünk
+            fetch("{{ url_for('drop_and_fetch') }}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);  // Megjelenítjük az üzenetet alert segítségével
+                    } else {
+                        // Ha sikeres volt a fetch, visszairányítunk a főoldalra
+                        window.location.href = "{{ url_for('index') }}";
+                    }
+                })
+                .catch(error => {
+                    console.error('Hiba a fetch közben:', error);
+                });
+        }
+    });
     </script>
     <main>
         {% block content %}{% endblock %}

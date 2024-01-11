@@ -21,8 +21,8 @@ class User(db.Model):
     played_time = db.Column(db.Integer, default=0)
     best_score = db.Column(db.Integer, default=0)
     current_score = db.Column(db.Integer, default=0)
+    games_played = db.Column(db.Integer, default=0)
+    average_score = db.Column(db.Float, default=0.0)
     registration_date = db.Column(db.DateTime, nullable=False)
     login_date = db.Column(db.DateTime, nullable=True)  # Default is None
     logout_date = db.Column(db.DateTime, nullable=True) # Default is None
-    games_played = db.Column(db.Integer, default=0)
-    average_score = db.Column(db.Float, default=0.0)

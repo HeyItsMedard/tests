@@ -8,27 +8,34 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
 </head>
 <body>
-    <div class="background-container"></div>
+    {% if message %}
+        <script>
+            alert("{{ message }}");
+            window.location.href = "{{ url_for('index') }}";
+        </script>
+    {% else %}
+        <div class="background-container"></div>
 
-    <div class="game-container">
-        <div class="video-container left">
-            <img src="{{ video1.thumbnail_url }}" alt="Video Thumbnail">
-            <h2>{{ video1.title }}</h2>
-            <p>{{ "{:,.0f}".format(video1.views) | replace(',', ' ') }} nézőszám</p>
-        </div>
-        
-        <div class="video-container right">
-            <img src="{{ video2.thumbnail_url }}" alt="Video Thumbnail">
-            <h2>{{ video2.title }}</h2>
-            <div class="buttons">
-                <form method="post" action="{{ url_for('check_guess', guess='more') }}">
-                    <button type="submit" class="more-btn">Több</button>
-                </form>
-                <form method="post" action="{{ url_for('check_guess', guess='less') }}">
-                    <button type="submit" class="less-btn">Kevesebb</button>
-                </form>
+        <div class="game-container">
+            <div class="video-container left">
+                <img src="{{ video1.thumbnail_url }}" alt="Video Thumbnail">
+                <h2>{{ video1.title }}</h2>
+                <p>{{ "{:,.0f}".format(video1.views) | replace(',', ' ') }} nézőszám</p>
+            </div>
+            
+            <div class="video-container right">
+                <img src="{{ video2.thumbnail_url }}" alt="Video Thumbnail">
+                <h2>{{ video2.title }}</h2>
+                <div class="buttons">
+                    <form method="post" action="{{ url_for('check_guess', guess='more') }}">
+                        <button type="submit" class="more-btn">Több</button>
+                    </form>
+                    <form method="post" action="{{ url_for('check_guess', guess='less') }}">
+                        <button type="submit" class="less-btn">Kevesebb</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 </body>
 </html>
