@@ -22,6 +22,7 @@ def page_not_found(e):
 
 @app.route('/')
 def index():
+    """Index page, redirects to login or register if no user is logged in, otherwise redirects to menu"""
     if "user" in session:
         if User.query.count() == 0:
             session.clear()
@@ -75,8 +76,8 @@ def login():
         if user and bcrypt.check_password_hash(user.password, password):
             session.permanent = True
             session["user"] = username
-            session['session_expires'] = datetime.utcnow() + timedelta(minutes=30)  # Set your custom session timeout
-            return redirect(url_for("index"))  # Redirect to the user page or any other desired page after successful login
+            session['session_expires'] = datetime.utcnow() + timedelta(minutes=30)
+            return redirect(url_for("index"))  # Redirect to menu successful login
         else:
             flash("Login failed. Invalid credentials.")
             return redirect(url_for("login"))
@@ -89,7 +90,7 @@ def login():
 @app.route("/logout")
 def logout():
     if "user" not in session:
-        # You are not logged in flash in user, redirect to login
+        # Not logged in anyways
         return render_template("login_or_register.html")
     else:
         # Get session user
@@ -105,7 +106,6 @@ def logout():
         session.pop("user", None) # not the same as list pop, logs user out
         return render_template("login_or_register.html")
     
-# Drop és fetch gombhoz útvonal
 @app.route('/drop_and_fetch', methods=['GET'])
 def drop_and_fetch():
     # Drop the Video table
@@ -120,15 +120,12 @@ def drop_and_fetch():
 @app.route('/game')
 def game():
     if Video.query.count() < 2:
-        return render_template('game.html', message="A video tábla üres. Kérlek, használd a Fetch gombot az adatok betöltéséhez!")
-    # Hozz létre egy Game példányt és add át neki a db objektumot
+        return render_template('game.html', message="A video táblában nincs elég adat. Kérlek, használd a Fetch gombot az adatok betöltéséhez!")
+
     game_instance = Game(db)
     
-    print("Current score: ",session['current_score'])
-    # Hívjuk meg a Game osztályt és vegyük le a videókat
     video1, video2 = game_instance.get_random_videos()
 
-    # Hívjuk meg a Game osztályt és adjuk át a videókat a template-nek
     return render_template('game.html', video1=video1, video2=video2)
 
 @app.route('/check_guess/<guess>', methods=['POST'])
@@ -146,23 +143,23 @@ def check_guess(guess):
     user = User.query.filter_by(username=session["user"]).first()
 
     if game_instance.check_guess(video1, video2, guess):
-        # Helyes tipp
+        # Correct guess, increase score
         user.current_score += 1
 
-        # Ellenőrizzük, hogy a mostani pontszám nagyobb-e, mint a legjobb
+        # Check if the current score is higher than the best score
         if user.current_score > user.best_score:
             user.best_score = user.current_score
 
         db.session.commit()
 
-        # Folytatjuk a játékot
+        # Continue the game
         video1, video2 = game_instance.get_random_videos()
 
-        # Tároljuk el az új videók ID-jait a session-ben
+        # Store the video IDs in the session
         session['video1_id'] = video1.id if video1 else None
         session['video2_id'] = video2.id if video2 else None
 
-        # Frissítjük a session-ben tárolt pontszámokat
+        # Update the session
         session['current_score'] = user.current_score
         session['best_score'] = user.best_score
 
@@ -170,7 +167,7 @@ def check_guess(guess):
 
         return render_template('game.html', video1=video1, video2=video2)
     else:
-        # Rossz tipp, visszatérünk a menühöz - game over indev!
+        # Incorrect guess, redirect to menu - game over indev!
         user.current_score = 0
         session['current_score'] = user.current_score
         db.session.commit()

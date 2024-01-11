@@ -10,3 +10,5 @@
 <span style="font-size: 1.5em;"> Kalkuláljon game over kiírásnál esetleg olyat is, hogy a játékosok hány százalékánál teljesített a játékos jobban!  
 
 <span style="font-size: 1.5em;"> Kommentek!
+
+<span style="font-size: 1.5em;"> Visszagomb bejelentkezésnek és regisztrációnak

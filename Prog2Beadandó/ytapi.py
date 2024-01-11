@@ -3,10 +3,14 @@ from googleapiclient.errors import HttpError
 
 from models import Video, db
 
-API_KEY = 'AIzaSyCunLMSXkrHuWy1bV-kfYJBcZlB_pZ5OOY'
+API_KEY = 'AIzaSyCunLMSXkrHuWy1bV-kfYJBcZlB_pZ5OOY' # PLEASE, DON'T EDIT THIS!
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
 quota_cost = 0
+
+"""Note to reader: print() statements are used for debugging purposes.
+You can see the data that it can return and the ones we truly need amongst other things 
+like quota cost, which has a daily limit of 10000."""
 
 def get_all_video_details(video_ids):
     """We use this function to fetch video details like viewcount using pagination"""
@@ -31,7 +35,7 @@ def get_all_video_details(video_ids):
             response = request.execute()
             video_data.extend(response.get('items', []))
 
-        print(f"Video data (first):" + str(video_data[0])) # check for yourself
+        print(f"Video data (first):" + str(video_data[0])) # Check for yourself
         return video_data
 
     except HttpError as e:
@@ -60,8 +64,7 @@ def get_playlist_items(playlist_id):
             next_page_token = response.get('nextPageToken')
 
         video_ids = [item['contentDetails']['videoId'] for item in playlist_items]
-        print(f"Playlist item (first):" + str(playlist_items[0])) # check for yourself
-        # Add debugging output
+        print(f"Playlist item (first):" + str(playlist_items[0])) # Check for yourself
         print("Fetching video details...")
         print(f"Video IDs: {video_ids}")  # This is a list of video IDs
         print(f"Total videos: {len(video_ids)}")  # This is the number of videos in the playlist
@@ -91,6 +94,8 @@ def fetch_data():
         for pair in paired_data:
             playlist_item = pair['playlist_item']
             video_info = pair['video_info']
+
+            """If you wish to see the necessary data, uncomment the following lines"""
             # print(f"Title: {playlist_item['snippet']['title']}")
             # print(f"Video ID: {playlist_item['contentDetails']['videoId']}")
             # print(f"Views: {video_info['statistics']['viewCount']}")
@@ -123,4 +128,4 @@ def fetch_data():
         db.session.commit()
 
     print(f"Total videos fetched: {len(paired_data)}")
-    print(f"Total quota cost: {quota_cost}") # for developer (me) - limit is 10 000
+    print(f"Total quota cost: {quota_cost}")

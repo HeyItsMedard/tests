@@ -7,11 +7,13 @@ from flask import session
 db = SQLAlchemy()
 
 class Game:
-    displayed_video_ids = set()  # Az eddig megjelenített videók azonosítóit tartalmazó halmaz
+    displayed_video_ids = set() # Stores the IDs of the videos that have already been displayed
     def __init__(self, db):
         self.db = db
 
     def get_random_videos(self):
+        """Returns two random videos from the database in first round, 
+        any other rounds, a random for the second video and a video that is not in displayed_video_ids"""
         if session.get('video1_id') is None and session.get('video2_id') is None:
             # Get a random video from the database
             video1 = self.db.session.query(Video).order_by(func.random()).first()
@@ -55,7 +57,7 @@ class Game:
         print('-------------------')
 
     def check_guess(self, video1, video2, guess):
-        print(video1, video2, guess)
+        """Returns True if the guess is correct, False otherwise"""
         if guess == 'more' and video2.views >= video1.views:
             return True
         elif guess == 'less' and video2.views < video1.views:
@@ -64,6 +66,7 @@ class Game:
             return False
     
     def reset(self):
+        """Resets the game"""
         print("Resetting game...")
         self.displayed_video_ids.clear()
         session.pop('video1_id', None)
