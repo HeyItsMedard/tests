@@ -211,23 +211,18 @@ def react_to_points(points: int, length: int):
         # The answer is chosen randomly, but based on earned points
         # Comment out playsound for Easter Eggs (note: sometimes they do not work).
         if points == 0:
-            print(random.choice(zero))
             return random.choice(zero)
             # playsound('sounds\\zero1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
         elif points <= 2:
-            print(random.choice(terrible))
             return random.choice(terrible)
             # playsound('sounds\\\\\\bad1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
         elif points <= 6:
-            print(random.choice(better))
             return random.choice(better)
             # playsound('sounds\\notbad.mp3') -> gave up again, error handling doesn't work on it, only commenting helps 
         elif points < length:
-            print(random.choice(great))
             return random.choice(great)
             # playsound('sounds\\nice.mp3')
         elif points == length:
-            print(random.choice(max))
             return random.choice(max)
             # playsound('sounds\\\max1.mp3')
 
