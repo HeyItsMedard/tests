@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Over</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/game_over.css') }}">
+</head>
+<body>
+
+
+    <div class="content-container">
+        <h1>Game Over</h1>
+        <p>Pontszám: {{ score }}</p>
+        <p>{{ message }}</p>
+    </div>
+</body>
+</html>

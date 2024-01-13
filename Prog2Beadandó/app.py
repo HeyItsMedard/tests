@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
 from sqlalchemy.engine.reflection import Inspector
+import random
 
 from models import db, Video, User
 from game import Game
@@ -29,6 +30,7 @@ def index():
             return render_template("login_or_register.html")
         game_instance = Game(db)
         game_instance.reset()
+        session['current_score'] = 0
         return render_template('menu.html')
     else:
         if User.query.count() == 0:
@@ -170,13 +172,64 @@ def check_guess(guess):
         # Incorrect guess, redirect to menu - game over indev!
         user.current_score = 0
         user.games_played += 1
-        session['current_score'] = user.current_score
+        # session['current_score'] = user.current_score - dobjuk át előbb gameoverbe!
         db.session.commit()
-        return redirect(url_for('index'))
+        return redirect(url_for('game_over'))
 
 @app.route('/stats')
 def stats():
     return render_template('stats.html')
+
+@app.route('/game_over')
+def game_over():
+    random_message = react_to_points(session['current_score'], Video.query.count()-1)
+    return render_template('game_over.html', score=session['current_score'], message=random_message)
+
+def react_to_points(points: int, length: int):
+        """The game reacts with a message, based on how well the player was performing.
+
+        Args:
+            points (int): Points earned throughout the game by the player.
+            length (int): The maximum possible questions' count. Necessary when the game runs out of questions.
+
+        Prints:
+            str: A funny response
+        """
+        zero = ["Te egy kő alatt élsz, vagy ennyire szerencsétlen kérdést kaptál? Próbálkozz újra!", 
+                "Több mint a semmi! Ja nem...", "Hát lehetne ennél rosszabb?"]
+        terrible = ["Felejtsük el, hogy ez megtörtént... Új játék?", f"... csak {points} pont? Rettenetes...", 
+                    "Nagyjából ennyi pont választotta el a Dortmundot is egy bajnoki győzelemtől... idén is...",
+                    "Ennél tudsz te jobbat is, hiszek benned!"]
+        better = ["Szép szám bizony, de vajon tudsz ennél jobbat elérni?",
+                  "Ügyes! Így tovább!", "Ez megérdemel egy virtuális hátveregést!",
+                  "Ahogy VR Pisti is mondaná: \"Nem is rossz!\""]
+        great = ["Aztamindenségit! Gratulálok az eredményhez!", "Ijesztően sokat tudsz!",
+                 "Szép munka!"]
+        max = ["Sikerült kivinned a játékot! Gratulálok!", 
+               "A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!",
+               "Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg"]
+        # The answer is chosen randomly, but based on earned points
+        # Comment out playsound for Easter Eggs (note: sometimes they do not work).
+        if points == 0:
+            print(random.choice(zero))
+            return random.choice(zero)
+            # playsound('sounds\\zero1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
+        elif points <= 2:
+            print(random.choice(terrible))
+            return random.choice(terrible)
+            # playsound('sounds\\\\\\bad1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
+        elif points <= 6:
+            print(random.choice(better))
+            return random.choice(better)
+            # playsound('sounds\\notbad.mp3') -> gave up again, error handling doesn't work on it, only commenting helps 
+        elif points < length:
+            print(random.choice(great))
+            return random.choice(great)
+            # playsound('sounds\\nice.mp3')
+        elif points == length:
+            print(random.choice(max))
+            return random.choice(max)
+            # playsound('sounds\\\max1.mp3')
 
 if __name__ == "__main__":
     with app.app_context():
