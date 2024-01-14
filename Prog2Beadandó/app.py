@@ -182,8 +182,8 @@ def stats():
 
 @app.route('/game_over')
 def game_over():
-    random_message = react_to_points(session['current_score'], Video.query.count()-1)
-    return render_template('game_over.html', score=session['current_score'], message=random_message)
+    random_message, gif_name = react_to_points(session['current_score'], Video.query.count()-1)
+    return render_template('game_over.html', score=session['current_score'], message=random_message, gif_name=gif_name)
 
 def react_to_points(points: int, length: int):
         """The game reacts with a message, based on how well the player was performing.
@@ -211,19 +211,19 @@ def react_to_points(points: int, length: int):
         # The answer is chosen randomly, but based on earned points
         # Comment out playsound for Easter Eggs (note: sometimes they do not work).
         if points == 0:
-            return random.choice(zero)
+            return random.choice(zero), 'zero.gif'
             # playsound('sounds\\zero1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
         elif points <= 2:
-            return random.choice(terrible)
+            return random.choice(terrible), 'terrible.gif'
             # playsound('sounds\\\\\\bad1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
         elif points <= 6:
-            return random.choice(better)
+            return random.choice(better), 'better.gif'
             # playsound('sounds\\notbad.mp3') -> gave up again, error handling doesn't work on it, only commenting helps 
         elif points < length:
-            return random.choice(great)
+            return random.choice(great), 'great.gif'
             # playsound('sounds\\nice.mp3')
         elif points == length:
-            return random.choice(max)
+            return random.choice(max), 'max.gif'
             # playsound('sounds\\\max1.mp3')
 
 if __name__ == "__main__":
