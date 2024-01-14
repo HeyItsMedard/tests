@@ -121,11 +121,13 @@ def drop_and_fetch():
 
 @app.route('/game')
 def game():
+    #Not enough data, alert
     if Video.query.count() < 2:
         return render_template('game.html', message="A video táblában nincs elég adat. Kérlek, használd a Fetch gombot az adatok betöltéséhez!")
 
     game_instance = Game(db)
     
+    # Starting off with getting the first two videos
     video1, video2 = game_instance.get_random_videos()
 
     return render_template('game.html', video1=video1, video2=video2)
@@ -169,15 +171,15 @@ def check_guess(guess):
 
         return render_template('game.html', video1=video1, video2=video2)
     else:
-        # Incorrect guess, redirect to menu - game over indev!
+        # Incorrect guess, game over screen
         user.current_score = 0
         user.games_played += 1
-        # session['current_score'] = user.current_score - dobjuk át előbb gameoverbe!
         db.session.commit()
         return redirect(url_for('game_over'))
 
 @app.route('/stats')
 def stats():
+    # In development!
     return render_template('stats.html')
 
 @app.route('/game_over')
@@ -212,19 +214,14 @@ def react_to_points(points: int, length: int):
         # Comment out playsound for Easter Eggs (note: sometimes they do not work).
         if points == 0:
             return random.choice(zero), 'zero.gif'
-            # playsound('sounds\\zero1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
         elif points <= 2:
             return random.choice(terrible), 'terrible.gif'
-            # playsound('sounds\\\\\\bad1.mp3') -> gave up again, error handling doesn't work on it, only commenting helps
         elif points <= 6:
             return random.choice(better), 'better.gif'
-            # playsound('sounds\\notbad.mp3') -> gave up again, error handling doesn't work on it, only commenting helps 
         elif points < length:
             return random.choice(great), 'great.gif'
-            # playsound('sounds\\nice.mp3')
         elif points == length:
             return random.choice(max), 'max.gif'
-            # playsound('sounds\\\max1.mp3')
 
 if __name__ == "__main__":
     with app.app_context():

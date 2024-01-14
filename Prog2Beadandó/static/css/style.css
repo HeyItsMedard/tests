@@ -87,6 +87,7 @@ p {
     font-size: 18px;
     line-height: 1.6;
 }
+
 /*login és regisztráció*/
 form {
     display: flex;
@@ -107,7 +108,6 @@ input[type="password"] {
     color: #ffffff;
 }
 
-/* A fehér outline alatt a focus színét állítsd be a kívánt színre */
 input[type="text"]:focus,
 input[type="password"]:focus {
     outline-color: #ffffff;
@@ -140,30 +140,14 @@ input[type="submit"]:hover {
     border-radius: 5px;
     font-size: 14px;
 }
-
-.background-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-#background {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-
+/* game over */
 .content-container {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: black;
+    color: rgb(255, 255, 255);
     font-family: 'Arial', sans-serif;
 }
 
@@ -179,7 +163,7 @@ p {
 .menu-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #3498db; /* Példa szín */
+    background-color: #3498db;
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -188,7 +172,7 @@ p {
 }
 
 .menu-button:hover {
-    background-color: #2980b9; /* Példa hover szín */
+    background-color: #2980b9; 
 }
 
 .gif-container {

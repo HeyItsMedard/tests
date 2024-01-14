@@ -11,9 +11,9 @@ body {
     bottom: 0;
     right: 0;
     color: #ffffff;
-    margin: 0; /* Törölje el a test marginját, hogy ne legyen üres tér a test körül */
-    overflow: hidden; /* Ne jelenjen meg görgetősáv */
-    height: 100vh; /* Töltse ki a teljes képernyőmagasságot */
+    margin: 0;
+    overflow: hidden; 
+    height: 100vh; 
 }
 
 .game-container {
@@ -31,7 +31,7 @@ body {
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    filter: brightness(50%); /* Sötétítés a menu.jpg-hoz */
+    filter: brightness(50%);
 }
 
 .video-container {
@@ -63,10 +63,10 @@ body {
 }
 
 .video-container p {
-    color: yellow; /* Nézettség színének beállítása */
+    color: yellow;
     font-weight: bold;
     font-size: 1.5em;
-    margin-top: 5px; /* Felső margó a törés után */
+    margin-top: 5px;
 }
 
 .buttons button {
