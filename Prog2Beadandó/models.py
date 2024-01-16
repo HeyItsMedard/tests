@@ -22,6 +22,7 @@ class User(db.Model):
     password = db.Column(db.String(128), nullable=False)
     best_score = db.Column(db.Integer, default=0)
     current_score = db.Column(db.Integer, default=0)
+    total_score = db.Column(db.Integer, default=0)
     games_played = db.Column(db.Integer, default=0)
     average_score = db.Column(db.Float, default=0.0)
     registration_date = db.Column(db.DateTime, nullable=False)
@@ -36,3 +37,10 @@ class User(db.Model):
         seconds = int(total_seconds % 60)
 
         return f"{hours}H {minutes}M {seconds}S"
+    
+    def update_average_score(self, new_score):
+        # Frissítsd az összpontszámot és a játékok számát
+        self.total_score += new_score
+        # Számold ki az átlagpontszámot
+        self.average_score = self.total_score / self.games_played
+        db.session.commit()
