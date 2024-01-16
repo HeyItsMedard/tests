@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egyéni Statisztikák</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <!-- Fejléc tartalma, pl. cím vagy logo -->
+    </header>
+    <nav>
+        <!-- Menü tartalma -->
+    </nav>
+    <main>
+        <h1>Statisztikák: {{ session['user'] }}</h1>
+        <ul>
+            <li>Regisztráció ideje: {{ user.registration_date }}</li>
+            <li>Legjobb pontszám: {{ user.best_score }}</li>
+            <li>Játszott meccsek száma: {{ user.games_played }}</li>
+            <li>Játszott idő: {{ user.formatted_played_time() }}</li>
+        </ul>
+    </main>
+    <!-- Egyéb tartalom, scriptek stb. -->
+</body>
+</html>

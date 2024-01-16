@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
-from sqlalchemy.engine.reflection import Inspector
-import random
 
 from models import db, Video, User
 from game import Game
@@ -182,46 +180,24 @@ def stats():
     # In development!
     return render_template('stats.html')
 
+@app.route('/individual_stats')
+def individual_stats():
+    if 'user' in session:
+        username = session['user']
+        user = User.query.filter_by(username=username).first()
+        if user:
+            return render_template('individual_stats.html', user=user)
+    
+    return redirect(url_for('index'))
+
+@app.route('/community_stats')
+def community_stats():
+    return render_template('community_stats.html')
+
 @app.route('/game_over')
 def game_over():
-    random_message, gif_name = react_to_points(session['current_score'], Video.query.count()-1)
+    random_message, gif_name = Game.react_to_points(session['current_score'], Video.query.count()-1)
     return render_template('game_over.html', score=session['current_score'], message=random_message, gif_name=gif_name)
-
-def react_to_points(points: int, length: int):
-        """The game reacts with a message, based on how well the player was performing.
-
-        Args:
-            points (int): Points earned throughout the game by the player.
-            length (int): The maximum possible questions' count. Necessary when the game runs out of questions.
-
-        Prints:
-            str: A funny response
-        """
-        zero = ["Te egy kő alatt élsz, vagy ennyire szerencsétlen kérdést kaptál? Próbálkozz újra!", 
-                "Több mint a semmi! Ja nem...", "Hát lehetne ennél rosszabb?"]
-        terrible = ["Felejtsük el, hogy ez megtörtént... Új játék?", f"... csak {points} pont? Rettenetes...", 
-                    "Nagyjából ennyi pont választotta el a Dortmundot is egy bajnoki győzelemtől... idén is...",
-                    "Ennél tudsz te jobbat is, hiszek benned!"]
-        better = ["Szép szám bizony, de vajon tudsz ennél jobbat elérni?",
-                  "Ügyes! Így tovább!", "Ez megérdemel egy virtuális hátveregést!",
-                  "Ahogy VR Pisti is mondaná: \"Nem is rossz!\""]
-        great = ["Aztamindenségit! Gratulálok az eredményhez!", "Ijesztően sokat tudsz!",
-                 "Szép munka!"]
-        max = ["Sikerült kivinned a játékot! Gratulálok!", 
-               "A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!",
-               "Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg"]
-        # The answer is chosen randomly, but based on earned points
-        # Comment out playsound for Easter Eggs (note: sometimes they do not work).
-        if points == 0:
-            return random.choice(zero), 'zero.gif'
-        elif points <= 2:
-            return random.choice(terrible), 'terrible.gif'
-        elif points <= 6:
-            return random.choice(better), 'better.gif'
-        elif points < length:
-            return random.choice(great), 'great.gif'
-        elif points == length:
-            return random.choice(max), 'max.gif'
 
 if __name__ == "__main__":
     with app.app_context():

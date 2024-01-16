@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Statisztika{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Statisztika oldal</h1>
-    <p>Egyelőre fejlesztés alatt áll. :)</p>
-    <a href="{{url_for('index')}}">Vissza a főmenübe</a>
+    <header>
+        {% if session['user'] == "HenryKettner" %}
+            <img src="{{ url_for('static', filename='images/kettner.png') }}" alt="Logo">
+        {% else %}
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo">
+        {% endif %}
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('individual_stats') }}">Egyéni</a></li>
+            <li><a href="{{ url_for('community_stats') }}">Közösségi</a></li>
+        </ul>
+    </nav>
+    {% if 'user' in session %}
+        <div class="user-info">Bejelentkezett: {{ session['user'] }}</div>
+    {% endif %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 </body>
 </html>

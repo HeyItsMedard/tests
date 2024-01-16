@@ -27,4 +27,12 @@ class User(db.Model):
     registration_date = db.Column(db.DateTime, nullable=False)
     login_date = db.Column(db.DateTime, nullable=True)  # Default is None
     logout_date = db.Column(db.DateTime, nullable=True) # Default is None
-    played_time = db.Column(Interval, default=timedelta(seconds=0)) 
+    played_time = db.Column(Interval, default=timedelta(seconds=0))
+
+    def formatted_played_time(self):
+        total_seconds = self.played_time.total_seconds()
+        hours = int(total_seconds // 3600)
+        minutes = int((total_seconds % 3600) // 60)
+        seconds = int(total_seconds % 60)
+
+        return f"{hours}H {minutes}M {seconds}S"

@@ -31,18 +31,17 @@
         document.getElementById('fetchBtn').addEventListener('click', function () {
             var confirmResult = confirm('Biztosan szeretnél új adatokat fetch-elni?');
             if (confirmResult) {
-                // Fetch gomb lenyomásakor AJAX kérést küldünk
+                // Send a fetch request to the server
                 fetch("{{ url_for('drop_and_fetch') }}")
                     .then(response => {
-                        // Ellenőrizzük a válasz státuszát
+                        // Error Handling
                         if (!response.ok) {
                             throw new Error(`Hiba: ${response.status}`);
                         }
-                        // Az üzenet tartalmát tartalmazza, nem JSON
                         return response.text();
                     })
                     .then(data => {
-                        alert("Sikeres fetch!");  // Megjelenítjük az üzenetet alert segítségével
+                        alert("Sikeres fetch!");  // Alert if succesful
                         window.location.href = "{{ url_for('index') }}";
                     })
                     .catch(error => {

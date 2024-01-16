@@ -1,8 +1,8 @@
-# game.py
 from models import Video
 from sqlalchemy import func
 from flask_sqlalchemy import SQLAlchemy
 from flask import session
+import random
 
 db = SQLAlchemy()
 
@@ -71,3 +71,40 @@ class Game:
         self.displayed_video_ids.clear()
         session.pop('video1_id', None)
         session.pop('video2_id', None)
+
+    @staticmethod
+    def react_to_points(points: int, length: int):
+        """The game reacts with a message, based on how well the player was performing.
+
+        Args:
+            points (int): Points earned throughout the game by the player.
+            length (int): The maximum possible questions' count. Necessary when the game runs out of questions.
+
+        Prints:
+            str: A funny response
+        """
+        zero = ["Te egy kő alatt élsz, vagy ennyire szerencsétlen kérdést kaptál? Próbálkozz újra!", 
+                "Több mint a semmi! Ja nem...", "Hát lehetne ennél rosszabb?"]
+        terrible = ["Felejtsük el, hogy ez megtörtént... Új játék?", f"... csak {points} pont? Rettenetes...", 
+                    "Nagyjából ennyi pont választotta el a Dortmundot is egy bajnoki győzelemtől... idén is...",
+                    "Ennél tudsz te jobbat is, hiszek benned!"]
+        better = ["Szép szám bizony, de vajon tudsz ennél jobbat elérni?",
+                  "Ügyes! Így tovább!", "Ez megérdemel egy virtuális hátveregést!",
+                  "Ahogy VR Pisti is mondaná: \"Nem is rossz!\""]
+        great = ["Aztamindenségit! Gratulálok az eredményhez!", "Ijesztően sokat tudsz!",
+                 "Szép munka!"]
+        max = ["Sikerült kivinned a játékot! Gratulálok!", 
+               "A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!",
+               "Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg"]
+        # The answer is chosen randomly, but based on earned points
+        # Comment out playsound for Easter Eggs (note: sometimes they do not work).
+        if points == 0:
+            return random.choice(zero), 'zero.gif'
+        elif points <= 2:
+            return random.choice(terrible), 'terrible.gif'
+        elif points <= 6:
+            return random.choice(better), 'better.gif'
+        elif points < length:
+            return random.choice(great), 'great.gif'
+        elif points == length:
+            return random.choice(max), 'max.gif'
