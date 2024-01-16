@@ -3,6 +3,7 @@ from sqlalchemy import func
 from flask_sqlalchemy import SQLAlchemy
 from flask import session
 import random
+from models import User, db
 
 db = SQLAlchemy()
 
@@ -70,6 +71,15 @@ class Game:
         self.displayed_video_ids.clear()
         session.pop('video1_id', None)
         session.pop('video2_id', None)
+
+    @staticmethod
+    def make_changes():
+        """Makes changes to the database, called after game over"""
+        user = User.query.filter_by(username=session["user"]).first()
+        user.update_average_score(user.current_score)
+        user.add_score(user.current_score)
+        user.current_score = 0
+        db.session.commit()
 
     @staticmethod
     def react_to_points(points: int, length: int):

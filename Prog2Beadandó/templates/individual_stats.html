@@ -12,7 +12,7 @@
         <h1>Statisztikák: {{ session['user'] }}</h1>
     </header>
     <main>
-        <ul>
+        <ul class="user-stats">
             <li>Regisztráció ideje: {{ user.registration_date }}</li>
             <li>Legjobb pontszám: {{ user.best_score }}</li>
             <li>Átlag pontszám: {{ user.average_score }}</li>
@@ -20,7 +20,13 @@
             <li>Játszott idő: {{ user.formatted_played_time() }}</li>
         </ul>
     </main>
-    <img src="{{ url_for('static', filename='stats/last_10_scores_plot.png') }}" alt="Előző 10 játék eredménye">
+    <img class="stats-image" src="{{ url_for('static', filename='stats/last_10_scores_plot.png') }}" alt="Előző legfeljebb 10 játék eredménye">
+    <nav>
+        <ul class="nav-list">
+            <li><a class="nav-link" href="{{ url_for('stats') }}">Vissza</a></li>
+            <li><a class="nav-link" href="{{ url_for('index') }}">Főmenü</a></li>
+        </ul>
+    </nav>    
     <!-- Egyéb tartalom, gráfok stb. -->
 </body>
 </html>
