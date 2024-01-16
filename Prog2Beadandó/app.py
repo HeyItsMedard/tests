@@ -152,7 +152,16 @@ def check_guess(guess):
         if user.current_score > user.best_score:
             user.best_score = user.current_score
 
+        # Update the session
+        session['current_score'] = user.current_score
+        session['best_score'] = user.best_score
+
         db.session.commit()
+        
+        # Check if the user guessed all videos correctly
+        if user.current_score == Video.query.count()-1:
+            # Game over, user "won"
+            return redirect(url_for('game_over'))
 
         # Continue the game
         video1, video2 = game_instance.get_random_videos()
@@ -160,10 +169,6 @@ def check_guess(guess):
         # Store the video IDs in the session
         session['video1_id'] = video1.id if video1 else None
         session['video2_id'] = video2.id if video2 else None
-
-        # Update the session
-        session['current_score'] = user.current_score
-        session['best_score'] = user.best_score
 
         session.modified = True  # Explicitly mark the session as modified
 

@@ -96,7 +96,9 @@ class Game:
                "A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!",
                "Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg"]
         # The answer is chosen randomly, but based on earned points
-        if points == 0:
+        if points == length:
+            return random.choice(max), 'max.gif'
+        elif points == 0:
             return random.choice(zero), 'zero.gif'
         elif points <= 2:
             return random.choice(terrible), 'terrible.gif'
@@ -104,5 +106,3 @@ class Game:
             return random.choice(better), 'better.gif'
         elif points < length:
             return random.choice(great), 'great.gif'
-        elif points == length:
-            return random.choice(max), 'max.gif'
