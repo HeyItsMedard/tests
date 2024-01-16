@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egyéni Statisztikák</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stats.css') }}">
+</head>
+<body>
+    <div class="background-container"></div>
+    <header>
+        <h1>Statisztikák: Közösség</h1>
+    </header>
+    <main>
+        <ul class="user-stats">
+            <li>Összes játékos: {{ total_users }}</li>
+            <li>Játszott meccsek száma (közösség): {{ total_games_played }}</li>
+            <li>Átlag pontszám (közösség): {{ average_score_community }}</li>
+        </ul>
+    </main>
+    <!-- Egyéb tartalom, gráfok: highscore, átlagok top 10 stb. -->
+    <img class="stats-image" src="{{ url_for('static', filename='stats/highscore.png') }}" alt="Highscore">
+    <img class="stats-image" src="{{ url_for('static', filename='stats/average.png') }}" alt="Átlagok">
+    <nav>
+        <ul class="nav-list">
+            <li><a class="nav-link" href="{{ url_for('stats') }}">Vissza</a></li>
+            <li><a class="nav-link" href="{{ url_for('index') }}">Főmenü</a></li>
+        </ul>
+    </nav>    
+</body>
+</html>

@@ -6,8 +6,6 @@
 
 <span style="font-size: 1.5em;"> Kommentek!
 
-<span style="font-size: 1.5em;"> Visszagomb bejelentkezésnek és regisztrációnak
-
 <span style="font-size: 1.5em;"> Jobb játszott idő tracking.
 
 <span style="font-size: 1.5em;"> Legvégén dokumentáció.

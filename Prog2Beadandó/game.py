@@ -71,16 +71,7 @@ class Game:
         self.displayed_video_ids.clear()
         session.pop('video1_id', None)
         session.pop('video2_id', None)
-
-    @staticmethod
-    def make_changes():
-        """Makes changes to the database, called after game over"""
-        user = User.query.filter_by(username=session["user"]).first()
-        user.update_average_score(user.current_score)
-        user.add_score(user.current_score)
-        user.current_score = 0
-        db.session.commit()
-
+        
     @staticmethod
     def react_to_points(points: int, length: int):
         """The game reacts with a message, based on how well the player was performing.

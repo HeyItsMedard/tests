@@ -172,7 +172,10 @@ def check_guess(guess):
         # Check if the user guessed all videos correctly
         if user.current_score == Video.query.count()-1:
             # Game over, user "won"
-            Game.make_changes()
+            user.update_average_score(user.current_score)
+            user.add_score(user.current_score)
+            user.current_score = 0
+            db.session.commit()
             return redirect(url_for('game_over'))
 
         # Continue the game
@@ -187,7 +190,10 @@ def check_guess(guess):
         return render_template('game.html', video1=video1, video2=video2)
     else:
         # Incorrect guess, game over screen
-        Game.make_changes()
+        user.update_average_score(user.current_score)
+        user.add_score(user.current_score)
+        user.current_score = 0
+        db.session.commit()
         return redirect(url_for('game_over'))
 
 @app.route('/stats')
@@ -206,8 +212,8 @@ def individual_stats():
 
 @app.route('/community_stats')
 def community_stats():
-    # In development!
-    return render_template('community_stats.html')
+    total_users, total_games_played, average_score_community = User.get_community_stats()
+    return render_template('community_stats.html', total_users=total_users, total_games_played=total_games_played, average_score_community=average_score_community)
 
 @app.route('/game_over')
 def game_over():

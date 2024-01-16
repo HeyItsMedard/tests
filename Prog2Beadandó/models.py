@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from dataclasses import dataclass
+from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy import Interval
@@ -68,7 +69,6 @@ class User(db.Model):
         plt.savefig(image_path)
         plt.close()
 
-
     def formatted_played_time(self):
         total_seconds = self.played_time.total_seconds()
         hours = int(total_seconds // 3600)
@@ -79,4 +79,10 @@ class User(db.Model):
     def update_average_score(self, new_score):
         self.total_score += new_score
         self.games_played += 1
-        self.average_score = self.total_score / self.games_played
+        self.average_score = round(self.total_score / self.games_played, 2)
+
+    def get_community_stats():
+        total_users = User.query.count()
+        total_games_played = db.session.query(func.sum(User.games_played)).scalar()
+        average_score_community = round(db.session.query(func.avg(User.average_score)).scalar(), 2)
+        return total_users, total_games_played, average_score_community
