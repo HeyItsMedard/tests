@@ -172,7 +172,6 @@ def check_guess(guess):
         User.update_average_score(user, user.current_score)
         # Incorrect guess, game over screen
         user.current_score = 0
-        user.games_played += 1
         db.session.commit()
         return redirect(url_for('game_over'))
 
