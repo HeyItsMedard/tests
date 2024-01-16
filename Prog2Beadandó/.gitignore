@@ -1,3 +1,9 @@
+# Project files (changes made by user on UI)
+*.sqlite3
+last_10_scores.png
+highscore.png
+average.png
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

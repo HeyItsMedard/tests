@@ -68,7 +68,7 @@ class User(db.Model):
 
         plt.savefig(image_path)
         plt.close()
-
+    
     def formatted_played_time(self):
         total_seconds = self.played_time.total_seconds()
         hours = int(total_seconds // 3600)
@@ -85,4 +85,32 @@ class User(db.Model):
         total_users = User.query.count()
         total_games_played = db.session.query(func.sum(User.games_played)).scalar()
         average_score_community = round(db.session.query(func.avg(User.average_score)).scalar(), 2)
+
+        top_10_highscore = User.query.order_by(User.best_score.desc()).limit(10).all()
+        top_10_average = User.query.order_by(User.average_score.desc()).limit(10).all()
+        print(top_10_average)
+
+        # Előző kód részletek (matplotlib bar chart létrehozása)
+        highscore_chart_path = os.path.join('Prog2Beadandó','static', 'stats', 'highscore.png')
+        average_chart_path = os.path.join('Prog2Beadandó','static', 'stats', 'average.png')
+
+        User.create_bar_chart(top_10_highscore, highscore_chart_path, 'Top 10 Highscore', 'Felhasználónév', 'Legjobb pontszám')
+        User.create_bar_chart(top_10_average, average_chart_path, 'Top 10 Átlagpontszám', 'Felhasználónév', 'Átlagpontszám')
+
         return total_users, total_games_played, average_score_community
+
+    def create_bar_chart(users, image_path, title, x_label, y_label):
+        """Community bar charts"""
+        print("Creating bar chart")
+        usernames = [user.username for user in users]
+        scores = [user.best_score for user in users] if title == 'Top 10 Highscore' else [user.average_score for user in users]
+
+        plt.bar(usernames, scores, color='blue')
+        plt.xlabel(x_label)
+        plt.ylabel(y_label)
+        plt.title(title)
+        plt.xticks(rotation=45, ha='right')
+
+        plt.tight_layout()
+        plt.savefig(image_path)
+        plt.close()
