@@ -1,0 +1,25 @@
+{
+    "question": "Ki volt a SEN'23 legjobb fellépője?",
+    "candidates": [
+        {
+            "id": 1,
+            "name": "Blahalouisiana",
+            "votes": 0
+        },
+        {
+            "id": 2,
+            "name": "Bëlga",
+            "votes": 0
+        },
+        {
+            "id": 3,
+            "name": "Manuel",
+            "votes": 0
+        },
+        {
+            "id": 4,
+            "name": "Beton.Hofi",
+            "votes": 0
+        }
+    ]
+}

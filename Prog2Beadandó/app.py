@@ -29,6 +29,7 @@ def index():
         game_instance = Game(db)
         game_instance.reset()
         session['current_score'] = 0
+        # User.generate_plot(User.query.filter_by(username=session['user']).first())
         return render_template('menu.html')
     else:
         if User.query.count() == 0:
@@ -75,7 +76,6 @@ def login():
             session.permanent = True
             session["user"] = username
             user.login_date = datetime.utcnow()
-            session['session_expires'] = datetime.utcnow() + timedelta(minutes=30)
             db.session.commit()
             return redirect(url_for("index"))  # Redirect to menu successful login
         else:
@@ -161,6 +161,11 @@ def check_guess(guess):
         # Check if the user guessed all videos correctly
         if user.current_score == Video.query.count()-1:
             # Game over, user "won"
+            User.update_average_score(user, user.current_score)
+            # User.add_score(user, user.current_score)
+            # User.generate_plot(user)
+            user.current_score = 0
+            db.session.commit()
             return redirect(url_for('game_over'))
 
         # Continue the game
@@ -174,8 +179,10 @@ def check_guess(guess):
 
         return render_template('game.html', video1=video1, video2=video2)
     else:
-        User.update_average_score(user, user.current_score)
         # Incorrect guess, game over screen
+        User.update_average_score(user, user.current_score)
+        # User.add_score(user, user.current_score)
+        # User.generate_plot(user)
         user.current_score = 0
         db.session.commit()
         return redirect(url_for('game_over'))

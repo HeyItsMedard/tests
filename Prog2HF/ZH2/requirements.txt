@@ -1,0 +1,6 @@
+Flask==3.0.0
+mypy==1.7.1
+Pillow==10.1.0
+requests==2.31.0
+types-Pillow==10.1.0.2
+types-requests==2.31.0.10
