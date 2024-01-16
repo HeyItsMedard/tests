@@ -67,7 +67,6 @@ class Game:
     
     def reset(self):
         """Resets the game"""
-        print("Resetting game...")
         self.displayed_video_ids.clear()
         session.pop('video1_id', None)
         session.pop('video2_id', None)
@@ -97,7 +96,6 @@ class Game:
                "A családod mikor látott utoljára? Csak egy kérdés... mert helyesen válaszoltál minden kérdésre! Lenyűgöző!",
                "Ez a játék vége. Tényleg. Nem vicc. Feladom. Le a kalappal. gg"]
         # The answer is chosen randomly, but based on earned points
-        # Comment out playsound for Easter Eggs (note: sometimes they do not work).
         if points == 0:
             return random.choice(zero), 'zero.gif'
         elif points <= 2:

@@ -35,12 +35,9 @@ class User(db.Model):
         hours = int(total_seconds // 3600)
         minutes = int((total_seconds % 3600) // 60)
         seconds = int(total_seconds % 60)
-
         return f"{hours}H {minutes}M {seconds}S"
     
     def update_average_score(self, new_score):
-        # Frissítsd az összpontszámot és a játékok számát
         self.total_score += new_score
         self.games_played += 1
-        # Számold ki az átlagpontszámot
         self.average_score = self.total_score / self.games_played

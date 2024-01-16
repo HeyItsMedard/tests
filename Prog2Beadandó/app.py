@@ -177,7 +177,6 @@ def check_guess(guess):
 
 @app.route('/stats')
 def stats():
-    # In development!
     return render_template('stats.html')
 
 @app.route('/individual_stats')
@@ -192,6 +191,7 @@ def individual_stats():
 
 @app.route('/community_stats')
 def community_stats():
+    # In development!
     return render_template('community_stats.html')
 
 @app.route('/game_over')

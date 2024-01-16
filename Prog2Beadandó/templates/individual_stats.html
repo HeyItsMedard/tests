@@ -11,9 +11,6 @@
     <header>
         <h1>Statisztikák: {{ session['user'] }}</h1>
     </header>
-    <nav>
-        <!-- Menü tartalma -->
-    </nav>
     <main>
         <ul>
             <li>Regisztráció ideje: {{ user.registration_date }}</li>
@@ -23,6 +20,6 @@
             <li>Játszott idő: {{ user.formatted_played_time() }}</li>
         </ul>
     </main>
-    <!-- Egyéb tartalom, scriptek stb. -->
+    <!-- Egyéb tartalom, gráfok stb. -->
 </body>
 </html>
