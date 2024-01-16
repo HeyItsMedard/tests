@@ -1,7 +1,16 @@
 from flask_sqlalchemy import SQLAlchemy
 from dataclasses import dataclass
+from sqlalchemy.dialects.postgresql import JSON
+from sqlalchemy.ext.mutable import MutableDict, MutableList
 from sqlalchemy import Interval
 from datetime import timedelta
+import threading
+import os
+from sqlalchemy import ARRAY
+
+import matplotlib
+matplotlib.use('Agg')  # Háttérhasználat beállítása
+import matplotlib.pyplot as plt
 
 db = SQLAlchemy()
 
@@ -29,6 +38,36 @@ class User(db.Model):
     login_date = db.Column(db.DateTime, nullable=True)  # Default is None
     logout_date = db.Column(db.DateTime, nullable=True) # Default is None
     played_time = db.Column(Interval, default=timedelta(seconds=0))
+    last_10_scores = db.Column(MutableList.as_mutable(JSON), default=[])
+
+    def create_plot_thread(self):
+        print("Creating plot thread")
+        self.plot_thread = threading.Thread(target=self.generate_plot, daemon=True)
+
+    def add_score(self, score):
+        self.last_10_scores.append(score)
+        self.last_10_scores = self.last_10_scores[-10:]
+
+    def generate_plot(self):
+        print("Generating plot")
+        plt.switch_backend('Agg')
+        plt.plot(range(1, len(self.last_10_scores) + 1), self.last_10_scores)
+        plt.xlabel('Kísérlet száma')
+        plt.ylabel('Elért pontszám')
+        plt.title('Előző legfeljebb 10 játék eredménye')
+        plt.grid(True)
+
+        # Beállítja az x tengely számait egész számokra
+        plt.xticks(range(1, len(self.last_10_scores) + 1))
+
+        # Ellenőrzi, hogy a kép létezik-e, és ha igen, törli
+        image_path = os.path.join('Prog2Beadandó', 'static', 'stats', 'last_10_scores_plot.png')
+        if os.path.exists(image_path):
+            os.remove(image_path)
+
+        plt.savefig(image_path)
+        plt.close()
+
 
     def formatted_played_time(self):
         total_seconds = self.played_time.total_seconds()

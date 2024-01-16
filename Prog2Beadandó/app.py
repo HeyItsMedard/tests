@@ -29,7 +29,10 @@ def index():
         game_instance = Game(db)
         game_instance.reset()
         session['current_score'] = 0
-        # User.generate_plot(User.query.filter_by(username=session['user']).first())
+        user = User.query.filter_by(username=session['user']).first()
+        print(user.last_10_scores)
+        user.create_plot_thread()
+        user.plot_thread.start() 
         return render_template('menu.html')
     else:
         if User.query.count() == 0:
@@ -132,12 +135,17 @@ def game():
 
 @app.route('/check_guess/<guess>', methods=['POST'])
 def check_guess(guess):
+    
     game_instance = Game(db)
 
     # Retrieve video IDs from the session
     video1_id = session.get('video1_id')
     video2_id = session.get('video2_id')
 
+    if video1_id is None or video2_id is None:
+        # User probably tried to access this page directly (sneakely, after game over)
+        return redirect(url_for('index'))
+    
     # Retrieve video instances using IDs
     video1 = Video.query.get(video1_id)
     video2 = Video.query.get(video2_id)
@@ -161,11 +169,7 @@ def check_guess(guess):
         # Check if the user guessed all videos correctly
         if user.current_score == Video.query.count()-1:
             # Game over, user "won"
-            User.update_average_score(user, user.current_score)
-            # User.add_score(user, user.current_score)
-            # User.generate_plot(user)
-            user.current_score = 0
-            db.session.commit()
+            changes()
             return redirect(url_for('game_over'))
 
         # Continue the game
@@ -180,11 +184,7 @@ def check_guess(guess):
         return render_template('game.html', video1=video1, video2=video2)
     else:
         # Incorrect guess, game over screen
-        User.update_average_score(user, user.current_score)
-        # User.add_score(user, user.current_score)
-        # User.generate_plot(user)
-        user.current_score = 0
-        db.session.commit()
+        changes()
         return redirect(url_for('game_over'))
 
 @app.route('/stats')
@@ -210,6 +210,16 @@ def community_stats():
 def game_over():
     random_message, gif_name = Game.react_to_points(session['current_score'], Video.query.count()-1)
     return render_template('game_over.html', score=session['current_score'], message=random_message, gif_name=gif_name)
+
+def changes():
+    user = User.query.filter_by(username=session["user"]).first()
+    user.update_average_score(user.current_score)
+    user.add_score(user.current_score)
+    print(user.last_10_scores)
+    user.create_plot_thread()
+    user.plot_thread.start() 
+    user.current_score = 0
+    db.session.commit()
 
 if __name__ == "__main__":
     with app.app_context():

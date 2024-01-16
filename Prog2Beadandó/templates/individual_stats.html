@@ -20,6 +20,7 @@
             <li>Játszott idő: {{ user.formatted_played_time() }}</li>
         </ul>
     </main>
+    <img src="{{ url_for('static', filename='stats/last_10_scores_plot.png') }}" alt="Előző 10 játék eredménye">
     <!-- Egyéb tartalom, gráfok stb. -->
 </body>
 </html>
