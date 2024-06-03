@@ -11,7 +11,8 @@
 
 ## Nem informált és informált, fa alapú keresési algoritmusok
 Források:  
-MI_02-Keresés.pdf
+MI_02-Keresés.pdf  
+[Algoritmusok képes ábrázolása és RBFS](https://web.cs.hacettepe.edu.tr/~ilyas/Courses/VBM688/lec04_informedsearch%20.pdf)
 _________________
 Ágens:  
 „Cselekvő”  
@@ -169,8 +170,7 @@ A* MEMÓRIAKORLÁTOZÁSSAL
     és f(szülő)-t a min{f(gyerek)}-re növeli
     - Javítja a becslést a továbblépéssel, de nem foglalja a memóriát, amíg van jobb alternatíva
 
-RBFS példa: [kép]
-
+RBFS példa: [kép](https://web.cs.hacettepe.edu.tr/~ilyas/Courses/VBM688/lec04_informedsearch%20.pdf)
 
 ## Lokális keresésre épülő és populáció alapú algoritmusok
 Források:  
