@@ -1050,9 +1050,10 @@ korreláció, 0 erős pozitív korreláció
 _________________
 
 ## Osztályozás gépi tanulási módszerekkel
-Források:  
+Források:    
 MI_09_Gépi_tanulás.pdf  
-MI_10_classification.ipynb
+MI_10_classification.ipynb  
+Fordítás: forditas.docx  
 
 TANULÓ ÁGENSEK
 - A megfigyeléseket nem csak a jelenlegi cselekvés meghatározására használja, hanem 
@@ -1076,14 +1077,16 @@ GÉPI TANULÁS ALOSZTÁLYAI
 - Nem felügyelt tanulás (unsupervised)
 - Megerősítéses tanulás (reinforcement)
 
-**????**  
-TÉTEL KIEGÉSZÍTÉSE! 
+**Osztályozás**  
+TÉTEL KIEGÉSZÍTÉSE Iza fordításában! (formázni md-ben sok idő lenne)
 
 _________________
 
 ## Mesterséges neurális hálózatok számítási modellje és tanítása
-Források: MI_11_02_neural_networks.ipynb  
+Források:   
+MI_11_02_neural_networks.ipynb    
+Fordítás: forditas.docx  
 
-**????**  
-TÉTEL KIEGÉSZÍTÉSE! 
+**Klaszterezés és neurális hálózatok**  
+TÉTEL KIEGÉSZÍTÉSE Iza fordításában! (formázni md-ben sok idő lenne)
 _________________
