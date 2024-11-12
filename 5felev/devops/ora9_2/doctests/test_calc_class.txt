@@ -1,0 +1,47 @@
+The 'calculator' module
+=======================
+
+>>> from calculator.calc_class import Calculator
+
+>>> calc = Calculator()
+
+>>> calc.add(2, 1)
+3
+
+>>> calc.subtract(2, 1)
+1
+
+>>> calc.subtract(1, 2)
+-1
+
+>>> calc.multiply(1, 2)
+2
+
+>>> calc.multiply(5, 2)
+10
+
+>>> calc.divide(1, 2)
+0.5
+
+>>> calc.divide(1.0, 0)
+Traceback (most recent call last):
+...
+ZeroDivisionError: float division by zero
+
+>>> calc.minimum(1, 2)
+1
+
+>>> calc.minimum(2, 1)
+1
+
+>>> calc.minimum(1, 1)
+1
+
+>>> calc.maximum(1, 2)
+2
+
+>>> calc.maximum(2, 1)
+2
+
+>>> calc.maximum(5, 5)
+5

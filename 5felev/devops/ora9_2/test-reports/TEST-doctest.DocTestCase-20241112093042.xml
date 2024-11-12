@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<testsuite name="doctest.DocTestCase-20241112093042" tests="6" time="0.003" failures="0" errors="0">
+	<testcase classname="doctest.DocTestCase" name="add" time="0.001"/>
+	<testcase classname="doctest.DocTestCase" name="divide" time="0.001"/>
+	<testcase classname="doctest.DocTestCase" name="maximum" time="0.000"/>
+	<testcase classname="doctest.DocTestCase" name="minimum" time="0.001"/>
+	<testcase classname="doctest.DocTestCase" name="multiply" time="0.000"/>
+	<testcase classname="doctest.DocTestCase" name="subtract" time="0.000"/>
+	<system-out><![CDATA[]]></system-out>
+	<system-err><![CDATA[]]></system-err>
+</testsuite>
