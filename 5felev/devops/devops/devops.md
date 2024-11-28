@@ -1,29 +1,6 @@
 # DEVOPS
 
 ## Dockerfile és Build folyamat:
-+1 compose és annak pullolása futtatása (kb. 5 sor a fájlban image-l) compose up -d
-+1 hogyan lesz egy domain https saját gépen? dockerrel
-   - 1. : portainer stack < file content
-   - 2. : deploy stack
-   - 3. : proxy manager login
-   - 4. : szerzett domain.com pl. name.com-tól
-   - 5. : ip: cica
-   - 6. : 8080:80 8080 külső 80 belső dockeren belül fut a proxy manager, szóval 80
-   - 7. : ssl certificate beszerzése
-   - 8. : internal conflict error -> 
-      - name
-      - port
-      - image neve
-      - container fut-e
-      - van e net?
-      - ssh-t megtekinteni (fut-e a szerver)
-      - nginx proxy managerben egy hálózaton kéne legyenek: nincsenek
-         - meg kell adni composeban a networkot
-            networks:
-               npm:
-                  external: true
-   - 9. :
-   - 10. :
 
 28. **Mi a `RUN` parancs szerepe egy Dockerfile-ban?**  
    - A `RUN` parancs lehetővé teszi, hogy parancsokat futtassunk a konténer létrehozásának során, például szoftverek telepítése, fájlok módosítása stb. Minden `RUN` lépés új réteget hoz létre az image-ban.
@@ -176,24 +153,6 @@
      ``` 
      Megjegyzés: én .env-ben szoktam megadni ezeket, de ki ahol akarja
 
-
-+1. **Nem indul el az oldal, miért?**  
-
-SERVERHEZ HISTORY:
-ssh medi@IP
-history | less 
--> | multiple command (ennek a programnak a kimenetét | ennek a programnak a bemenete), görgethető
-vagy more
-tail -n 2 utolsó két sorrendjét
-grep "ls" csak az ls-es listázásokat teszik ki
-python main.py > print.log & cat print.log -> háttérben futó process
-pkill 574073 process
-python main.py > print.log && cat print.log
-helyes print (vagy && helyett ;)
->> appendelelés (python main.py >> print.log && cat print.log)
-hullámpötty (.~) - ssh kapcsolat megszakítása (pl ha elmenne a net és kilépnél ssh terminálból)
-curl http... | sh 
-
 ## IP, domain és DNS:
 11. **Mi a különbség IP, domain, és subdomain között?**  
    - **IP**: Számokból álló cím, amely egy eszköz azonosítására szolgál a hálózaton.  
@@ -286,6 +245,23 @@ curl http... | sh
 
 19. **Hogyan terheli szét egy Swarm Manager a feladatok végrehajtását több worker node között?**  
    - A Swarm Manager figyeli a rendszer állapotát és a feladatokat a worker node-ok között osztja el az erőforrások és a szolgáltatások szükségletei alapján.
+
++1. **Nem indul el az oldal, miért?**  
+
+SERVERHEZ HISTORY:
+ssh medi@IP
+history | less 
+-> | multiple command (ennek a programnak a kimenetét | ennek a programnak a bemenete), görgethető
+vagy more
+tail -n 2 utolsó két sorrendjét
+grep "ls" csak az ls-es listázásokat teszik ki
+python main.py > print.log & cat print.log -> háttérben futó process
+pkill 574073 process
+python main.py > print.log && cat print.log
+helyes print (vagy && helyett ;)
+>> appendelelés (python main.py >> print.log && cat print.log)
+hullámpötty (.~) - ssh kapcsolat megszakítása (pl ha elmenne a net és kilépnél ssh terminálból)
+curl http... | sh 
 
 # SOFTTEST
 
