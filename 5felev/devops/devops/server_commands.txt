@@ -1,0 +1,55 @@
+1  su root
+    2  exit
+    3  sudo yum install htop
+    4  ls -lka
+    5  cd
+    6  mkdir .ssh
+    7  touch .ssh/authorized_keys
+    8  ls -la .ssh/
+    9  chmod -R go= .ssh/
+   10  vim .ssh/authorized_keys
+   11  nano .ssh/authorized_keys
+   12  ssh medi@47.250.87.83
+   13  exit
+   14  eexit
+   15  exit
+   16  yum install firewalld
+   17  yum install firewalld -y
+   18  sudo yum install firewalld -y
+   19  sudo systemctl status firewalld
+   20  sudo systemctl start firewalld
+   21  sudo systemctl status firewalld
+   22  sudo firewall-cmd --permanent --list-all
+   23  sudo firewall-cmd --get-services
+   24  sudo firewall-cmd --permanent --add-service=http
+   25  sudo firewall-cmd --permanent --add-service=https
+   26  sudo firewall-cmd --reload
+   27  sudo firewall-cmd --permanent --list-all
+   28  sudo systemctl enable firewalld
+   29  sudo yum install epel-release
+   30  sudo yum update
+   31  sudo yum remove epel-release
+   32  sudo yum install htop
+   33  sudo yum update
+   34  sudo yum install htop
+   35  tmux
+   36  curl -fsSL https://get.docker.com/ | sh
+   37  sudo systemctl status docker
+   38  sudo systemctl start docker
+   39  sudo systemctl status docker
+   40  sudo systemctl enable docker
+   41  sudo systemctl status docker
+   42  docker ps
+   43  sudo docker ps
+   44  groups
+   45  sudo usermod -aG docker $(whoami)
+   46  whoami
+   47  groups
+   48  exit
+   49  sudo nano /etc/ssh/sshd_config
+   50  sudo systemctl restart sshd.service
+   51  tmux
+   52  exit
+   53  sudo firewall-cmd --zone=public --permanent --add-port=81/tcp
+   54  sudo firewall-cmd --reload
+   55  sudo firewall-cmd --zone=public --list-ports
