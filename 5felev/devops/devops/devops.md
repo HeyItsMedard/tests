@@ -1,4 +1,70 @@
-# SKIBIDI DEVOPS
+# DEVOPS
+
+## Dockerfile és Build folyamat:
++1 compose és annak pullolása futtatása (kb. 5 sor a fájlban image-l) compose up -d
++1 hogyan lesz egy domain https saját gépen? dockerrel
+   - 1. : portainer stack < file content
+   - 2. : deploy stack
+   - 3. : proxy manager login
+   - 4. : szerzett domain.com pl. name.com-tól
+   - 5. : ip: cica
+   - 6. : 8080:80 8080 külső 80 belső dockeren belül fut a proxy manager, szóval 80
+   - 7. : ssl certificate beszerzése
+   - 8. : internal conflict error -> 
+      - name
+      - port
+      - image neve
+      - container fut-e
+      - van e net?
+      - ssh-t megtekinteni (fut-e a szerver)
+      - nginx proxy managerben egy hálózaton kéne legyenek: nincsenek
+         - meg kell adni composeban a networkot
+            networks:
+               npm:
+                  external: true
+   - 9. :
+   - 10. :
+
+28. **Mi a `RUN` parancs szerepe egy Dockerfile-ban?**  
+   - A `RUN` parancs lehetővé teszi, hogy parancsokat futtassunk a konténer létrehozásának során, például szoftverek telepítése, fájlok módosítása stb. Minden `RUN` lépés új réteget hoz létre az image-ban.
+
+29. **Hogyan lehet a `npm` parancsot futtatni egy build során, majd a szükséges fájlokat bemásolni az Nginx könyvtárba?**  
+   - A Dockerfile-ban a következő lépéseket tehetjük:
+     ```Dockerfile
+     # Build fázis
+     FROM node:alpine AS builder
+     WORKDIR /app
+     COPY package*.json ./
+     RUN npm install
+     COPY . .
+     RUN npm run build
+
+     # Nginx fázis
+     FROM nginx:alpine
+     COPY --from=builder /app/dist /usr/share/nginx/html
+     ```
+
+30. **Miért nem elegendő egy alap Nginx Docker image a specifikus igények kielégítésére?**  
+   - Az alap Nginx image csak az Nginx szerver alapvető funkcionalitását biztosítja. A személyre szabott konfigurációk, mint például a virtuális hosztok, SSL beállítások és más speciális igények nem érhetők el alapértelmezés szerint, ezeket külön kell konfigurálni.
+
+31. **Mi a `COPY` parancs szerepe egy Dockerfile-ban?**  
+   - A `COPY` parancs fájlokat vagy könyvtárakat másol a hostról a konténer fájlrendszerébe, ami lehetővé teszi a helyi forráskód vagy erőforrások integrálását az image-be.
+
+32. **Hogyan lehet környezeti változókat definiálni egy Dockerfile-ban?**  
+   - Környezeti változók definiálhatók az `ENV` paranccsal. Például:
+     ```Dockerfile
+     ENV NODE_ENV=production
+     ```
+
+33. **Milyen előnyökkel jár a multi-stage build használata Dockerfile-ban?**  
+   - A multi-stage build lehetővé teszi, hogy több fázisban építkezzünk, így csökkentve a végső image méretét, mivel csak a szükséges fájlok kerülnek be a végső image-be, és elkerülhetjük a nem szükséges build eszközök beépítését. 
+
+34. **Hogyan lehet megakadályozni, hogy a Docker cache-t használja a build során?**  
+   - A `--no-cache` flag használatával lehet megakadályozni, hogy a Docker cache-t használjon a build során:
+     ```bash
+     docker build --no-cache -t my-image .
+     ``` 
+
 ## Docker és konténerizáció alapjai:
 
 1. **Mi a különbség egy Docker image és egy container között?**  
@@ -128,7 +194,6 @@ helyes print (vagy && helyett ;)
 hullámpötty (.~) - ssh kapcsolat megszakítása (pl ha elmenne a net és kilépnél ssh terminálból)
 curl http... | sh 
 
-
 ## IP, domain és DNS:
 11. **Mi a különbség IP, domain, és subdomain között?**  
    - **IP**: Számokból álló cím, amely egy eszköz azonosítására szolgál a hálózaton.  
@@ -174,6 +239,32 @@ curl http... | sh
 19. **Hogyan terheli szét egy Swarm Manager a feladatok végrehajtását több worker node között?**  
    - A Swarm manager automatikusan elosztja a feladatokat (tasks) a worker node-ok között a rendelkezésre álló erőforrások, prioritások és beállított replikációs szabályok alapján. 
 
+## Portainer és Proxy Manager 
+20. **Hogyan tárolható privát repository a Portainer stacken belül?**  
+   - Privát repository-kat Github Token használatával lehet megadni.
+
+21. **Milyen előnyei vannak a statikus weboldalak tárhely használatának?**  
+   - Gyorsabb betöltési sebesség, egyszerűbb karbantartás és alacsonyabb erőforrás-felhasználás, mivel nincs dinamikus tartalomgenerálás.
+
+22. **Mit jelent az, hogy autentikáció "access tokennel" történik?**  
+   - Az **access token** egy titkosított azonosító, amelyet a felhasználók azonosítására használnak, biztosítva a jogosultságokat egy alkalmazáson belül.
+
+23. **Hogyan kezelhetők a különböző szintű hozzáférések egy konténerizált környezetben?**  
+   - Hozzáférések kezelhetők RBAC (Role-Based Access Control) segítségével, amely lehetővé teszi, hogy különböző felhasználók és csoportok eltérő jogosultságokkal rendelkezzenek a konténerek és erőforrások felett. 
+
+## Folyamatadminisztráció és hibakezelés:
+24. **Miért szükséges figyelni a futó konténerek erőforrás-használatát?**  
+   - Az erőforrás-használat figyelése segít elkerülni a teljesítménybeli problémákat, biztosítja a stabil működést és optimalizálja az erőforrás-felhasználást, így költségeket is csökkenthet.
+
+25. **Hogyan deríthetjük ki, ha egy adatbázis container erőforrás-problémái miatt áll le?**  
+   - Ellenőrzés a konténer logjaiban (`docker logs <container_name>`), valamint a futó konténer erőforrás-használatának nyomon követése (`docker stats`). Ha a CPU vagy memória használat rendszeresen maxon pörög, akkor problémák lehetnek.
+
+26. **Mikor kell Proxy managert használni egy infrastruktúra optimalizálásához?**  
+   - Proxy managert akkor érdemes használni, ha több szolgáltatást szeretnénk egy domain alatt futtatni, illetve a forgalmat szét kívánjuk osztani, vagy HTTPS tanúsítványokat szeretnénk egyszerűen kezelni.
+
+27. **Hogyan lehet egyszerű adblock-megoldásokkal minimalizálni a felesleges hálózati terhelést egy projektben?**  
+   - Használhatunk tartalomblokkoló proxykat (pl. Pi-hole) vagy beállíthatunk a böngészőkben adblockert, hogy kiszűrjük a nem kívánt hirdetéseket és egyéb forgalmat, csökkentve ezzel a hálózati terhelést. 
+
 ## Docker Swarm és Kubernetes:
 
 16. **Mi a különbség a Docker Swarm és Kubernetes között?**  
@@ -195,6 +286,8 @@ curl http... | sh
 
 19. **Hogyan terheli szét egy Swarm Manager a feladatok végrehajtását több worker node között?**  
    - A Swarm Manager figyeli a rendszer állapotát és a feladatokat a worker node-ok között osztja el az erőforrások és a szolgáltatások szükségletei alapján.
+
+# SOFTTEST
 
 ## CI/CD és állománykezelés:
 - +1.: Mi az a CI/CD? 
@@ -228,32 +321,6 @@ curl http... | sh
    - **White-box tesztelés**: A tesztelő ismeri a kód belső működését, és a logikát, valamint az implementációt használja a tesztelés során.  
    - **Black-box tesztelés**: A tesztelő nem ismeri a kód belső működését, kizárólag a bemeneti és kimeneti funkciókat vizsgálja.  
    - **Gray-box tesztelés**: A tesztelő részben ismeri a belső működést, kombinálva a black-box és white-box megközelítést, hogy a tesztelés hatékonyabb legyen. 
-
-    
-20. **Hogyan tárolható privát repository a Portainer stacken belül?**  
-   - Privát repository-kat Github Token használatával lehet megadni.
-
-21. **Milyen előnyei vannak a statikus weboldalak tárhely használatának?**  
-   - Gyorsabb betöltési sebesség, egyszerűbb karbantartás és alacsonyabb erőforrás-felhasználás, mivel nincs dinamikus tartalomgenerálás.
-
-22. **Mit jelent az, hogy autentikáció "access tokennel" történik?**  
-   - Az **access token** egy titkosított azonosító, amelyet a felhasználók azonosítására használnak, biztosítva a jogosultságokat egy alkalmazáson belül.
-
-23. **Hogyan kezelhetők a különböző szintű hozzáférések egy konténerizált környezetben?**  
-   - Hozzáférések kezelhetők RBAC (Role-Based Access Control) segítségével, amely lehetővé teszi, hogy különböző felhasználók és csoportok eltérő jogosultságokkal rendelkezzenek a konténerek és erőforrások felett. 
-
-## Folyamatadminisztráció és hibakezelés:
-24. **Miért szükséges figyelni a futó konténerek erőforrás-használatát?**  
-   - Az erőforrás-használat figyelése segít elkerülni a teljesítménybeli problémákat, biztosítja a stabil működést és optimalizálja az erőforrás-felhasználást, így költségeket is csökkenthet.
-
-25. **Hogyan deríthetjük ki, ha egy adatbázis container erőforrás-problémái miatt áll le?**  
-   - Ellenőrzés a konténer logjaiban (`docker logs <container_name>`), valamint a futó konténer erőforrás-használatának nyomon követése (`docker stats`). Ha a CPU vagy memória használat rendszeresen maxon pörög, akkor problémák lehetnek.
-
-26. **Mikor kell Proxy managert használni egy infrastruktúra optimalizálásához?**  
-   - Proxy managert akkor érdemes használni, ha több szolgáltatást szeretnénk egy domain alatt futtatni, illetve a forgalmat szét kívánjuk osztani, vagy HTTPS tanúsítványokat szeretnénk egyszerűen kezelni.
-
-27. **Hogyan lehet egyszerű adblock-megoldásokkal minimalizálni a felesleges hálózati terhelést egy projektben?**  
-   - Használhatunk tartalomblokkoló proxykat (pl. Pi-hole) vagy beállíthatunk a böngészőkben adblockert, hogy kiszűrjük a nem kívánt hirdetéseket és egyéb forgalmat, csökkentve ezzel a hálózati terhelést. 
 
 ## Tesztelési folyamatok és típusok (TDD):
 8. **Mi a különbség a unit test, integration test, acceptance test és regression test között?**  
@@ -327,69 +394,4 @@ curl http... | sh
    - A `--maxfail` paraméter korlátozza a futtatott tesztek számát, amely után a tesztelés leáll, ha a megadott számú teszt megbukik. A `--quiet` opció csökkenti a megjelenített információ mennyiségét, így a kimenet tömörebb lesz. Ezeket a parancssori opciókat tesztelés indításakor használjuk, például:
      ```
      pytest --maxfail=1 --quiet
-     ``` 
-
-## Dockerfile és Build folyamat:
-+1 compose és annak pullolása futtatása (kb. 5 sor a fájlban image-l) compose up -d
-+1 hogyan lesz egy domain https saját gépen? dockerrel
-   - 1. : portainer stack < file content
-   - 2. : deploy stack
-   - 3. : proxy manager login
-   - 4. : szerzett domain.com pl. name.com-tól
-   - 5. : ip: cica
-   - 6. : 8080:80 8080 külső 80 belső dockeren belül fut a proxy manager, szóval 80
-   - 7. : ssl certificate beszerzése
-   - 8. : internal conflict error -> 
-      - name
-      - port
-      - image neve
-      - container fut-e
-      - van e net?
-      - ssh-t megtekinteni (fut-e a szerver)
-      - nginx proxy managerben egy hálózaton kéne legyenek: nincsenek
-         - meg kell adni composeban a networkot
-            networks:
-               npm:
-                  external: true
-   - 9. :
-   - 10. :
-
-28. **Mi a `RUN` parancs szerepe egy Dockerfile-ban?**  
-   - A `RUN` parancs lehetővé teszi, hogy parancsokat futtassunk a konténer létrehozásának során, például szoftverek telepítése, fájlok módosítása stb. Minden `RUN` lépés új réteget hoz létre az image-ban.
-
-29. **Hogyan lehet a `npm` parancsot futtatni egy build során, majd a szükséges fájlokat bemásolni az Nginx könyvtárba?**  
-   - A Dockerfile-ban a következő lépéseket tehetjük:
-     ```Dockerfile
-     # Build fázis
-     FROM node:alpine AS builder
-     WORKDIR /app
-     COPY package*.json ./
-     RUN npm install
-     COPY . .
-     RUN npm run build
-
-     # Nginx fázis
-     FROM nginx:alpine
-     COPY --from=builder /app/dist /usr/share/nginx/html
-     ```
-
-30. **Miért nem elegendő egy alap Nginx Docker image a specifikus igények kielégítésére?**  
-   - Az alap Nginx image csak az Nginx szerver alapvető funkcionalitását biztosítja. A személyre szabott konfigurációk, mint például a virtuális hosztok, SSL beállítások és más speciális igények nem érhetők el alapértelmezés szerint, ezeket külön kell konfigurálni.
-
-31. **Mi a `COPY` parancs szerepe egy Dockerfile-ban?**  
-   - A `COPY` parancs fájlokat vagy könyvtárakat másol a hostról a konténer fájlrendszerébe, ami lehetővé teszi a helyi forráskód vagy erőforrások integrálását az image-be.
-
-32. **Hogyan lehet környezeti változókat definiálni egy Dockerfile-ban?**  
-   - Környezeti változók definiálhatók az `ENV` paranccsal. Például:
-     ```Dockerfile
-     ENV NODE_ENV=production
-     ```
-
-33. **Milyen előnyökkel jár a multi-stage build használata Dockerfile-ban?**  
-   - A multi-stage build lehetővé teszi, hogy több fázisban építkezzünk, így csökkentve a végső image méretét, mivel csak a szükséges fájlok kerülnek be a végső image-be, és elkerülhetjük a nem szükséges build eszközök beépítését. 
-
-34. **Hogyan lehet megakadályozni, hogy a Docker cache-t használja a build során?**  
-   - A `--no-cache` flag használatával lehet megakadályozni, hogy a Docker cache-t használjon a build során:
-     ```bash
-     docker build --no-cache -t my-image .
      ``` 
