@@ -1,0 +1,71 @@
+docker build -t devops-nginx-1
+docker build -t devops-nginx-1 .
+docker build -t my-custom-nginx .
+docker build -t my-static-site .
+docker build -t myapp .
+docker compose down
+docker compose up
+docker compose up -d
+docker compose version
+docker exec -it devops sh
+docker exec -it devops-my-static-website-1 sh
+docker exec -it devops-nginx /bin/sh
+docker exec -it my-static-website-1 sh
+docker image prune
+docker images
+docker info
+docker inspect devops-nginx
+docker inspect devops-nginx-1
+docker logs <container_id>
+docker logs devops-nginx
+docker ls
+docker network
+docker network create -d bridge my-net
+docker network create -d bridge nginx-proxy-network
+docker network create -d nginx-proxy-network
+docker network create nginx-proxy-network
+docker network delete nginx-proxy-network
+docker network ed
+docker network edb7e0cf504c6d8638186cc8244a9804652be0f6ce02ac4a9c9840787a2d4305
+docker network ls
+docker network rm nginx-proxy-network
+docker prune
+docker ps
+docker pull nginx
+docker pull pihole/pihole
+docker rm devops-my-static-website-1
+docker rm devops-nginx
+docker rm devops-nginx-1
+docker rmi nginx:alpine
+docker run --name cassandra-container -p 9042:9042 -d cassandra:latest
+docker run --rm --network my-net -p  80:5000 myapp
+docker run --rm --network my-net -p  81:5000 myapp
+docker run --rm --network my-net -p 80:5000 myapp
+docker run --rm --network my-net -p 81:5000 -e DB_URL=db myapp
+docker run --rm --network my-net -p 81:5000 myapp
+docker run --rm --network my-net 80:5000 myapp
+docker run --rm --network my-net myapp
+docker run --rm myapp
+docker run -d --name my-nginx-container -p 8080:80 my-custom-nginx
+docker run -d --name my-nginx-container -p 8080:82 my-custom-nginx
+docker run -d --name my-nginx-container -p 8082:80 my-custom-nginx
+docker run -d --name my-nginx-container -p 8084:80 my-custom-nginx
+docker run -d -p 8082:80 --name devops-nginx my-static-site
+docker stop database
+docker stop devops-my-static-website-1
+docker stop devops-nginx
+docker stop devops-nginx-1
+docker system prune -f
+docker volume create db-data
+docker volume inspect db-data
+docker volume inspectmdb-data
+docker volume ls
+docker-compose -p devops up -d
+docker-compose down
+docker-compose down  # Stop and remove existing containers
+docker-compose up --build -d
+docker-compose up --build -d  # Rebuild and start the container
+docker-compose up -d
+pip install docker
+sudo systemctl restart docker
+type docker-compose.yml

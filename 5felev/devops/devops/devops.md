@@ -78,16 +78,17 @@
 
 1. **Mit jelent a volume csatolása egy konténerhez, és miért van szükség rá?**  
    - A volume csatolása lehetővé teszi az adatok tartós tárolását a konténer újraindítása vagy törlése esetén is. Ez fontos, hogy megőrizzük az adatokat, például egy adatbázis esetén.
+   - [Ez így történik meg a valóságban](#volume-csatolása).
 
 2. **Hogyan lehet bind mount és volume között választani a fájlok tárolásakor?**  
-   - **Bind mount**: A helyi fájlrendszer egy mellékhelyiséget csatolunk, közvetlenül a host fájlairól.  
-   - **Volume**: Docker által kezelt, izolált tárolóhely, amely független a host fájlrendszerétől, ideális adatfelhasználásra és megosztásra.
+   - **Bind mount**: A helyi fájlrendszer egy mellékhelyiséget csatolunk, közvetlenül a host fájlairól.   (magyarul: abszolút path)
+   - **Volume**: Docker által kezelt, izolált tárolóhely, amely független a host fájlrendszerétől, ideális adatfelhasználásra és megosztásra. (magyarul: automatikus)
 
 3. **Mit csinál a következő parancs: `docker-compose up`, ha egy konfigurációs fájl köt meg szolgáltatásokat?**  
    - A `docker-compose up` parancs létrehozza és elindítja a szolgáltatásokat a megadott konfigurációs fájl alapján,azaz a konténereket hálózati kapcsolatokkal és volume-okkal kezeli.
 
 4. **Hogyan készíthető egy statikus weboldal Docker segítségével, Nginx-et hasznosítva?**  
-   - Hozzon létre egy Dockerfile-t, ami Nginx-et telepít, és másolja a statikus fájlokat az Nginx html könyvtárába. Használja a `docker build` és `docker run` parancsokat a konténer létrehozásához és futtatásához.
+   - Hozzon létre egy Dockerfile-t, ami Nginx-et telepít, és másolja a statikus fájlokat az Nginx html könyvtárába. Használja a `docker build` és `docker run` parancsokat a konténer létrehozásához és futtatásához. [Mindezt gyakorlatban itt találhatjátok](#statikus-weboldal-készítése-dockerrel-és-nginx-el).
 
 5. **Hogyan biztosítható, hogy a fájlok elérhetők legyenek egy konténer számára helyi könyvtárból?**  
    - A helyi könyvtárat volume-ként vagy bind mount-ként felcsatlakoztathatjuk a konténerhez a `-v` vagy `--mount` flag segítségével a `docker run` parancsban.
@@ -371,3 +372,148 @@ curl http... | sh
      ```
      pytest --maxfail=1 --quiet
      ``` 
+
+## Extrák
+
+### Volume csatolása
+
+A volume csatolása egy konténerhez azt jelenti, hogy a konténer számára elérhetővé teszünk egy külső adattároló helyet (volumet), amely független a konténer életciklusától. Ez lehetővé teszi az adatok megőrzését akkor is, ha a konténer újraindul vagy törlésre kerül.  
+
+#### **Hogyan csatolhatunk volumet egy konténerhez?**  
+A `docker run` parancsban a `-v` vagy a `--mount` opció segítségével csatolhatunk volumet.
+
+#### **Példa a volume használatára**  
+1. **Hozzunk létre egy új volumet:**
+   ```bash
+   docker volume create my_volume
+   ```
+
+2. **Indítsunk egy konténert, amelyhez csatoljuk a volumet:**
+   ```bash
+   docker run -d --name my_container -v my_volume:/data nginx
+   ```
+
+   Ebben a példában:
+   - **`-v my_volume:/data`**: A `my_volume` nevű volumet csatoljuk a konténer `/data` könyvtárához.
+   - **`nginx`**: Egy alapértelmezett NGINX szervert futtatunk.
+
+3. **Ellenőrizzük, hogy a volume csatolva lett:**
+   ```bash
+   docker inspect my_container
+   ```
+   Az eredményben a **Mounts** szekció mutatja, hogy a `my_volume` csatolva van a konténer `/data` útvonalához.
+
+4. **Tartós adat mentése:**
+   A konténerben a `/data` könyvtárban létrehozott vagy módosított fájlok a `my_volume`-be kerülnek. Ha a konténert újraindítjuk vagy töröljük, az adatok a volumeben megmaradnak, és egy új konténer is hozzáférhet ezekhez.
+
+#### **Volume újrahasználata másik konténerrel**  
+Egy másik konténer is használhatja a `my_volume` volumet:  
+```bash
+docker run -d --name another_container -v my_volume:/data nginx
+```
+
+Ebben az esetben az új konténer ugyanazokat az adatokat éri el, amelyek a volumeben tárolódnak. Ez ideális adatbázisokhoz, konfigurációs fájlokhoz vagy bármilyen állandó adattárolási szükséglethez.
+
+### Statikus weboldal készítése Dockerrel és Nginx-el
+
+A következőkben bemutatom, hogyan készíthetünk egy statikus weboldalt Docker segítségével, Nginx-et hasznosítva.
+
+---
+
+### **1. Hozzuk létre a szükséges fájlokat**
+#### **Statikus tartalom létrehozása**
+Hozzunk létre egy könyvtárat, például `static-website`, és tegyünk bele egy egyszerű statikus HTML fájlt.
+
+```plaintext
+static-website/
+├── Dockerfile
+├── index.html
+```
+
+#### **`index.html` tartalma:**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statikus Weboldal</title>
+</head>
+<body>
+    <h1>Üdvözöllek a statikus weboldalamon!</h1>
+    <p>Ez az oldal egy Docker konténerben fut Nginx segítségével.</p>
+</body>
+</html>
+```
+
+---
+
+### **2. Dockerfile létrehozása**
+A Dockerfile tartalmazza az utasításokat az Nginx és a statikus fájlok beállításához.
+
+#### **`Dockerfile` tartalma:**
+```dockerfile
+# Alap Nginx image használata
+FROM nginx:alpine
+
+# Másoljuk a statikus fájlokat az Nginx alapértelmezett html könyvtárába
+COPY index.html /usr/share/nginx/html/
+
+# Nginx futtatása
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### **3. Konténer létrehozása és futtatása**
+
+#### **1. Építsük meg az image-t:**
+A `Dockerfile` alapján hozzuk létre az Nginx image-et:
+```bash
+docker build -t static-website .
+```
+
+Ebben:  
+- **`-t static-website`**: Az új image neve.  
+- A `.` jelzi, hogy a `Dockerfile` az aktuális könyvtárban található.
+
+#### **2. Futtassuk a konténert:**
+Indítsuk el a konténert az újonnan létrehozott image segítségével:
+```bash
+docker run -d -p 8080:80 --name my-static-site static-website
+```
+
+Ebben:  
+- **`-d`**: A konténert háttérben futtatja.  
+- **`-p 8080:80`**: A host gép 8080-as portját az Nginx konténer 80-as portjára irányítja.  
+- **`--name my-static-site`**: A konténer neve.  
+- **`static-website`**: A korábban létrehozott image neve.
+
+---
+
+### **4. Teszteljük a weboldalt**
+Nyissuk meg a böngészőt, és írjuk be az alábbi URL-t:
+```
+http://localhost:8080
+```
+
+Meg kell jelenjen a weboldal az **"Üdvözöllek a statikus weboldalamon!"** szöveggel.
+
+---
+
+### **5. (Opcionális) A konténer leállítása és törlése**
+#### Konténer leállítása:
+```bash
+docker stop my-static-site
+```
+
+#### Konténer törlése:
+```bash
+docker rm my-static-site
+```
+
+#### Image törlése:
+```bash
+docker rmi static-website
+```
+
+Ez a megközelítés gyors és egyszerű módja annak, hogy Docker segítségével statikus weboldalt futtassunk Nginx-en.
