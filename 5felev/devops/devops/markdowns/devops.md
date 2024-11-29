@@ -26,6 +26,15 @@
      docker build --no-cache -t my-image .
      ``` 
 
+35. **Mi a különbség start és up között?**
+   - ### **Különbségek összefoglalása:**
+
+| Parancs                  | Művelet                                                         | Ha van változás a kódban vagy a Dockerfile-ban? |
+|--------------------------|-----------------------------------------------------------------|------------------------------------------------|
+| **`docker-compose start`**| Elindítja a már létező, de leállított konténereket.             | **Nem** újraépíti a konténereket vagy image-eket. |
+| **`docker-compose up`**   | Létrehozza a konténereket és elindítja őket. Ha szükséges, újraépíti a konténereket. | **Igen**, ha változtattál az image-eken vagy a Dockerfile-on. |
+| **`docker-compose up --build`** | Elindítja a konténereket és **újraépíti** az image-eket a változásokkal. | **Igen**, mindenképpen újraépíti az image-eket. |
+
 ## Docker és konténerizáció alapjai:
 
 1. **Mi a különbség egy Docker image és egy container között?**  
