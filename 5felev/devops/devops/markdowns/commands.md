@@ -1,13 +1,9 @@
-Az általad megadott parancsokat elemezve a szerveren különböző típusú tevékenységeket hajtottak végre, beleértve rendszergazdai hozzáférés beállítását, tűzfal konfigurálását, Docker telepítését, valamint SSH- és fájlkezelési műveleteket. Íme a részletes elemzés:
-
----
-
 ### **Rendszergazdai jogosultságok és általános parancsok**
 1. `su root`: Átváltás root (rendszergazdai) felhasználóra.
 2. `exit`: Kilépés az aktuális terminálból vagy root mód elhagyása.
 3. `sudo yum install htop`: A **htop** rendszerfigyelő eszköz telepítése.
 4. `ls -lka`: A fájlrendszer listázása bővített információkkal.
-5. `cd`: Könyvtárváltás a felhasználó alapértelmezett könyvtárába.
+5. `cd`: Könyvtárváltás.
 6. `mkdir .ssh`: Létrehoz egy **.ssh** könyvtárat a felhasználó könyvtárában.
 7. `touch .ssh/authorized_keys`: Létrehoz egy **authorized_keys** fájlt az SSH kulcsok tárolására.
 8. `ls -la .ssh/`: A **.ssh** könyvtár tartalmának listázása részletes nézettel.
@@ -24,12 +20,9 @@ Az általad megadott parancsokat elemezve a szerveren különböző típusú tev
 ---
 
 ### **Tűzfalkezelés**
-16. `yum install firewalld`: A Firewalld telepítése (nem rendszergazdaként próbálkozva).
-17. `yum install firewalld -y`: Telepítés automatikus jóváhagyással.
 18. `sudo yum install firewalld -y`: Firewalld telepítése rendszergazdaként.
 19. `sudo systemctl status firewalld`: Firewalld státuszának lekérdezése.
 20. `sudo systemctl start firewalld`: Firewalld szolgáltatás elindítása.
-21. `sudo systemctl status firewalld`: Ismételt státuszlekérdezés.
 22. `sudo firewall-cmd --permanent --list-all`: A tűzfal jelenlegi szabályainak listázása.
 23. `sudo firewall-cmd --get-services`: Elérhető tűzfal-szolgáltatások listázása.
 24. `sudo firewall-cmd --permanent --add-service=http`: HTTP-szolgáltatás engedélyezése a tűzfalon.
@@ -48,8 +41,6 @@ Az általad megadott parancsokat elemezve a szerveren különböző típusú tev
 30. `sudo yum update`: A rendszer összes csomagjának frissítése.
 31. `sudo yum remove epel-release`: Az EPEL tároló eltávolítása.
 32. `sudo yum install htop`: **htop** újratelepítése.
-33. `sudo yum update`: Újabb frissítési próbálkozás.
-34. `sudo yum install htop`: **htop** ismételt telepítése.
 
 ---
 
@@ -59,7 +50,6 @@ Az általad megadott parancsokat elemezve a szerveren különböző típusú tev
 38. `sudo systemctl start docker`: Docker szolgáltatás elindítása.
 39. `sudo systemctl status docker`: Ismételt állapotlekérdezés.
 40. `sudo systemctl enable docker`: Docker automatikus indításának engedélyezése a rendszer indításakor.
-42. `docker ps`: Docker futó konténerek listázása (engedély nélkül próbálkozva).
 43. `sudo docker ps`: Docker futó konténerek listázása rendszergazdaként.
 44. `groups`: Jelenlegi felhasználó csoportjainak listázása.
 45. `sudo usermod -aG docker $(whoami)`: A jelenlegi felhasználó hozzáadása a Docker csoporthoz.
@@ -70,7 +60,6 @@ Az általad megadott parancsokat elemezve a szerveren különböző típusú tev
 
 ### **Egyéb**
 35. `tmux`: Tmux session indítása (terminál multiplexer használata).
-51. `tmux`: Ismételt tmux indítás.
 48. `exit`: Kilépés a terminálból.
 
 ---
