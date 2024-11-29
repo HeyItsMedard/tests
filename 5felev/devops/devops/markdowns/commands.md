@@ -84,3 +84,4 @@ A parancsok nagy részét rendszergazdai jogosultságokkal futtatták, amelyek a
 - **Szoftverfrissítések és új csomagok kezelése**: YUM és EPEL.
 
 Ez a sorozat jól mutatja a szerver előkészítését különféle szolgáltatások futtatására és biztosítására.
+Sorrendet a [steps.md](/5felev/devops/devops/markdowns/steps.md)-ban találhattok.

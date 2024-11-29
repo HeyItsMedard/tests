@@ -5,22 +5,6 @@
 28. **Mi a `RUN` parancs szerepe egy Dockerfile-ban?**  
    - A `RUN` parancs lehetővé teszi, hogy parancsokat futtassunk a konténer létrehozásának során, például szoftverek telepítése, fájlok módosítása stb. Minden `RUN` lépés új réteget hoz létre az image-ban.
 
-29. **Hogyan lehet a `npm` parancsot futtatni egy build során, majd a szükséges fájlokat bemásolni az Nginx könyvtárba?**  
-   - A Dockerfile-ban a következő lépéseket tehetjük:
-     ```Dockerfile
-     # Build fázis
-     FROM node:alpine AS builder
-     WORKDIR /app
-     COPY package*.json ./
-     RUN npm install
-     COPY . .
-     RUN npm run build
-
-     # Nginx fázis
-     FROM nginx:alpine
-     COPY --from=builder /app/dist /usr/share/nginx/html
-     ```
-
 30. **Miért nem elegendő egy alap Nginx Docker image a specifikus igények kielégítésére?**  
    - Az alap Nginx image csak az Nginx szerver alapvető funkcionalitását biztosítja. A személyre szabott konfigurációk, mint például a virtuális hosztok, SSL beállítások és más speciális igények nem érhetők el alapértelmezés szerint, ezeket külön kell konfigurálni.
 
@@ -48,16 +32,11 @@
    - Az **image** egy statikus sablon, amely tartalmazza az alkalmazás futtatásához szükséges fájlokat és beállításokat. (az operációs rendszert, a szükséges könyvtárakat, függőségeket, valamint az alkalmazás kódját és konfigurációit tartalmazhatják)  
    - A **container** az image futó példánya, amely elkülönített környezetben végzi az alkalmazás működését. Egyetlen egységbe csomagolt környezet.
 
-2. **Hogyan használhatóak a Docker volumes az adatok tárolására?**  
-   - A Docker volumes segítségével tartósan tárolhatunk adatokat a konténerek számára, akár az alábbi módokon:  
-     - **Bind mount**: Meghatározott helyi fájlrendszer felcsatolása.  
-     - **Named volume**: Egy elkülönített tárolóhely, amelyet Docker kezel.  
-
-3. **Mit jelent a `docker run` parancs különböző kapcsolókkal, például `-d` vagy `--rm`?**  
+2. **Mit jelent a `docker run` parancs különböző kapcsolókkal, például `-d` vagy `--rm`?**  
    - **`-d`**: A konténer **detached** módban (háttérben) fut.  
    - **`--rm`**: A konténer automatikusan törlődik a leállítása után.  
 
-4. **Hogyan törölhető egy Docker container és image a terminál segítségével?**  
+3. **Hogyan törölhető egy Docker container és image a terminál segítségével?**  
    - **Container törlése**:  
      ```
      docker stop <container_name>
@@ -68,7 +47,7 @@
      docker rmi <image_name>
      ```
 
-5. **Mit kell tenni, ha egy image nem törölhető, mert egy container éppen fut rajta?**  
+4. **Mit kell tenni, ha egy image nem törölhető, mert egy container éppen fut rajta?**  
    - Először le kell állítani és törölni a futó containert:  
      ```
      docker stop <container_name>
@@ -76,27 +55,27 @@
      ```  
    - Ezután törölhető lesz az image. 
 
-1. **Mit jelent a volume csatolása egy konténerhez, és miért van szükség rá?**  
+5. **Mit jelent a volume csatolása egy konténerhez, és miért van szükség rá?**  
    - A volume csatolása lehetővé teszi az adatok tartós tárolását a konténer újraindítása vagy törlése esetén is. Ez fontos, hogy megőrizzük az adatokat, például egy adatbázis esetén.
    - [Ez így történik meg a valóságban](#volume-csatolása).
 
-2. **Hogyan lehet bind mount és volume között választani a fájlok tárolásakor?**  
+6. **Hogyan lehet bind mount és volume között választani a fájlok tárolásakor?**  
    - **Bind mount**: A helyi fájlrendszer egy mellékhelyiséget csatolunk, közvetlenül a host fájlairól.   (magyarul: abszolút path)
    - **Volume**: Docker által kezelt, izolált tárolóhely, amely független a host fájlrendszerétől, ideális adatfelhasználásra és megosztásra. (magyarul: automatikus)
 
-3. **Mit csinál a következő parancs: `docker-compose up`, ha egy konfigurációs fájl köt meg szolgáltatásokat?**  
+7. **Mit csinál a következő parancs: `docker-compose up`, ha egy konfigurációs fájl köt meg szolgáltatásokat?**  
    - A `docker-compose up` parancs létrehozza és elindítja a szolgáltatásokat a megadott konfigurációs fájl alapján,azaz a konténereket hálózati kapcsolatokkal és volume-okkal kezeli.
 
-4. **Hogyan készíthető egy statikus weboldal Docker segítségével, Nginx-et hasznosítva?**  
+8. **Hogyan készíthető egy statikus weboldal Docker segítségével, Nginx-et hasznosítva?**  
    - Hozzon létre egy Dockerfile-t, ami Nginx-et telepít, és másolja a statikus fájlokat az Nginx html könyvtárába. Használja a `docker build` és `docker run` parancsokat a konténer létrehozásához és futtatásához. [Mindezt gyakorlatban itt találhatjátok](#statikus-weboldal-készítése-dockerrel-és-nginx-el).
 
-5. **Hogyan biztosítható, hogy a fájlok elérhetők legyenek egy konténer számára helyi könyvtárból?**  
+9. **Hogyan biztosítható, hogy a fájlok elérhetők legyenek egy konténer számára helyi könyvtárból?**  
    - A helyi könyvtárat volume-ként vagy bind mount-ként felcsatlakoztathatjuk a konténerhez a `-v` vagy `--mount` flag segítségével a `docker run` parancsban.
 
-6. **Mi történik, ha az index.html helyett egy másik fájl kerül felcsatolásra az Nginx konténerben?**  
+10. **Mi történik, ha az index.html helyett egy másik fájl kerül felcsatolásra az Nginx konténerben?**  
    - Az Nginx az új fájlt fogja kiszolgálni a webes kérésekre, ami valószínűleg hibát vagy nem várt viselkedést okoz, ha a fájl nem érvényes HTML vagy más típusú tartalmat tartalmaz.
 
-7. **Hogyan működik a `depends_on` kulcs a docker-compose fájlban?**  
+11. **Hogyan működik a `depends_on` kulcs a docker-compose fájlban?**  
    - A `depends_on` kulcs határozza meg a szolgáltatások indítási sorrendjét. Például ha a service A függ a service B-től, a Docker Compose először elindítja B-t, majd A-t. Azonban ez nem garantálja, hogy B készen is áll a kérések fogadására. 
 
 - **+1.: Mi az a Docker Network, mit csinál?**
@@ -113,9 +92,9 @@
 6. **Hogyan érhető el egy webkonténerből hostolt alkalmazás localhoston keresztül?**  
    - A konténert a host géphez kell kötni a `-p <host_port>:<container_port>` flaggel, például:  
      ```
-     docker run -p 80:80 <image_name>
+     docker run -p 8081:80 <image_name>
      ```
-   - Ezután elérhető lesz a weboldal a `http://localhost` címen.
+   - Ezután elérhető lesz a weboldal a `http://localhost:8080` címen. (Vagyis mindig a gazdagép külső portját megadni, nem a belső konténer portot)
 
 7. **Mit jelent a `-p 80:80` flag a `docker run` parancsnál?**  
    - A host gép **80-as portját** összeköti a konténer **80-as portjával**, így a kívülről érkező kérések eljutnak a konténerben futó alkalmazáshoz.
@@ -126,25 +105,6 @@
      docker run -v $(pwd)/default.conf:/etc/nginx/conf.d/default.conf nginx
      ```
    - Ez biztosítja, hogy a saját konfigurációt használja az Nginx.
-   - +1.: **Mi az a volume?**
-        - lehetővé teszi az adatok tartós tárolását és megosztását a konténerek között. A volume-ok segítségével a konténerek újraindítása vagy törlése esetén is megőrizhetők az adatok.
-
-        - Például, ha egy adatbázis-konténerben tárolt adatokat szeretnél megőrizni, akkor egy volume-t csatolhatsz a konténerhez, amely a host gépen található fájlrendszert használja az adatok tárolására.   
-
-9. **Hogyan kezelhetünk különböző portokat, ha több weboldalt szeretnénk kiszolgálni egy Nginx proxyval?**  
-   - Az Nginx virtuális hostokra alapozva dolgozik. Különböző domain nevekhez és portokhoz külön konfigurációs fájlokat hozhatunk létre, például:  
-     ```
-     server {
-       listen 81; # Első weboldal
-       server_name site1.local;
-       ...
-     }
-     server {
-       listen 82; # Második weboldal
-       server_name site2.local;
-       ...
-     }
-     ```
 
 10. **Mi az environment variable és hogyan adható meg például egy MySQL adatbázis jelszava?**  
    - Az **environment variable (környezeti változó)** a konfigurációs adatok tárolására használatos.  
@@ -164,11 +124,6 @@
    - A DNS cache a korábban lekérdezett domain-IP párosokat tárolja helyileg. Ezáltal nem kell újra DNS-szervereken keresztül feloldani a címet, így gyorsabb az elérés.
 
 13. **Hogyan konfigurálható egy domain Let's Encrypt tanúsítvány segítségével?**  
-   - Használhatunk egy kliensprogramot (pl. Certbot), amely automatikusan generál és telepít tanúsítványt:
-     ```
-     sudo certbot --nginx -d example.com
-     ```
-   - Ezután az Nginx automatikusan HTTPS-t biztosít a domainhez.  
    - Mi az órán Nginx Proxy Managerben kértük le domainjeinkhez.  
 
 14. **Miért fontos a Cloudflare DNS használata az anti-DDoS védelem érdekében?**  
@@ -188,13 +143,6 @@
 
 18. **Mi az a "pod" Kubernetes-ben, és hogyan használható volumenekkel?**  
    - A pod a Kubernetes legkisebb egysége, amely egy vagy több konténert tartalmaz.  
-   - Volumeneket a podhoz rendelhetünk adat persistálására:
-     ```yaml
-     volumes:
-       - name: data-volume
-         hostPath:
-           path: /data
-     ```
 
 19. **Hogyan terheli szét egy Swarm Manager a feladatok végrehajtását több worker node között?**  
    - A Swarm manager automatikusan elosztja a feladatokat (tasks) a worker node-ok között a rendelkezésre álló erőforrások, prioritások és beállított replikációs szabályok alapján. 
@@ -225,44 +173,9 @@
 27. **Hogyan lehet egyszerű adblock-megoldásokkal minimalizálni a felesleges hálózati terhelést egy projektben?**  
    - Használhatunk tartalomblokkoló proxykat (pl. Pi-hole) vagy beállíthatunk a böngészőkben adblockert, hogy kiszűrjük a nem kívánt hirdetéseket és egyéb forgalmat, csökkentve ezzel a hálózati terhelést. 
 
-## Docker Swarm és Kubernetes:
-
-16. **Mi a különbség a Docker Swarm és Kubernetes között?**  
-   - **Docker Swarm**: Egyszerűbb, könnyen használható, a Docker natív orchestration eszköze.  
-   - **Kubernetes**: Komplexebb, sokkal robusztusabb, szélesebb körű funkcionalitást kínál, például automatikus skálázást és helyreállítást.
-
-17. **Hogyan történik a szolgáltatások skálázása és monitorozása Kubernetes-ben?**  
-   - **Skálázás**: A `kubectl scale` parancs, vagy automatikus horizontális skálázás (HPA) használatával végezhető.  
-   - **Monitorozás**: Eszközök, mint a Prometheus és Grafana segítségével, amelyek metrikákat gyűjtenek a podokról és szolgáltatásokról.
-
-18. **Mi az a "pod" Kubernetes-ben, és hogyan használható volumenekkel?**  
-   - A pod a Kubernetes legkisebb végrehajtható egysége, amely egy vagy több konténert tartalmaz.  
-   - Volumenek használatával adatok tárolhatók, például a pod definiálásakor:
-     ```yaml
-     volumes:
-       - name: data-volume
-         emptyDir: {}
-     ```
-
-19. **Hogyan terheli szét egy Swarm Manager a feladatok végrehajtását több worker node között?**  
-   - A Swarm Manager figyeli a rendszer állapotát és a feladatokat a worker node-ok között osztja el az erőforrások és a szolgáltatások szükségletei alapján.
-
 +1. **Nem indul el az oldal, miért?**  
 
-SERVERHEZ HISTORY:
-ssh medi@IP
-history | less 
--> | multiple command (ennek a programnak a kimenetét | ennek a programnak a bemenete), görgethető
-vagy more
-tail -n 2 utolsó két sorrendjét
-grep "ls" csak az ls-es listázásokat teszik ki
-python main.py > print.log & cat print.log -> háttérben futó process
-pkill 574073 process
-python main.py > print.log && cat print.log
-helyes print (vagy && helyett ;)
->> appendelelés (python main.py >> print.log && cat print.log)
-hullámpötty (.~) - ssh kapcsolat megszakítása (pl ha elmenne a net és kilépnél ssh terminálból)
-curl http... | sh 
+[sitedown.md](sitedown.md)
 
 # SOFTTEST
 
@@ -431,20 +344,7 @@ static-website/
 ```
 
 #### **`index.html` tartalma:**
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statikus Weboldal</title>
-</head>
-<body>
-    <h1>Üdvözöllek a statikus weboldalamon!</h1>
-    <p>Ez az oldal egy Docker konténerben fut Nginx segítségével.</p>
-</body>
-</html>
-```
+lényegtelen, csak legyen jó html
 
 ---
 
@@ -515,5 +415,3 @@ docker rm my-static-site
 ```bash
 docker rmi static-website
 ```
-
-Ez a megközelítés gyors és egyszerű módja annak, hogy Docker segítségével statikus weboldalt futtassunk Nginx-en.

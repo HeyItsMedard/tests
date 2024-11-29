@@ -1,0 +1,24 @@
+docker run --rm --network my-net -p 81:5000 -e DB_URL=db myapp -> keresse a docker adatbázisát
+docker run -p 3306:3306 --network my-net --name db -e MYSQL_ROOT_PASSWORD=password -v db-data:/var/lib/mysql -d mysql
+docker network create -d bridge my-net -> hálózat létrehozása
+docker volume create db-data -> volume létrehozása
+docker build -t myapp . -> buildelés
+docker compose up (-d háttérben elindítja) -> yml fájlból létrehozás (kell network, services, volumes külön a fájlban!)
+docker compose down -> leszedi
+docker compose stop -> leállítja
+docker compose start -> ha fent van akkor elindítja és nem fogja újra lebuildelni
+
+SERVERHEZ HISTORY:
+ssh medi@IP
+history | less 
+-> | multiple command (ennek a programnak a kimenetét | ennek a programnak a bemenete), görgethető
+vagy more
+tail -n 2 utolsó két sorrendjét
+grep "ls" csak az ls-es listázásokat teszik ki
+python main.py > print.log & cat print.log -> háttérben futó process
+pkill 574073 process
+python main.py > print.log && cat print.log
+helyes print (vagy && helyett ;)
+>> appendelelés (python main.py >> print.log && cat print.log)
+hullámpötty (.~) - ssh kapcsolat megszakítása (pl ha elmenne a net és kilépnél ssh terminálból)
+curl http... | sh 
