@@ -1,5 +1,5 @@
 ### **Rendszergazdai jogosultságok és általános parancsok**
-1. `su root`: Átváltás root (rendszergazdai) felhasználóra.
+1. `su root/sudo su`: Átváltás root (rendszergazdai) felhasználóra.
 2. `exit`: Kilépés az aktuális terminálból vagy root mód elhagyása.
 3. `sudo yum install htop`: A **htop** rendszerfigyelő eszköz telepítése.
 4. `ls -lka`: A fájlrendszer listázása bővített információkkal.

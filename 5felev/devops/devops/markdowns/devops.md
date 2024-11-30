@@ -169,6 +169,20 @@
 23. **Hogyan kezelhetők a különböző szintű hozzáférések egy konténerizált környezetben?**  
    - Hozzáférések kezelhetők RBAC (Role-Based Access Control) segítségével, amely lehetővé teszi, hogy különböző felhasználók és csoportok eltérő jogosultságokkal rendelkezzenek a konténerek és erőforrások felett. 
 
++1.: **Hogyan telepítettük a portainert?**
+   - 1. portainer data volume készítése
+   - 2. hálózat készítése: nginx-proxy network
+   - 3. docker run --network-nginx-proxy-network -d -p 8000:8000 -p 9443:9443 -p 9000:9000 --name portainer --restart=always -v portainer_data:/data -v /var/run/docker.sock: /var/run/docker.sock portainer/portainer-ce:latest
+
++1.: **Mi az a docker.sock**?
+   - Röviden, enabler, ami például olyan szolgáltatásoknak tud jogokat adni készítéshez, szerkesztéshez... mint a Portainer.
+   - In simple terms, /var/run/docker.sock is a Unix socket file used by Docker to communicate with the Docker daemon (dockerd). This socket file acts as a bridge between your Docker client (like the Docker CLI) and the Docker daemon, enabling you to manage containers, images, networks, and more.
+   - Docker Daemon (dockerd):
+      - A rendszer szintű szolgáltatás, amely a Docker konténerek indítását, leállítását és kezelését végzi.
+   - A Docker CLI (parancssori interfész) kommunikál a daemon-nal, hogy végrehajtja a feladatokat.
+   - Portainer:
+      - A Portainer a Docker Daemon-nal a /var/run/docker.sock socket-en keresztül kommunikál, így képes végrehajtani Docker parancsokat.
+
 ## Folyamatadminisztráció és hibakezelés:
 24. **Miért szükséges figyelni a futó konténerek erőforrás-használatát?**  
    - Az erőforrás-használat figyelése segít elkerülni a teljesítménybeli problémákat, biztosítja a stabil működést és optimalizálja az erőforrás-felhasználást, így költségeket is csökkenthet.

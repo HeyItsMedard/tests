@@ -43,7 +43,7 @@ docker run --rm --network my-net -p  81:5000 myapp
 docker run --rm --network my-net -p 80:5000 myapp
 docker run --rm --network my-net -p 81:5000 -e DB_URL=db myapp
 docker run --rm --network my-net -p 81:5000 myapp
-docker run --rm --network my-net 80:5000 myapp
+rm --network my-net 80:5000 myapp
 docker run --rm --network my-net myapp
 docker run --rm myapp
 docker run -d --name my-nginx-container -p 8082:80 my-custom-nginx
