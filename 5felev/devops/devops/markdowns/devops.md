@@ -169,10 +169,42 @@
 23. **Hogyan kezelhetők a különböző szintű hozzáférések egy konténerizált környezetben?**  
    - Hozzáférések kezelhetők RBAC (Role-Based Access Control) segítségével, amely lehetővé teszi, hogy különböző felhasználók és csoportok eltérő jogosultságokkal rendelkezzenek a konténerek és erőforrások felett. 
 
-+1.: **Hogyan telepítettük a portainert?**
++1.: **Hogyan telepítettük a portainert szerveren?**
    - 1. portainer data volume készítése
-   - 2. hálózat készítése: nginx-proxy network
+   - 2. hálózat készítése: nginx-proxy-network
    - 3. docker run --network-nginx-proxy-network -d -p 8000:8000 -p 9443:9443 -p 9000:9000 --name portainer --restart=always -v portainer_data:/data -v /var/run/docker.sock: /var/run/docker.sock portainer/portainer-ce:latest
+   - 4. portok kinyitása tűzfalon
+   - 5. Portainer megnyitása szerveren a 9000-es porton és adatok felvitele (stack, volume, etc.)
+
++1.: **Hogyan telepítettük a proxy managert szerveren?**
+   - 1. Hozzunk létre egy Docker hálózatot szerveren:
+     ```bash
+     docker network create nginx-proxy-network
+     ```
+   - 2. Készítsük el a compose filet:
+     ```bash
+      version: '3.8'
+      services:
+         app:
+            image: 'jc21/nginx-proxy-manager:latest'
+            restart: unless-stopped
+            ports:
+            - '80:80'
+            - '81:81'
+            - '443:443'
+            volumes:
+               - ./data:/data
+               - ./letsencrypt:/etc/letsencrypt networks:
+         networks:
+            - nginx-proxy-network
+
+      networks:
+         nginx-proxy-network:
+            external: true
+     ```
+   - 3. Adjuk meg Portaineren belül a compose filet stackként és a networkot.
+   - 4. Jelentkezzünk be az alapértelmezett hitelesítő adatokkal (admin@example.com / changeme) és változtassuk meg a jelszót az alkalmazott porton (<szerverip-d>:81).
+   - 5. Konfiguráljuk a kívánt proxy beállításokat és SSL tanúsítványokat a felületen keresztül.
 
 +1.: **Mi az a docker.sock**?
    - Röviden, enabler, ami például olyan szolgáltatásoknak tud jogokat adni készítéshez, szerkesztéshez... mint a Portainer.
@@ -182,6 +214,9 @@
    - A Docker CLI (parancssori interfész) kommunikál a daemon-nal, hogy végrehajtja a feladatokat.
    - Portainer:
       - A Portainer a Docker Daemon-nal a /var/run/docker.sock socket-en keresztül kommunikál, így képes végrehajtani Docker parancsokat.
+
++1.: **Mit jelent az, hogy external: true**?
+   - Nem a Compose fogja létrehozni, hanem azt feltételezi, hogy az már létezik. Hibát ad vissza, ha nem létezik. CLI vagy más compose létre kéne hozza (network, volume)
 
 ## Folyamatadminisztráció és hibakezelés:
 24. **Miért szükséges figyelni a futó konténerek erőforrás-használatát?**  

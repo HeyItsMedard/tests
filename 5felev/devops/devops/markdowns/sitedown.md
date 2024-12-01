@@ -148,8 +148,8 @@
       - nginx proxy managerben egy hálózaton kéne legyenek: nincsenek
          - meg kell adni composeban a networkot
             networks:
-               npm:
-                  external: true
-   - 9. :
-   - 10. :
+              nginx-proxy-network:
+                external: true
+   - 9. : aha müxik mán
+   - 10. : jól van
 
