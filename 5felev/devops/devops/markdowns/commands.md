@@ -59,7 +59,7 @@
 ---
 
 ### **Egyéb**
-35. `tmux`: Tmux session indítása (terminál multiplexer használata).
+35. `tmux`: Tmux session indítása (terminál multiplexer használata, main terminalból nyitja meg, véletlen kilépést akadályoz, több terminált lehet benne megnyitni különböző feladatokhoz, ha szakadás is van, a tmux folyamatai nem vesznek el).
 48. `exit`: Kilépés a terminálból.
 
 ---

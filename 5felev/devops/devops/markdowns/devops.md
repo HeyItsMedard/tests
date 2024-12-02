@@ -123,6 +123,12 @@
      ``` 
      Megjegyzés: én .env-ben szoktam megadni ezeket, de ki ahol akarja
 
+ +1.: **Hol dolgoztunk ECS Consoleon belül?**
+   - Security Groups: megadtuk a portokat amiket kinyitottunk a szerveren
+   - Key Pair: az SSH kulcsot megadtuk
+   - Overview: szerver leírása, állapota
+   - Instances: general információ
+
 ## IP, domain és DNS:
 11. **Mi a különbség IP, domain, és subdomain között?**  
    - **IP**: Számokból álló cím, amely egy eszköz azonosítására szolgál a hálózaton.  
@@ -140,6 +146,105 @@
 
 15. **Mikor hasznosak a CNAME rekordok egy DNS rendszerben?**  
    - A CNAME rekordok akkor hasznosak, ha egy domain más domain névre mutat. Például egy subdomain (`www.example.com`) átirányítása az alap domainre (`example.com`). Ez csökkenti a karbantartás nehézségeit, ha az IP-cím változik. 
+
++1.: **Hogyan áll össze egy URL?**
+   - protocol://domain:port/path?query#fragment
+
++1.: **Mi történik egy domain lekérésekor?**
+
+#### 1. **Rekurzív DNS-szerver (Recursive DNS Resolver)**
+- **Feladata:** 
+  - Ez az első szerver, amelyhez a böngésző a lekérést továbbítja.
+  - A felhasználó internetszolgáltatója vagy egy harmadik fél (pl. Google Public DNS, Cloudflare) üzemelteti.
+      - cachelve van pár mostanában használt domain, jellemzően ezt user is törölheti pl. cmdben ipconfig /flushdns
+- **Működés:** 
+  - Ha a rekurzív szerver nem tudja azonnal a választ, megkezdi a DNS-hierarchia bejárását, hogy megtalálja az IP-címet.
+
+#### 2. **Gyökérszerverek (Root Servers)**
+- **Feladata:** 
+  - A DNS-hierarchia csúcsán helyezkednek el.
+  - A rekurzív szerver kérdésére válaszul megadják, mely TLD (Top-Level Domain) szerverhez kell fordulni.
+- **Példa:** 
+  - A „.com” vagy „.hu” TLD-szervereket azonosítják.
+- **Működés:** 
+  - Világszerte 13 gyökérszerverrendszer létezik, de ezek redundánsak, így több helyen elérhetők.
+
+#### 3. **TLD-szerverek (Top-Level Domain Servers)**
+- **Feladata:** 
+  - A lekérdezés továbbítása az adott TLD-hez tartozó másodlagos DNS-szerverekhez.
+- **Példa:** 
+  - A „.com” TLD-szerver tudja, hogy az `example.com` domain mely autoritatív DNS-szerveren érhető el.
+- **Működés:** 
+  - A gyökérszervertől kapott információ alapján válaszol a rekurzív szervernek.
+
+#### 4. **Autoritatív DNS-szerverek (Authoritative DNS Servers)**
+- **Feladata:** 
+  - Ezek tárolják a domain névhez tartozó tényleges információt, például az IP-címet vagy más rekordokat (pl. MX, CNAME, TXT).
+- **Példa:** 
+  - Az `example.com` domainhez tartozó autoritatív szerver tárolhatja a `www.example.com` IP-címét.
+- **Működés:** 
+  - Az autoritatív szerver a végső válaszokat adja a rekurzív szervernek, amely visszatér a klienshez (böngészőhöz).
+
+---
+
+### **Domain-részek feloldásának folyamata**
+
+Tegyük fel, hogy a következő URL-t írod be: `https://www.example.com`.
+
+#### 1. **Aldomain feloldása (www)**
+   - A böngésző első lépésként a teljes domain nevet (`www.example.com`) próbálja feloldani. Az autoritatív DNS-szerver megmondja, hogy a „www” aldomainhez milyen IP-cím tartozik, vagy hogy másik aldomainhez kell-e irányítani (CNAME rekord).
+
+#### 2. **Másodlagos domain (example.com) feloldása**
+   - A gyökérszerver és a TLD-szerverek közreműködésével a rendszer azonosítja, hogy az „example.com” másodlagos domainhez mely autoritatív szerverek tartoznak.
+
+#### 3. **Felső szintű domain (.com) kezelése**
+   - A gyökérszerver azonosítja a „.com” TLD-szervert, amely továbbadja a kérést az „example.com” autoritatív DNS-szerverének.
+
+---
+
+### **Folyamat részletezve**
+
+1. **Böngésző DNS-kérése:**
+   - A böngésző a rekurzív DNS-szerverhez fordul a `www.example.com` IP-címéért.
+
+2. **Rekurzív szerver kérése a gyökérszerverhez:**
+   - A gyökérszerver visszaadja a `.com` TLD-szerver címét.
+
+3. **TLD-szerver lekérdezése:**
+   - A TLD-szerver visszaadja az „example.com” autoritatív DNS-szerver címét.
+
+4. **Autoritatív szerver válasza:**
+   - Az autoritatív szerver megadja a `www.example.com` IP-címét (például `93.184.216.34`).
+
+5. **Böngésző IP-alapú kapcsolódása:**
+   - A böngésző kapcsolódik az IP-címhez, és kéri a megfelelő tartalmat (pl. HTML, CSS, JavaScript stb.).
+
+---
+
+### **Speciális rekordok a DNS-ben**
+
+- **A rekord:** Az IPv4-címet tárolja.
+- **AAAA rekord:** Az IPv6-címet tárolja.
+- **CNAME rekord:** Másik domainre irányít át (pl. `www` → `example.com`).
+- **MX rekord:** Az e-mail szerverekhez kapcsolódó információt tárolja.
+- **TXT rekord:** Szöveges információkat tartalmaz, például SPF vagy DKIM az e-mailek hitelesítéséhez.
+
++1.: **Hogyan áll össze a domain?**
+   - 1. Aldomain (Subdomain), a domain név legbaloldalibb része
+      - www a legyakoribb
+      - Más aldomainek lehetnek: mail.example.com, blog.example.com.
+   - 2. Másodlagos domain (Second-Level Domain, SLD), a domain név központi része, amelyet a felhasználó vagy vállalat regisztrál. Például:
+      - Az example az SLD a www.example.com címben.
+      - A másodlagos domain választása egyedi, és azt egy regisztrátornál vásárolják meg (pl. example.hu).
+      - A regisztrátor kapcsolatot tart az ICANN-nal (Internet Corporation for Assigned Names and Numbers), amely a domainnevek és IP-címek globális kezelője.
+
+   - 3. Felső szintű domain (Top-Level Domain, TLD = szerver) a domain név utolsó része, kétféle TLD létezik:
+      - Általános TLD-k (gTLD): Például .com, .org, .net.
+      - Országspecifikus TLD-k (ccTLD): Például .hu, .de, .uk.
+
+További fontos fogalmak
+- WHOIS adatbázis: A domain név tulajdonosának regisztrációs adatai találhatók itt. Ezek nyilvánosak lehetnek, de adatvédelmi okokból gyakran elrejtik őket.
+- SSL/TLS tanúsítvány: A biztonságos HTTPS kapcsolat érdekében szükséges a domainhez egy SSL tanúsítvány. Ez titkosítja a felhasználók és a szerver közötti adatforgalmat.
 
 ## Docker Swarm és Kubernetes:
 16. **Mi a különbség a Docker Swarm és Kubernetes között?**  
@@ -175,6 +280,9 @@
    - 3. docker run --network-nginx-proxy-network -d -p 8000:8000 -p 9443:9443 -p 9000:9000 --name portainer --restart=always -v portainer_data:/data -v /var/run/docker.sock: /var/run/docker.sock portainer/portainer-ce:latest
    - 4. portok kinyitása tűzfalon
    - 5. Portainer megnyitása szerveren a 9000-es porton és adatok felvitele (stack, volume, etc.)
+
++1.: Cloudflare navigáció
+   - cím>DNS>Records
 
 +1.: **Hogyan telepítettük a proxy managert szerveren?**
    - 1. Hozzunk létre egy Docker hálózatot szerveren:
