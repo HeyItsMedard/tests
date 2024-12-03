@@ -12,10 +12,7 @@
        ```bash
        ssh user@<szerver_ip>
        ```
-     - Ha nem sikerül, ellenőrizd az SSH szolgáltatást:  
-       ```bash
-       systemctl status ssh
-       ```
+     - Ha nem sikerül, ellenőrizd az SSH szolgáltatást Serviceknél Windowson.
 
 2. **Docker specifikus ellenőrzések**:
    - **Konténerek állapotának lekérdezése**:  

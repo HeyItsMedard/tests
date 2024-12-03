@@ -1,0 +1,16 @@
+- pip install pytest
+- python(3) -m pytest [test mappa/fájlnév]
+- python(3) -m pytest --maxfail=2
+- python(3) -m pytest -q
+- python(3) -m pytest -m [marker név]
+- pip install pytest-html
+- pip install pytest-cov
+- python(3) -m pytest --cov=[mappa név]  --cov-branch
+- pip install pytest-xdist
+- python(3) -m pytest -n 14
+(itt van két parancsom is, de probably csak a pytest-playwright kell idk)
+- pip install pytest-playwright
+- pip install playwright
+- playwright install -> Leszedi a böngészőket asszem
+- python(3) -m pytest -m ui --headed --slowmo 2000
+- python(3) -m pytest .\tests\test_accu.py::test_acme_bank_make_payment
